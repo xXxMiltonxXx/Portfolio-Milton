@@ -17,7 +17,7 @@ Requiere Node 22.12 o superior.
 Todo el contenido (experiencia, proyectos, stack, comunidad) vive en `src/data/profile.ts`. Las secciones de la página y el asistente de IA leen de ahí, así que basta con editar ese archivo.
 
 - **Foto:** `public/milton.jpg`.
-- **LinkedIn:** reemplaza `links.linkedin` en `profile.ts` por la URL de tu perfil.
+- **LinkedIn:** `links.linkedin` en `profile.ts`.
 
 ## Asistente de IA
 

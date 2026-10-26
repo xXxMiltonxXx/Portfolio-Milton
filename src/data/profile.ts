@@ -34,8 +34,7 @@ export const profile = {
   photoFallback: "",
   links: {
     github: GH,
-    // TODO: reemplazar por la URL exacta de tu perfil (linkedin.com/in/...)
-    linkedin: "https://www.linkedin.com/search/results/people/?keywords=Milton%20Angamarca",
+    linkedin: "https://www.linkedin.com/in/milton-angamarca",
   },
 
   stats: [
