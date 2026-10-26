@@ -67,11 +67,11 @@ export const profile = {
     },
     {
       title: "Datos y sistemas empresariales",
-      text: "Procesos ETL, ciencia de datos, concurrencia, procedimientos almacenados, multitenancy y módulos contables.",
+      text: "Procesos ETL, ciencia de datos, concurrencia, procedimientos almacenados, réplicas de PostgreSQL, multitenancy y módulos contables.",
     },
     {
       title: "Del prototipo a producción",
-      text: "Docker, colas con Celery/Redis, CI/CD, VPS y Vercel.",
+      text: "Gestión de servidores, despliegues, crons, Docker, colas con Celery/Redis, CI/CD, VPS y Vercel.",
     },
   ],
 
@@ -117,8 +117,10 @@ export const profile = {
         "Implementé roles y permisos, y el módulo contable con su lógica de debe y haber.",
         "Escribí procedimientos almacenados y lógica de negocio en base de datos.",
         "Trabajé en proyectos multitenant, procesos ETL, ciencia de datos y manejo de concurrencia.",
+        "Frontend en Angular (versiones 15, 17 y 20) con manejo de estado global.",
+        "Backend en Python sobre PostgreSQL con réplicas, gestión de servidores, despliegues y tareas programadas con cron.",
       ],
-      tags: [],
+      tags: ["Angular", "TypeScript", "Python", "PostgreSQL", "Linux", "Docker"],
     },
     {
       title: "Creador y organizador",
@@ -253,8 +255,9 @@ export const profile = {
         "Roles y permisos por usuario",
         "Módulo contable con asientos de debe y haber",
         "Procedimientos almacenados, procesos ETL y concurrencia",
+        "Angular 15, 17 y 20 con estado global; PostgreSQL con réplicas",
       ],
-      tags: [],
+      tags: ["Angular", "TypeScript", "Python", "PostgreSQL", "Linux"],
       categories: ["web", "backend"],
       year: "Full Stack Junior",
       private: true,
