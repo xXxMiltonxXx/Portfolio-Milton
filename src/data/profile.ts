@@ -286,6 +286,7 @@ export const profile = {
     },
     {
       name: "Sistema Center · ZGames",
+      image: "/proyectos/zgames.webp",
       summary:
         "Plataforma que centraliza todos los movimientos de los empleados, con roles y permisos, contabilidad (debe y haber) y arquitectura multitenant.",
       highlights: [
