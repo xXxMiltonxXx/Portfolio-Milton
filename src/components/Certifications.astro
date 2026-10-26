@@ -10,14 +10,28 @@ const certs = profile.certifications;
     <div class="container wide">
       <div class="section-head">
         <span class="eyebrow">Certificaciones</span>
-        <h2 class="headline">Aprendizaje continuo. <span class="soft">Cursos completados en Udemy y Coursera.</span></h2>
+        <h2 class="headline">Aprendizaje continuo. <span class="soft">Cursos completados y verificables.</span></h2>
       </div>
       <ul class="grid">
         {certs.map((c) => (
           <li class="tile cert">
-            <p class="issuer"><TechIcon name={c.issuer} size={20} /><span>{c.issuer}</span>{c.year && <span class="year">{c.year}</span>}</p>
-            <h3>{c.title}</h3>
-            {c.url && <a class="link" href={c.url} target="_blank" rel="noopener">Ver certificado</a>}
+            {c.image && (
+              <a class="thumb" href={c.url ?? c.image} target="_blank" rel="noopener">
+                <img src={c.image} alt={`Certificado: ${c.title}`} width="800" height="600" loading="lazy" />
+              </a>
+            )}
+            <div class="body">
+              <p class="issuer">
+                <TechIcon name={c.issuer} size={18} />
+                <span>{c.issuer}</span>
+                {c.date && <span class="date">{c.date}</span>}
+              </p>
+              <h3>{c.title}</h3>
+              <p class="meta">
+                {[c.instructor && `Instructor: ${c.instructor}`, c.hours].filter(Boolean).join(" · ")}
+              </p>
+              {c.url && <a class="link" href={c.url} target="_blank" rel="noopener">Verificar certificado</a>}
+            </div>
           </li>
         ))}
       </ul>
@@ -31,16 +45,42 @@ const certs = profile.certifications;
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 16px;
+    gap: 20px;
+  }
+  @media (min-width: 760px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
   .cert {
-    padding: 26px;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    gap: 12px;
     background: var(--bg-alt);
     box-shadow: none;
+  }
+  .thumb {
+    display: block;
+    aspect-ratio: 4 / 3;
+    max-width: 100%;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s;
+  }
+  .thumb:hover img {
+    transform: scale(1.03);
+  }
+  .body {
+    padding: 24px 26px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
   }
   .issuer {
     margin: 0;
@@ -50,16 +90,22 @@ const certs = profile.certifications;
     font-size: 0.9rem;
     color: var(--fg-2);
   }
-  .year {
+  .date {
     margin-left: auto;
     color: var(--fg-3);
-    font-variant-numeric: tabular-nums;
   }
   h3 {
-    font-size: 1.15rem;
+    font-size: 1.25rem;
+    line-height: 1.2;
     letter-spacing: -0.02em;
+  }
+  .meta {
+    margin: 0;
+    color: var(--fg-2);
+    font-size: 0.92rem;
   }
   .link {
     margin-top: auto;
+    padding-top: 6px;
   }
 </style>

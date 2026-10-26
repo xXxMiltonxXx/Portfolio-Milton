@@ -104,9 +104,9 @@ export const profile = {
       points: [
         "Dirigí el proyecto como líder técnico: planificación, decisiones de arquitectura y coordinación del equipo.",
         "Participé en la creación del sistema escolar y en la refactorización de módulos existentes para hacerlo más mantenible.",
-        "Construido con Next.js y renderizado del lado del servidor (SSR) para mejor rendimiento y SEO.",
+        "Construido con Next.js, renderizado del lado del servidor (SSR) y SWR para la obtención y caché de datos.",
       ],
-      tags: ["Next.js", "React", "TypeScript"],
+      tags: ["Next.js", "React", "TypeScript", "SWR"],
       link: "https://bebrighton.net/es/home-2/",
     },
     {
@@ -245,9 +245,9 @@ export const profile = {
       highlights: [
         "Liderazgo técnico del equipo",
         "Creación de módulos nuevos y refactorización del código existente",
-        "Next.js con renderizado del lado del servidor (SSR)",
+        "Next.js con SSR y SWR para obtención y caché de datos",
       ],
-      tags: ["Next.js", "React", "TypeScript"],
+      tags: ["Next.js", "React", "TypeScript", "SWR"],
       categories: ["web"],
       year: "Líder de proyecto",
       live: "https://bebrighton.net/es/home-2/",
@@ -331,7 +331,7 @@ export const profile = {
 
   stack: [
     { group: "Inteligencia artificial", items: ["OpenAI", "Claude", "LangGraph", "LangChain", "Pinecone", "PyTorch", "OpenCV", "TensorFlow Lite", "Hugging Face", "ElevenLabs", "OpenRouter"] },
-    { group: "Frontend", items: ["React", "Next.js", "Astro", "Angular", "TypeScript", "JavaScript", "Tailwind CSS", "Vite", "GSAP", "Three.js", "Framer Motion"] },
+    { group: "Frontend", items: ["React", "Next.js", "Astro", "Angular", "TypeScript", "JavaScript", "Tailwind CSS", "Vite", "SWR", "GSAP", "Three.js", "Framer Motion"] },
     { group: "Backend", items: ["Python", "FastAPI", "Flask", "Go", "Node.js", "Express", "tRPC", "Prisma", "Celery", "Redis", "n8n"] },
     { group: "Móvil", items: ["Flutter", "Dart", "Kotlin", "Jetpack Compose", "Android", "Firebase"] },
     { group: "Datos e infraestructura", items: ["Supabase", "PostgreSQL", "MongoDB", "Docker", "Nginx", "Cloudflare", "Contabo", "Vercel", "Linux", "Ubuntu", "Bash", "Git", "GitHub Actions", "LiveKit", "MQTT", "Stripe"] },
@@ -339,7 +339,26 @@ export const profile = {
 
   // Certificados de Udemy y Coursera: { title, issuer: "Udemy" | "Coursera", year, url }.
   // La sección se muestra sola en cuanto haya al menos uno.
-  certifications: [] as { title: string; issuer: string; year?: string; url?: string }[],
+  certifications: [
+    {
+      title: "JavaScript Moderno Guía Definitiva: Construye +20 Proyectos",
+      issuer: "Udemy",
+      instructor: "Juan Pablo De la torre Valdez",
+      date: "Enero 2026",
+      hours: "52.5 horas",
+      url: "https://ude.my/UC-52b03c29-c292-48af-b79a-39e55caae35b",
+      image: "/certificados/udemy-javascript-moderno.jpg",
+    },
+    {
+      title: "Aprende JavaScript ES9, HTML, CSS3 y NodeJS desde cero",
+      issuer: "Udemy",
+      instructor: "Nicolas Schurmann",
+      date: "Enero 2024",
+      hours: "19 horas",
+      url: "https://ude.my/UC-e55e9a05-2275-4449-a703-226f447a39cb",
+      image: "/certificados/udemy-javascript-es9-node.jpg",
+    },
+  ] as { title: string; issuer: string; instructor?: string; date?: string; hours?: string; url?: string; image?: string }[],
 
   community: [
     {
@@ -387,7 +406,7 @@ export function profileAsContext(): string {
     "Comunidad:",
     ...p.community.map((c) => `- ${c.title} (${c.kicker}): ${c.text}`),
     ...(p.certifications.length
-      ? ["Certificaciones:", ...p.certifications.map((c) => `- ${c.title} (${c.issuer}${c.year ? `, ${c.year}` : ""})`)]
+      ? ["Certificaciones:", ...p.certifications.map((c) => `- ${c.title} (${c.issuer}${c.date ? `, ${c.date}` : ""}${c.hours ? `, ${c.hours}` : ""}${c.instructor ? `, instructor ${c.instructor}` : ""})`)]
       : []),
     `Contacto: GitHub ${p.links.github}, LinkedIn ${p.links.linkedin}.`,
   ].join("\n");

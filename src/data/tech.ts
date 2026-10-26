@@ -55,6 +55,7 @@ const slugs: Record<string, string> = {
   "n8n": "n8n",
   "WhatsApp API": "whatsapp",
   "Figma": "figma",
+  "SWR": "swr",
   "Nginx": "nginx",
   "Cloudflare": "cloudflare",
   "Contabo": "contabo",
