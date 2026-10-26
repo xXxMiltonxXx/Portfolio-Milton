@@ -30,7 +30,7 @@ export const profile = {
   location: "Manta, Ecuador",
   availability: "Abierto a proyectos y colaboraciones",
   tagline:
-    "Desarrollo productos con IA de punta a punta: agentes conversacionales, CRMs inteligentes, apps móviles de salud y plataformas web — desde la idea hasta producción.",
+    "Desarrollo productos con IA de punta a punta: agentes conversacionales, CRMs inteligentes, apps móviles de salud y plataformas web, desde la idea hasta producción.",
   heroWords: ["agentes de IA", "CRMs inteligentes", "apps móviles", "plataformas web", "comunidad tech"],
   photo: "/milton.jpg",
   photoFallback: "",
@@ -48,7 +48,7 @@ export const profile = {
 
   about: [
     "Soy <strong>Milton Angamarca</strong>, ingeniero de software de <strong>Manta, Ecuador</strong>, formado en la <strong>Universidad Laica Eloy Alfaro de Manabí (ULEAM)</strong>. Me apasiona convertir problemas reales en productos que la gente usa todos los días.",
-    "Hoy construyo <strong>IssA</strong>, un CRM con IA nativa para WhatsApp: agentes que leen la base de conocimiento de un negocio, responden, agendan y cierran ventas 24/7. Trabajo en todo el stack — React y Next.js en el frontend, FastAPI, LangGraph y Go en el backend, Flutter en móvil y Supabase/Postgres como base.",
+    "Hoy construyo <strong>IssA</strong>, un CRM con IA nativa para WhatsApp: agentes que leen la base de conocimiento de un negocio, responden, agendan y cierran ventas 24/7. Trabajo en todo el stack: React y Next.js en el frontend, FastAPI, LangGraph y Go en el backend, Flutter en móvil y Supabase/Postgres como base.",
     "Fuera del código me mueve la comunidad: creé y organicé <strong>Hacknarok</strong>, una hackathon en Manta con más de <strong>$3.000 en premios</strong>, e impartí cursos en la <strong>Comunidad Microsoft de la ULEAM</strong>.",
   ],
 
@@ -85,7 +85,7 @@ export const profile = {
     {
       title: "Full Stack & AI Engineer",
       org: "IssA · issaa-ai.com",
-      period: "2025 — Actualidad",
+      period: "Desde 2025",
       points: [
         "Desarrollo de un CRM con IA nativa para WhatsApp que responde, agenda citas y cierra ventas 24/7 para salud, sector público, retail, educación y B2B.",
         "Backend con FastAPI + LangGraph (migrado desde n8n): webhooks por conexión, flujo conversacional RAG, colas Celery/Redis e ingesta de PDF, Office, audio y OCR.",
@@ -94,7 +94,7 @@ export const profile = {
       tags: ["Python", "FastAPI", "LangGraph", "OpenAI", "React", "Next.js", "Supabase", "Celery", "Redis", "Docker"],
     },
     {
-      title: "Desarrollador — Proyecto Coactiva",
+      title: "Desarrollador del proyecto Coactiva",
       org: "Prototipo para el IESS · Manabí",
       period: "2026",
       points: [
@@ -132,7 +132,7 @@ export const profile = {
     {
       title: "Creador y organizador",
       org: "Hacknarok 2024 · Manta",
-      period: "Oct — Dic 2024",
+      period: "Octubre a diciembre de 2024",
       points: [
         "Ideé y organicé una hackathon en Manta con más de $3.000 en premios, mentores por temática y rúbricas de evaluación.",
         "Construí la plataforma oficial: inscripción de equipos, temas y mentores, entrega de proyectos, calificación por jurados y recursos de formación.",
@@ -142,7 +142,7 @@ export const profile = {
     {
       title: "Instructor y miembro",
       org: "Comunidad Microsoft · ULEAM",
-      period: "2023 — 2025",
+      period: "2023 a 2025",
       points: [
         "Impartí un curso de TypeScript para estudiantes de la universidad.",
         "Diseñé pruebas técnicas para la selección de nuevos miembros de la comunidad.",
@@ -153,10 +153,10 @@ export const profile = {
 
   projects: defineProjects([
     {
-      name: "IssA — CRM con IA para WhatsApp",
+      name: "IssA",
       image: "/proyectos/issa-landing.webp",
       summary:
-        "Plataforma SaaS donde agentes de IA leen el catálogo y los manuales de un negocio para responder, agendar y cobrar por WhatsApp, mientras el CRM centraliza cada lead, pago y ticket.",
+        "CRM con IA nativa para WhatsApp. Sus agentes leen el catálogo y los manuales de un negocio para responder, agendar y cobrar, mientras el panel centraliza cada lead, pago y ticket.",
       highlights: [
         "Demo conversacional pública con OpenAI y límites de uso",
         "Portal de clientes: agente, métricas, planes y conversaciones",
@@ -164,13 +164,13 @@ export const profile = {
       ],
       tags: ["React", "Vite", "Tailwind CSS", "Supabase", "OpenAI", "WhatsApp API", "GSAP", "Three.js", "Framer Motion", "Docker"],
       categories: ["ia", "web"],
-      year: "2025 — 2026",
+      year: "2025 a 2026",
       featured: true,
       live: "https://issaa-ai.com",
       private: true,
     },
     {
-      name: "IssA CRM — Motor de IA",
+      name: "Motor de IA de IssA",
       image: "/proyectos/issa-crm.webp",
       live: "https://issaconnection.it.com/login",
       summary:
@@ -221,12 +221,12 @@ export const profile = {
       private: true,
     },
     {
-      name: "BioGuard — Tu rostro es la llave",
+      name: "BioGuard",
       image: "/proyectos/bioguard.webp",
       portrait: true,
       featured: true,
       summary:
-        "Acceso seguro en un instante: plataforma de autenticación biométrica que registra el rostro del usuario y le permite iniciar sesión con reconocimiento facial, sin contraseñas.",
+        "Tu rostro es la llave. Plataforma de autenticación biométrica que registra el rostro del usuario y le permite iniciar sesión con reconocimiento facial, sin contraseñas.",
       highlights: [
         "Detección y embeddings faciales con FaceNet (PyTorch) y OpenCV",
         "Registro de rostros y login biométrico que emite tokens JWT",
@@ -250,7 +250,7 @@ export const profile = {
       repo: `${GH}/Valentina-baby`,
     },
     {
-      name: "Quill ULEAM — Chat con tus PDFs",
+      name: "Quill ULEAM",
       summary:
         "SaaS para subir un PDF y conversar con él usando IA, con respuestas en streaming. Presentado en la Casa Abierta de la ULEAM.",
       highlights: ["RAG con LangChain, OpenAI y Pinecone", "Planes gratis y Pro con Stripe, tRPC + Zod + Prisma"],
@@ -326,7 +326,7 @@ export const profile = {
       highlights: ["Firebase Auth, Firestore, Realtime DB y Storage", "Versión nativa con Jetpack Compose"],
       tags: ["Flutter", "Dart", "Kotlin", "Jetpack Compose", "Android", "Firebase"],
       categories: ["movil"],
-      year: "2024 — 2025",
+      year: "2024 a 2025",
       repo: `${GH}/BridgeUleam`,
     },
     {

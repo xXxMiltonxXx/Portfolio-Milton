@@ -1,4 +1,4 @@
-# Portafolio — Milton Angamarca
+# Portafolio de Milton Angamarca
 
 Portafolio personal hecho con [Astro](https://astro.build), con un asistente de IA ("MiltonAI") que responde preguntas sobre mi experiencia y proyectos.
 

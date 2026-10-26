@@ -210,7 +210,7 @@ const kb = {
       return kb.stack.map((s) => `${s.group}: ${s.items.join(", ")}`).join("\n");
     }
     if (has("experiencia", "trabaj", "empresa", "zgames", "issa", "iess", "rol", "cargo")) {
-      return kb.experience.map((e) => `• ${e.title} — ${e.org} (${e.period})`).join("\n");
+      return kb.experience.map((e) => `• ${e.title}, ${e.org} (${e.period})`).join("\n");
     }
     if (has("proyecto", "portafolio", "hizo", "construy")) {
       return `Algunos de sus proyectos:\n${kb.projects
