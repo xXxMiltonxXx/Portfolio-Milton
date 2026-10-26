@@ -271,6 +271,7 @@ export const profile = {
     },
     {
       name: "Sistema escolar Brighton",
+      image: "/proyectos/brighton.webp",
       summary:
         "Sistema de gestión escolar que lideré como jefe de proyecto: participé en su creación y en la refactorización de sus módulos.",
       highlights: [
