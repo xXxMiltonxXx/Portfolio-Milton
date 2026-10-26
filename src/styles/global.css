@@ -227,9 +227,34 @@ h3 {
 }
 
 .tile {
+  position: relative;
   background: var(--tile);
   border-radius: var(--r-lg);
   box-shadow: var(--shadow);
+}
+
+/* Brillo que sigue al cursor (posición en --mx / --my desde motion.ts). */
+.tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--accent) 9%, transparent), transparent 60%);
+}
+
+.tile:hover::after {
+  opacity: 1;
+}
+
+/* Línea divisoria que GSAP dibuja al entrar en pantalla. */
+.rule {
+  display: block;
+  height: 1px;
+  background: var(--line);
+  transform-origin: left center;
 }
 
 @media (prefers-reduced-motion: reduce) {

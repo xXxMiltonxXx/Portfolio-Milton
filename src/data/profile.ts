@@ -14,6 +14,7 @@ export interface Project {
   repo?: string;
   live?: string;
   private?: boolean;
+  image?: string;
 }
 
 const GH = "https://github.com/xXxMiltonxXx";
@@ -146,6 +147,7 @@ export const profile = {
   projects: defineProjects([
     {
       name: "IssA — CRM con IA para WhatsApp",
+      image: "/proyectos/issa-landing.webp",
       summary:
         "Plataforma SaaS donde agentes de IA leen el catálogo y los manuales de un negocio para responder, agendar y cobrar por WhatsApp, mientras el CRM centraliza cada lead, pago y ticket.",
       highlights: [
@@ -162,6 +164,8 @@ export const profile = {
     },
     {
       name: "IssA CRM — Motor de IA",
+      image: "/proyectos/issa-crm.webp",
+      live: "https://issaconnection.it.com/login",
       summary:
         "Backend que reemplazó los flujos de n8n por un grafo conversacional con LangGraph: genera webhooks únicos por conexión (YCloud), procesa mensajes con RAG sobre Postgres y ejecuta automatizaciones.",
       highlights: [
@@ -177,6 +181,8 @@ export const profile = {
     },
     {
       name: "Salud Metabólica",
+      image: "/proyectos/salud-metabolica.webp",
+      live: "https://saludmetabolica-salud-landing.idpriz.easypanel.host/#apps",
       summary:
         "Plataforma de salud con app para pacientes, app para médicos y una API en Go. Un semáforo clínico prioriza pacientes y el médico puede llamarlos por video.",
       highlights: [
@@ -192,6 +198,7 @@ export const profile = {
     },
     {
       name: "Hacknarok 2024",
+      image: "/proyectos/hacknarok.webp",
       summary:
         "Plataforma oficial de la hackathon que creé en Manta: inscripción de equipos, temas con mentor asignado, entrega de proyectos y votación de jurados con puntaje ajustado por rúbrica.",
       highlights: [
@@ -205,6 +212,18 @@ export const profile = {
       featured: true,
       live: "https://hacknarok.vercel.app",
       private: true,
+    },
+    {
+      name: "Invitación Valentina",
+      image: "/proyectos/valentina.webp",
+      summary:
+        "Invitación web para una revelación de sexo, baby shower y cumpleaños: cuenta regresiva, itinerario, mapa del lugar y confirmación de asistencia por WhatsApp.",
+      highlights: ["Diseño editorial con tipografía caligráfica", "Un solo archivo HTML, sin dependencias"],
+      tags: ["JavaScript", "Vercel"],
+      categories: ["web"],
+      year: "2026",
+      live: "https://valentina-baby.vercel.app",
+      repo: `${GH}/Valentina-baby`,
     },
     {
       name: "BioGuard",

@@ -2,67 +2,194 @@
 import { profile } from "../data/profile";
 import TechIcon from "./TechIcon.astro";
 
-const featuredTech = ["OpenAI", "LangGraph", "Python", "FastAPI", "React", "Next.js", "Flutter", "Go", "Supabase", "Docker"];
+const featuredTech = ["OpenAI", "LangGraph", "Python", "FastAPI", "React", "Next.js", "Angular", "Flutter", "Go", "Supabase", "PostgreSQL", "Docker"];
+
+// Titular partido en palabras para animarlas una a una.
+const line1 = ["Software", "que", "piensa."];
+const line2 = ["Productos", "que", "funcionan."];
+
+// Chips flotantes alrededor de la foto: lo que construyo, no adornos.
+const chips = [
+  { label: "Agentes de IA", sub: "LangGraph · RAG", pos: "c1" },
+  { label: "CRM para WhatsApp", sub: "IssA", pos: "c2" },
+  { label: "Apps de salud", sub: "Flutter · Go", pos: "c3" },
+  { label: "Hacknarok 2024", sub: "Creador", pos: "c4" },
+];
+
+function countParts(v: string) {
+  const m = v.match(/^(\D*)(\d+)(.*)$/);
+  return m && !v.includes("/") ? { prefix: m[1], n: m[2], suffix: m[3] } : null;
+}
 ---
 
 <section id="inicio" class="hero">
-  <div class="container">
-    <div class="photo">
+  <svg class="lines" viewBox="0 0 1440 520" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="g-ai" x1="0" x2="1" y1="0" y2="0">
+        <stop offset="0" stop-color="#0894ff" />
+        <stop offset="0.35" stop-color="#c959dd" />
+        <stop offset="0.7" stop-color="#ff2e54" />
+        <stop offset="1" stop-color="#ff9004" />
+      </linearGradient>
+    </defs>
+    <path class="ln ln-ai" d="M-20,380 C180,300 360,180 560,250 S900,430 1100,300 S1360,140 1460,200" />
+    <path class="ln ln-soft" d="M-20,430 C220,360 420,300 640,340 S980,440 1180,360 S1380,280 1460,300" />
+    <path class="ln ln-soft2" d="M-20,250 C200,320 400,380 620,330 S960,200 1180,240 S1380,330 1460,280" />
+  </svg>
+
+  <div class="container stage">
+    <div class="orbit" aria-hidden="true">
+      <span class="ring r1"></span>
+      <span class="ring r2"></span>
+      <span class="ring r3"></span>
+    </div>
+
+    <div class="photo" data-hero="photo">
       <img
         src={profile.photo}
         alt={`Foto de ${profile.name}`}
-        width="144"
-        height="144"
+        width="160"
+        height="160"
         data-fallback={profile.photoFallback}
         onerror="var f=this.dataset.fallback;if(f&&this.getAttribute('src')!==f){this.setAttribute('src',f)}else{this.remove()}"
       />
       <span class="initials" aria-hidden="true">{profile.initials}</span>
     </div>
-    <p class="name">{profile.name}</p>
-    <h1 class="headline">Software que <span class="ai-text">piensa</span>.<br />Productos que funcionan.</h1>
-    <p class="lead">{profile.tagline}</p>
-    <div class="ctas">
+
+    {chips.map((c) => (
+      <div class:list={["chip", c.pos]} data-hero="chip" aria-hidden="true">
+        <span class="dot"></span>
+        <span class="chip-text"><strong>{c.label}</strong><small>{c.sub}</small></span>
+      </div>
+    ))}
+
+    <p class="name" data-hero="fade">{profile.name} · {profile.location}</p>
+    <h1 class="headline" aria-label="Software que piensa. Productos que funcionan.">
+      <span class="line" aria-hidden="true">
+        {line1.map((w, i) => (
+          <span class="w"><span class:list={["wi", { "ai-text": i === 2 }]}>{w}</span></span>
+        ))}
+      </span>
+      <span class="line" aria-hidden="true">
+        {line2.map((w) => <span class="w"><span class="wi">{w}</span></span>)}
+      </span>
+    </h1>
+    <p class="lead" data-hero="fade">{profile.tagline}</p>
+    <div class="ctas" data-hero="fade">
       <button class="btn btn-primary" data-open-chat type="button">Habla con mi IA</button>
-      <a class="link" href="#proyectos">Ver proyectos</a>
+      <a class="link" href="#vitrina">Ver proyectos</a>
     </div>
-    <ul class="tech" aria-label="Tecnologías principales">
-      {featuredTech.map((t) => (
-        <li title={t}><TechIcon name={t} size={26} /></li>
+  </div>
+
+  <div class="marquee" aria-label="Tecnologías principales">
+    <div class="track">
+      {[0, 1].map((k) => (
+        <ul aria-hidden={k === 1 ? "true" : undefined}>
+          {featuredTech.map((t) => (
+            <li><TechIcon name={t} size={22} /><span>{t}</span></li>
+          ))}
+        </ul>
       ))}
-    </ul>
+    </div>
   </div>
 
   <div class="container">
     <dl class="stats">
-      {profile.stats.map((s) => (
-        <div class="stat">
-          <dt>{s.label}</dt>
-          <dd>{s.value}</dd>
-        </div>
-      ))}
+      <span class="rule" data-line></span>
+      {profile.stats.map((s) => {
+        const c = countParts(s.value);
+        return (
+          <div class="stat" data-reveal>
+            <dt>{s.label}</dt>
+            <dd>
+              {c ? (
+                <>{c.prefix}<span data-count={c.n}>{c.n}</span>{c.suffix}</>
+              ) : (
+                s.value
+              )}
+            </dd>
+          </div>
+        );
+      })}
     </dl>
   </div>
 </section>
 
 <style>
   .hero {
-    padding-block: clamp(56px, 9vw, 104px) clamp(56px, 8vw, 88px);
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(48px, 8vw, 96px) clamp(48px, 7vw, 80px);
     text-align: center;
   }
-  .hero .container {
+  .lines {
+    position: absolute;
+    inset: 0 0 auto;
+    width: 100%;
+    height: min(720px, 100%);
+    pointer-events: none;
+  }
+  .ln {
+    fill: none;
+    stroke-linecap: round;
+  }
+  .ln-ai {
+    stroke: url(#g-ai);
+    stroke-width: 2.5;
+    opacity: 0.85;
+  }
+  .ln-soft,
+  .ln-soft2 {
+    stroke: var(--line);
+    stroke-width: 1.2;
+  }
+  .stage {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
+  .orbit {
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+  .ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border-radius: 50%;
+    border: 1px dashed var(--line);
+    transform: translate(-50%, -50%);
+  }
+  .r1 {
+    width: 240px;
+    height: 240px;
+  }
+  .r2 {
+    width: 380px;
+    height: 380px;
+    border-style: solid;
+    opacity: 0.6;
+  }
+  .r3 {
+    width: 540px;
+    height: 540px;
+    opacity: 0.4;
+  }
   .photo {
     position: relative;
-    width: 144px;
-    height: 144px;
+    width: 160px;
+    height: 160px;
     max-width: 100%;
     border-radius: 50%;
     overflow: hidden;
     background: var(--bg-alt);
-    margin-bottom: 22px;
+    margin-bottom: 26px;
+    box-shadow: 0 0 0 6px var(--bg), 0 0 0 8px color-mix(in srgb, var(--line) 70%, transparent), 0 24px 60px rgba(0, 0, 0, 0.18);
   }
   .photo img {
     position: relative;
@@ -80,15 +207,89 @@ const featuredTech = ["OpenAI", "LangGraph", "Python", "FastAPI", "React", "Next
     font-weight: 600;
     color: var(--fg-3);
   }
-  .name {
-    margin: 0 0 10px;
-    font-size: 1.3rem;
+  .chip {
+    position: absolute;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px 10px 12px;
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--tile) 82%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), inset 0 0 0 1px color-mix(in srgb, var(--line) 70%, transparent);
+    text-align: left;
+    z-index: 2;
+  }
+  .chip-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+  }
+  .chip strong {
+    font-size: 0.85rem;
     font-weight: 600;
+  }
+  .chip small {
+    font-size: 0.75rem;
+    color: var(--fg-3);
+  }
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--ai);
+    flex: none;
+  }
+  .c1 {
+    top: 0;
+    left: 4%;
+  }
+  .c2 {
+    top: 30px;
+    right: 3%;
+  }
+  .c3 {
+    top: 150px;
+    left: 12%;
+  }
+  .c4 {
+    top: 190px;
+    right: 10%;
+  }
+  @media (min-width: 980px) {
+    .chip {
+      display: flex;
+    }
+  }
+  .name {
+    margin: 0 0 14px;
+    font-size: 1.05rem;
+    font-weight: 500;
     color: var(--fg-2);
   }
   .headline {
-    font-size: clamp(2.6rem, 8vw, 5.5rem);
-    line-height: 1.04;
+    font-size: clamp(2.6rem, 8vw, 5.75rem);
+    line-height: 1.02;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .line {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: 0.24em;
+  }
+  .w {
+    display: inline-block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+  .wi {
+    display: inline-block;
+    will-change: transform;
   }
   .ai-text {
     background: var(--ai);
@@ -97,7 +298,7 @@ const featuredTech = ["OpenAI", "LangGraph", "Python", "FastAPI", "React", "Next
     color: transparent;
   }
   .lead {
-    margin-top: 22px;
+    margin-top: 24px;
     max-width: 640px;
   }
   .ctas {
@@ -108,32 +309,64 @@ const featuredTech = ["OpenAI", "LangGraph", "Python", "FastAPI", "React", "Next
     gap: 14px 28px;
     margin-top: 32px;
   }
-  .tech {
-    list-style: none;
-    padding: 0;
-    margin: 48px 0 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 14px;
-    color: var(--fg);
+  .marquee {
+    position: relative;
+    margin-top: clamp(48px, 7vw, 80px);
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
   }
-  .tech li {
-    display: grid;
-    place-items: center;
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
+  .track {
+    display: flex;
+    width: max-content;
+    animation: marquee 40s linear infinite;
+  }
+  .marquee:hover .track {
+    animation-play-state: paused;
+  }
+  .track ul {
+    display: flex;
+    gap: 12px;
+    list-style: none;
+    margin: 0;
+    padding: 0 6px;
+  }
+  .track li {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    border-radius: 980px;
     background: var(--bg-alt);
+    color: var(--fg);
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .track {
+      animation: none;
+    }
   }
   .stats {
+    position: relative;
     width: 100%;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 32px 20px;
-    margin: clamp(56px, 8vw, 88px) 0 0;
+    margin: clamp(48px, 7vw, 72px) 0 0;
     padding-top: 40px;
-    border-top: 1px solid var(--line);
+  }
+  .rule {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 1px;
+    background: var(--line);
+    transform-origin: left center;
   }
   @media (min-width: 760px) {
     .stats {
@@ -147,7 +380,7 @@ const featuredTech = ["OpenAI", "LangGraph", "Python", "FastAPI", "React", "Next
   }
   .stat dd {
     margin: 0;
-    font-size: clamp(2.2rem, 4.5vw, 3rem);
+    font-size: clamp(2.2rem, 4.5vw, 3.2rem);
     font-weight: 700;
     letter-spacing: -0.03em;
     font-variant-numeric: tabular-nums;

@@ -9,6 +9,9 @@ import TechIcon from "./TechIcon.astro";
       <span class="eyebrow">Experiencia</span>
       <h2 class="headline">Dónde he construido. <span class="soft">Y qué aprendí haciéndolo.</span></h2>
     </div>
+    <div class="timeline">
+      <span class="tl-track" aria-hidden="true"></span>
+      <span class="tl-fill" data-progress-line aria-hidden="true"></span>
     <ol class="list">
       {profile.experience.map((e) => (
         <li class="row reveal">
@@ -32,14 +35,49 @@ import TechIcon from "./TechIcon.astro";
         </li>
       ))}
     </ol>
+    </div>
   </div>
 </section>
 
 <style>
+  .timeline {
+    position: relative;
+    padding-left: 34px;
+  }
+  .tl-track,
+  .tl-fill {
+    position: absolute;
+    left: 6px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    border-radius: 2px;
+  }
+  .tl-track {
+    background: var(--line);
+  }
+  .tl-fill {
+    background: var(--ai);
+    transform-origin: top center;
+  }
   .list {
     list-style: none;
     margin: 0;
     padding: 0;
+  }
+  .row {
+    position: relative;
+  }
+  .row::before {
+    content: "";
+    position: absolute;
+    left: -34px;
+    top: 38px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--bg);
+    box-shadow: inset 0 0 0 2px var(--fg-3);
   }
   .row {
     display: grid;
