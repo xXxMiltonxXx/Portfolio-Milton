@@ -191,7 +191,7 @@ const kb = {
     if (has("hacknarok", "hackat", "hackaton", "evento")) {
       return "Milton creó y organizó Hacknarok 2024 en Manta: una hackathon con más de $3.000 en premios, mentores por temática, rúbricas de evaluación y equipos de 1 a 4 personas. Además construyó la plataforma oficial (Angular + Supabase) para inscripciones, entregas y votación de jurados.";
     }
-    const stop = new Set(["para", "con", "tus", "motor", "chat", "2024"]);
+    const stop = new Set(["para", "con", "tus", "motor", "chat", "2024", "sistema", "escolar"]);
     const proj = kb.projects.find((p) =>
       norm(p.name)
         .split(/[\s—-]+/)

@@ -40,14 +40,16 @@ const catLabel: Record<Category, string> = { ia: "IA", web: "Web", movil: "Móvi
           <ul class="hl">
             {p.highlights.map((h) => <li>{h}</li>)}
           </ul>
+          {p.tags.length > 0 && (
           <div class="stack">
-            <p class="stack-label">Tecnologías</p>
-            <ul class="tech">
-              {p.tags.map((t) => (
-                <li><TechIcon name={t} size={16} /><span>{t}</span></li>
-              ))}
-            </ul>
-          </div>
+              <p class="stack-label">Tecnologías</p>
+              <ul class="tech">
+                {p.tags.map((t) => (
+                  <li><TechIcon name={t} size={16} /><span>{t}</span></li>
+                ))}
+              </ul>
+            </div>
+          )}
           <div class="links">
             {p.live && <a class="link" href={p.live} target="_blank" rel="noopener">Ver en vivo</a>}
             {p.repo && <a class="link" href={p.repo} target="_blank" rel="noopener">Ver código</a>}

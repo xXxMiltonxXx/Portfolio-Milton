@@ -15,7 +15,9 @@ import TechIcon from "./TechIcon.astro";
           <span class="period">{e.period}</span>
           <div class="body">
             <h3>{e.title}</h3>
-            <p class="org">{e.org}</p>
+            <p class="org">
+              {"link" in e && e.link ? <a class="link" href={e.link} target="_blank" rel="noopener">{e.org}</a> : e.org}
+            </p>
             <ul class="points">
               {e.points.map((p) => <li>{p}</li>)}
             </ul>

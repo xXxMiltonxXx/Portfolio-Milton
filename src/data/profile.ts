@@ -66,6 +66,10 @@ export const profile = {
       text: "Flutter con Clean Architecture y BLoC, más Kotlin + Jetpack Compose.",
     },
     {
+      title: "Datos y sistemas empresariales",
+      text: "Procesos ETL, ciencia de datos, concurrencia, procedimientos almacenados, multitenancy y módulos contables.",
+    },
+    {
       title: "Del prototipo a producción",
       text: "Docker, colas con Celery/Redis, CI/CD, VPS y Vercel.",
     },
@@ -94,11 +98,25 @@ export const profile = {
       tags: ["Next.js", "React", "TypeScript", "Supabase", "Tailwind CSS"],
     },
     {
-      title: "Desarrollador de Software",
+      title: "Líder de proyecto y desarrollador",
+      org: "Sistema escolar Brighton",
+      period: "Experiencia profesional",
+      points: [
+        "Dirigí el proyecto como líder técnico: planificación, decisiones de arquitectura y coordinación del equipo.",
+        "Participé en la creación del sistema escolar y en la refactorización de módulos existentes para hacerlo más mantenible.",
+      ],
+      tags: [],
+      link: "https://bebrighton.net/es/home-2/",
+    },
+    {
+      title: "Desarrollador Full Stack Junior",
       org: "ZGames",
       period: "Experiencia profesional",
       points: [
-        "Desarrollo de software en un equipo enfocado en entretenimiento y videojuegos.",
+        "Desarrollé Sistema Center, una plataforma que centraliza todos los movimientos de los empleados.",
+        "Implementé roles y permisos, y el módulo contable con su lógica de debe y haber.",
+        "Escribí procedimientos almacenados y lógica de negocio en base de datos.",
+        "Trabajé en proyectos multitenant, procesos ETL, ciencia de datos y manejo de concurrencia.",
       ],
       tags: [],
     },
@@ -215,6 +233,30 @@ export const profile = {
       tags: ["Next.js", "React", "TypeScript", "Supabase", "PostgreSQL", "Tailwind CSS"],
       categories: ["web"],
       year: "2026",
+      private: true,
+    },
+    {
+      name: "Sistema escolar Brighton",
+      summary:
+        "Sistema de gestión escolar que lideré como jefe de proyecto: participé en su creación y en la refactorización de sus módulos.",
+      highlights: ["Liderazgo técnico del equipo", "Creación de módulos nuevos y refactorización del código existente"],
+      tags: [],
+      categories: ["web"],
+      year: "Líder de proyecto",
+      live: "https://bebrighton.net/es/home-2/",
+    },
+    {
+      name: "Sistema Center · ZGames",
+      summary:
+        "Plataforma que centraliza todos los movimientos de los empleados, con roles y permisos, contabilidad (debe y haber) y arquitectura multitenant.",
+      highlights: [
+        "Roles y permisos por usuario",
+        "Módulo contable con asientos de debe y haber",
+        "Procedimientos almacenados, procesos ETL y concurrencia",
+      ],
+      tags: [],
+      categories: ["web", "backend"],
+      year: "Full Stack Junior",
       private: true,
     },
     {
