@@ -55,6 +55,11 @@ const slugs: Record<string, string> = {
   "n8n": "n8n",
   "WhatsApp API": "whatsapp",
   "Figma": "figma",
+  "Nginx": "nginx",
+  "Cloudflare": "cloudflare",
+  "Contabo": "contabo",
+  "Udemy": "udemy",
+  "Coursera": "coursera",
 };
 
 export interface TechIconData {

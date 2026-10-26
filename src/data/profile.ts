@@ -71,7 +71,7 @@ export const profile = {
     },
     {
       title: "Del prototipo a producción",
-      text: "Gestión de servidores, despliegues, crons, Docker, colas con Celery/Redis, CI/CD, VPS y Vercel.",
+      text: "Servidores VPS en Contabo con Nginx, Cloudflare, despliegues, crons, Docker, colas con Celery/Redis, CI/CD y Vercel.",
     },
   ],
 
@@ -104,8 +104,9 @@ export const profile = {
       points: [
         "Dirigí el proyecto como líder técnico: planificación, decisiones de arquitectura y coordinación del equipo.",
         "Participé en la creación del sistema escolar y en la refactorización de módulos existentes para hacerlo más mantenible.",
+        "Construido con Next.js y renderizado del lado del servidor (SSR) para mejor rendimiento y SEO.",
       ],
-      tags: [],
+      tags: ["Next.js", "React", "TypeScript"],
       link: "https://bebrighton.net/es/home-2/",
     },
     {
@@ -185,7 +186,7 @@ export const profile = {
         "Videollamadas médico–paciente con LiveKit",
         "API Go con arquitectura hexagonal sobre Supabase, monorepo con Melos",
       ],
-      tags: ["Flutter", "Dart", "Go", "Supabase", "PostgreSQL", "LiveKit", "TensorFlow Lite", "Docker", "GitHub Actions"],
+      tags: ["Flutter", "Dart", "Go", "Supabase", "PostgreSQL", "LiveKit", "TensorFlow Lite", "Docker", "Contabo", "GitHub Actions"],
       categories: ["ia", "movil", "backend"],
       year: "2026",
       featured: true,
@@ -241,8 +242,12 @@ export const profile = {
       name: "Sistema escolar Brighton",
       summary:
         "Sistema de gestión escolar que lideré como jefe de proyecto: participé en su creación y en la refactorización de sus módulos.",
-      highlights: ["Liderazgo técnico del equipo", "Creación de módulos nuevos y refactorización del código existente"],
-      tags: [],
+      highlights: [
+        "Liderazgo técnico del equipo",
+        "Creación de módulos nuevos y refactorización del código existente",
+        "Next.js con renderizado del lado del servidor (SSR)",
+      ],
+      tags: ["Next.js", "React", "TypeScript"],
       categories: ["web"],
       year: "Líder de proyecto",
       live: "https://bebrighton.net/es/home-2/",
@@ -329,8 +334,12 @@ export const profile = {
     { group: "Frontend", items: ["React", "Next.js", "Astro", "Angular", "TypeScript", "JavaScript", "Tailwind CSS", "Vite", "GSAP", "Three.js", "Framer Motion"] },
     { group: "Backend", items: ["Python", "FastAPI", "Flask", "Go", "Node.js", "Express", "tRPC", "Prisma", "Celery", "Redis", "n8n"] },
     { group: "Móvil", items: ["Flutter", "Dart", "Kotlin", "Jetpack Compose", "Android", "Firebase"] },
-    { group: "Datos e infraestructura", items: ["Supabase", "PostgreSQL", "MongoDB", "Docker", "Vercel", "Linux", "Ubuntu", "Bash", "Git", "GitHub Actions", "LiveKit", "MQTT", "Stripe"] },
+    { group: "Datos e infraestructura", items: ["Supabase", "PostgreSQL", "MongoDB", "Docker", "Nginx", "Cloudflare", "Contabo", "Vercel", "Linux", "Ubuntu", "Bash", "Git", "GitHub Actions", "LiveKit", "MQTT", "Stripe"] },
   ],
+
+  // Certificados de Udemy y Coursera: { title, issuer: "Udemy" | "Coursera", year, url }.
+  // La sección se muestra sola en cuanto haya al menos uno.
+  certifications: [] as { title: string; issuer: string; year?: string; url?: string }[],
 
   community: [
     {
@@ -377,6 +386,9 @@ export function profileAsContext(): string {
     ...p.stack.map((s) => `- ${s.group}: ${s.items.join(", ")}`),
     "Comunidad:",
     ...p.community.map((c) => `- ${c.title} (${c.kicker}): ${c.text}`),
+    ...(p.certifications.length
+      ? ["Certificaciones:", ...p.certifications.map((c) => `- ${c.title} (${c.issuer}${c.year ? `, ${c.year}` : ""})`)]
+      : []),
     `Contacto: GitHub ${p.links.github}, LinkedIn ${p.links.linkedin}.`,
   ].join("\n");
 }

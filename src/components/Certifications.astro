@@ -1,0 +1,65 @@
+---
+import { profile } from "../data/profile";
+import TechIcon from "./TechIcon.astro";
+
+const certs = profile.certifications;
+---
+
+{certs.length > 0 && (
+  <section id="certificaciones" class="band">
+    <div class="container wide">
+      <div class="section-head">
+        <span class="eyebrow">Certificaciones</span>
+        <h2 class="headline">Aprendizaje continuo. <span class="soft">Cursos completados en Udemy y Coursera.</span></h2>
+      </div>
+      <ul class="grid">
+        {certs.map((c) => (
+          <li class="tile cert">
+            <p class="issuer"><TechIcon name={c.issuer} size={20} /><span>{c.issuer}</span>{c.year && <span class="year">{c.year}</span>}</p>
+            <h3>{c.title}</h3>
+            {c.url && <a class="link" href={c.url} target="_blank" rel="noopener">Ver certificado</a>}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+)}
+
+<style>
+  .grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .cert {
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--bg-alt);
+    box-shadow: none;
+  }
+  .issuer {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--fg-2);
+  }
+  .year {
+    margin-left: auto;
+    color: var(--fg-3);
+    font-variant-numeric: tabular-nums;
+  }
+  h3 {
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+  }
+  .link {
+    margin-top: auto;
+  }
+</style>
