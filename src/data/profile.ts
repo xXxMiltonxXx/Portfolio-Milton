@@ -29,10 +29,8 @@ export const profile = {
   tagline:
     "Desarrollo productos con IA de punta a punta: agentes conversacionales, CRMs inteligentes, apps móviles de salud y plataformas web — desde la idea hasta producción.",
   heroWords: ["agentes de IA", "CRMs inteligentes", "apps móviles", "plataformas web", "comunidad tech"],
-  // Coloca tu foto en public/milton.jpg. Mientras tanto se usa la de LinkedIn.
   photo: "/milton.jpg",
-  photoFallback:
-    "https://media.licdn.com/dms/image/v2/D4E03AQFpBYg9Z7ebOA/profile-displayphoto-scale_400_400/B4EZs2_rzMGYAg-/0/1766154224402?e=1794441600&v=beta&t=gSM16EbLfPlgM09R1TIaVm9cCWUEqoiQVrQN4aq7ZSQ",
+  photoFallback: "",
   links: {
     github: GH,
     // TODO: reemplazar por la URL exacta de tu perfil (linkedin.com/in/...)
