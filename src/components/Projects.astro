@@ -11,6 +11,12 @@ const filters: { id: "todos" | Category; label: string }[] = [
   { id: "devops", label: "DevOps" },
 ];
 const catLabel: Record<Category, string> = { ia: "IA", web: "Web", movil: "Móvil", backend: "Backend", devops: "DevOps" };
+// Tarjetas flotantes del encabezado, como las ilustraciones de la invitación de Valentina.
+const collage = [
+  { src: "/proyectos/bioguard.webp", cls: "f-bio" },
+  { src: "/proyectos/salud-metabolica.webp", cls: "f-salud" },
+  { src: "/proyectos/valentina.webp", cls: "f-vale" },
+];
 const count = (id: "todos" | Category) =>
   id === "todos" ? profile.projects.length : profile.projects.filter((p) => p.categories.includes(id)).length;
 ---
@@ -18,15 +24,24 @@ const count = (id: "todos" | Category) =>
 <section id="proyectos" class="band alt">
   <div class="container wide">
     <div class="head">
-      <div class="section-head reveal">
-        <span class="eyebrow">Proyectos</span>
-        <h2 class="headline">Todo lo que he construido. <span class="soft">De agentes de IA a apps de salud.</span></h2>
-      </div>
-      <div class="segmented reveal" role="group" aria-label="Filtrar proyectos">
+      <div class="head-copy">
+        <div class="section-head reveal">
+          <span class="eyebrow">Proyectos</span>
+          <h2 class="headline">Todo lo que he construido. <span class="soft">De agentes de IA a apps de salud.</span></h2>
+        </div>
+        <div class="segmented reveal" role="group" aria-label="Filtrar proyectos">
         {filters.map((f, i) => (
           <button type="button" class:list={["seg", { active: i === 0 }]} data-filter={f.id} aria-pressed={i === 0 ? "true" : "false"}>
             {f.label}<span class="n">{count(f.id)}</span>
           </button>
+        ))}
+        </div>
+      </div>
+      <div class="collage" aria-hidden="true">
+        {collage.map((c) => (
+          <figure class:list={["float", c.cls]}>
+            <img src={c.src} alt="" width="600" height="400" loading="lazy" />
+          </figure>
         ))}
       </div>
     </div>
@@ -35,8 +50,9 @@ const count = (id: "todos" | Category) =>
       {profile.projects.map((p) => (
         <li class:list={["tile project reveal", { featured: p.featured }]} data-cats={p.categories.join(" ")}>
           {p.image && (
-            <a class="thumb" href={p.live ?? p.repo ?? p.image} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
-              <img src={p.image} alt="" width="1600" height="914" loading="lazy" />
+            <a class:list={["thumb", { portrait: p.portrait }]} href={p.live ?? p.repo ?? p.image} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+              {p.portrait && <img class="backdrop" src={p.image} alt="" width="765" height="1024" loading="lazy" />}
+              <img class="shot" src={p.image} alt="" width="1600" height="914" loading="lazy" />
             </a>
           )}
           <div class="body">
@@ -89,13 +105,101 @@ const count = (id: "todos" | Category) =>
   .head {
     display: flex;
     flex-wrap: wrap;
-    align-items: flex-end;
+    align-items: center;
     justify-content: space-between;
     gap: 24px 40px;
     margin-bottom: clamp(36px, 5vw, 56px);
   }
   .head .section-head {
     margin-bottom: 0;
+  }
+  .head-copy {
+    display: grid;
+    gap: 24px;
+    justify-items: start;
+    min-width: 0;
+    flex: 1 1 520px;
+  }
+  .collage {
+    position: relative;
+    display: none;
+    flex: 0 1 440px;
+    height: 300px;
+  }
+  @media (min-width: 1100px) {
+    .collage {
+      display: block;
+    }
+  }
+  .float {
+    position: absolute;
+    margin: 0;
+    border-radius: 18px;
+    overflow: hidden;
+    background: var(--tile);
+    box-shadow: 0 24px 50px -18px rgba(0, 0, 0, 0.35), 0 0 0 1px color-mix(in srgb, var(--line) 60%, transparent);
+  }
+  .float img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+  .f-bio {
+    width: 150px;
+    height: 200px;
+    right: 6%;
+    top: 0;
+    z-index: 2;
+    transform-origin: 50% 90%;
+    animation: rock 5s ease-in-out infinite;
+  }
+  .f-salud {
+    width: 260px;
+    height: 150px;
+    left: 0;
+    top: 40px;
+    animation: floaty 6s ease-in-out infinite;
+  }
+  .f-vale {
+    width: 220px;
+    height: 128px;
+    left: 30%;
+    bottom: 0;
+    z-index: 1;
+    animation: drift 7s ease-in-out infinite;
+  }
+  @keyframes rock {
+    0%,
+    100% {
+      transform: rotate(-4deg);
+    }
+    50% {
+      transform: rotate(3deg);
+    }
+  }
+  @keyframes floaty {
+    0%,
+    100% {
+      transform: translateY(0) rotate(-6deg);
+    }
+    50% {
+      transform: translateY(-12px) rotate(-6deg);
+    }
+  }
+  @keyframes drift {
+    0%,
+    100% {
+      transform: translateX(0) rotate(5deg);
+    }
+    50% {
+      transform: translateX(-16px) rotate(5deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .float {
+      animation: none;
+    }
   }
   .segmented {
     display: inline-flex;
@@ -151,6 +255,31 @@ const count = (id: "todos" | Category) =>
     .project.featured {
       grid-column: span 3;
     }
+    /* El primer destacado ocupa toda la fila, con la captura al lado. */
+    .project.featured:first-child {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+      align-items: stretch;
+    }
+    .project.featured:first-child .thumb {
+      margin: 10px 0 10px 10px;
+      aspect-ratio: auto;
+      min-height: 100%;
+    }
+    .project.featured:first-child .thumb .shot {
+      object-position: left top;
+    }
+    .project.featured:first-child .body {
+      padding: 40px 44px;
+    }
+    .project.featured:first-child h3 {
+      font-size: clamp(2rem, 3vw, 2.6rem);
+    }
+    /* Las dos últimas tarjetas comparten la fila para no dejar huecos. */
+    .project:not(.featured):nth-last-child(-n + 2) {
+      grid-column: span 3;
+    }
   }
   .project {
     display: flex;
@@ -172,15 +301,33 @@ const count = (id: "todos" | Category) =>
     max-width: 100%;
     background: var(--bg-alt);
   }
-  .thumb img {
+  .thumb {
+    position: relative;
+  }
+  .thumb .shot {
+    position: relative;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: top center;
     transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
-  .project:hover .thumb img {
+  .project:hover .thumb .shot {
     transform: scale(1.04);
+  }
+  /* Póster vertical: completo sobre una versión difuminada de sí mismo. */
+  .thumb.portrait .backdrop {
+    position: absolute;
+    inset: -20px;
+    width: calc(100% + 40px);
+    height: calc(100% + 40px);
+    object-fit: cover;
+    filter: blur(24px) saturate(1.2);
+    opacity: 0.85;
+  }
+  .thumb.portrait .shot {
+    object-fit: contain;
+    filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.35));
   }
   .body {
     padding: clamp(22px, 2.6vw, 32px);

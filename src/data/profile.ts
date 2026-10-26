@@ -15,6 +15,8 @@ export interface Project {
   live?: string;
   private?: boolean;
   image?: string;
+  /** Imagen vertical (póster): se muestra completa sobre un fondo difuminado. */
+  portrait?: boolean;
 }
 
 const GH = "https://github.com/xXxMiltonxXx";
@@ -39,7 +41,7 @@ export const profile = {
 
   stats: [
     { value: "70+", label: "Repositorios en GitHub" },
-    { value: "$3K+", label: "En premios · Hacknarok 2024" },
+    { value: "3", label: "Idiomas · español, inglés e italiano" },
     { value: "24/7", label: "Agentes de IA atendiendo en IssA" },
     { value: "5+", label: "Años construyendo software" },
   ],
@@ -71,6 +73,12 @@ export const profile = {
       title: "Del prototipo a producción",
       text: "Servidores VPS en Contabo con Nginx, Cloudflare, despliegues, crons, Docker, colas con Celery/Redis, CI/CD y Vercel.",
     },
+  ],
+
+  languages: [
+    { name: "Español", level: "Nativo" },
+    { name: "Inglés", level: "Intermedio" },
+    { name: "Italiano", level: "Intermedio" },
   ],
 
   experience: [
@@ -213,6 +221,23 @@ export const profile = {
       private: true,
     },
     {
+      name: "BioGuard — Tu rostro es la llave",
+      image: "/proyectos/bioguard.webp",
+      portrait: true,
+      featured: true,
+      summary:
+        "Acceso seguro en un instante: plataforma de autenticación biométrica que registra el rostro del usuario y le permite iniciar sesión con reconocimiento facial, sin contraseñas.",
+      highlights: [
+        "Detección y embeddings faciales con FaceNet (PyTorch) y OpenCV",
+        "Registro de rostros y login biométrico que emite tokens JWT",
+        "Caché de rostros en memoria para respuestas rápidas y almacenamiento en Supabase",
+      ],
+      tags: ["Python", "FastAPI", "PyTorch", "OpenCV", "Supabase", "Docker"],
+      categories: ["ia", "backend"],
+      year: "2026",
+      private: true,
+    },
+    {
       name: "Invitación Valentina",
       image: "/proyectos/valentina.webp",
       summary:
@@ -223,16 +248,6 @@ export const profile = {
       year: "2026",
       live: "https://valentina-baby.vercel.app",
       repo: `${GH}/Valentina-baby`,
-    },
-    {
-      name: "BioGuard",
-      summary:
-        "API de autenticación biométrica: registra rostros y permite iniciar sesión con reconocimiento facial, emitiendo tokens JWT.",
-      highlights: ["Embeddings faciales con FaceNet (PyTorch) y OpenCV", "Caché de rostros en memoria y almacenamiento en Supabase"],
-      tags: ["Python", "FastAPI", "PyTorch", "OpenCV", "Supabase", "Docker"],
-      categories: ["ia", "backend"],
-      year: "2026",
-      private: true,
     },
     {
       name: "Quill ULEAM — Chat con tus PDFs",
@@ -417,6 +432,7 @@ export function profileAsContext(): string {
         (pr.live ? ` Demo: ${pr.live}.` : "") +
         (pr.repo ? ` Código: ${pr.repo}.` : pr.private ? " Código privado." : ""),
     ),
+    `Idiomas: ${p.languages.map((l) => `${l.name} (${l.level})`).join(", ")}.`,
     "Stack:",
     ...p.stack.map((s) => `- ${s.group}: ${s.items.join(", ")}`),
     "Comunidad:",

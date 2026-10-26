@@ -184,8 +184,9 @@ mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)", () => {
 
   // Cada captura se desplaza dentro de su marco y la tarjeta se endereza al entrar.
   slides.forEach((slide) => {
-    const img = slide.querySelector("[data-sc-img]");
-    gsap.fromTo(
+    // El póster vertical se muestra completo, sin desplazamiento interno.
+    const img = slide.querySelector(".portrait") ? null : slide.querySelector("[data-sc-img]");
+    if (img) gsap.fromTo(
       img,
       { yPercent: 0 },
       {
