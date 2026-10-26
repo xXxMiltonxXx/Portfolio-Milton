@@ -72,6 +72,14 @@
   box-sizing: border-box;
 }
 
+/* Transición suave solo mientras se cambia de tema. */
+.theme-anim,
+.theme-anim *,
+.theme-anim *::before,
+.theme-anim *::after {
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, fill 0.4s ease !important;
+}
+
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
@@ -261,4 +269,38 @@ h3 {
   html {
     scroll-behavior: auto;
   }
+}
+
+/* Sección en dos columnas: título fijo a la izquierda, contenido a la derecha. */
+.split {
+  display: grid;
+  gap: 40px;
+}
+
+@media (min-width: 1000px) {
+  .split {
+    grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.6fr);
+    gap: 72px;
+    align-items: start;
+  }
+  .split > .section-head {
+    position: sticky;
+    top: 96px;
+    margin-bottom: 0;
+  }
+  .split > .section-head .headline {
+    font-size: clamp(2.2rem, 3.4vw, 3.3rem);
+  }
+}
+
+.split-body {
+  min-width: 0;
+}
+
+.section-index {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--fg-3);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
 }

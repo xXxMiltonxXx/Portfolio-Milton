@@ -7,12 +7,13 @@ const certs = profile.certifications;
 
 {certs.length > 0 && (
   <section id="certificaciones" class="band">
-    <div class="container wide">
+    <div class="container wide split">
       <div class="section-head">
         <span class="eyebrow">Certificaciones</span>
         <h2 class="headline">Aprendizaje continuo. <span class="soft">Cursos completados y verificables.</span></h2>
+        <p class="total"><strong>{certs.reduce((h, c) => h + (parseFloat(c.hours ?? "0") || 0), 0)} horas</strong> de formación certificada.</p>
       </div>
-      <ul class="grid">
+      <ul class="grid split-body">
         {certs.map((c) => (
           <li class="tile cert">
             {c.image && (
@@ -40,6 +41,13 @@ const certs = profile.certifications;
 )}
 
 <style>
+  .total {
+    margin: 6px 0 0;
+    color: var(--fg-2);
+  }
+  .total strong {
+    color: var(--fg);
+  }
   .grid {
     list-style: none;
     margin: 0;

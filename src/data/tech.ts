@@ -47,6 +47,7 @@ const slugs: Record<string, string> = {
   "Bash": "gnubash",
   "GitHub Actions": "githubactions",
   "Git": "git",
+  "GitHub": "github",
   "Stripe": "stripe",
   "LiveKit": "livekit",
   "MQTT": "mqtt",

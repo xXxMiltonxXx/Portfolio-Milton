@@ -1,62 +1,222 @@
 ---
 import { profile } from "../data/profile";
+import TechIcon from "./TechIcon.astro";
+
 const year = new Date().getFullYear();
+const nav = [
+  { href: "#sobre-mi", label: "Sobre mí" },
+  { href: "#experiencia", label: "Experiencia" },
+  { href: "#proyectos", label: "Proyectos" },
+  { href: "#tecnologias", label: "Tecnologías" },
+  { href: "#certificaciones", label: "Certificaciones" },
+  { href: "#comunidad", label: "Comunidad" },
+];
 ---
 
 <section id="contacto" class="band">
-  <div class="container contact reveal">
-    <h2 class="headline">Hablemos.</h2>
-    <p class="lead">¿Tienes un producto, una idea con IA o un evento tech en mente? Escríbeme, o pregúntale primero a mi asistente.</p>
-    <div class="ctas">
-      <a class="btn btn-primary" href={profile.links.linkedin} target="_blank" rel="noopener">Escríbeme en LinkedIn</a>
-      <a class="btn btn-secondary" href={profile.links.github} target="_blank" rel="noopener">Ver mi GitHub</a>
+  <div class="container wide contact">
+    <div class="intro">
+      <span class="eyebrow">Contacto</span>
+      <h2 class="headline">Hablemos.</h2>
+      <p class="lead">¿Tienes un producto, una idea con IA o un evento tech en mente? Escríbeme, o pregúntale primero a mi asistente.</p>
+      <p class="avail"><span class="status" aria-hidden="true"></span>{profile.availability}</p>
     </div>
-    <button class="link ask" data-open-chat type="button">Pregúntale a mi IA</button>
+
+    <ul class="channels">
+      <li class="reveal">
+        <a class="tile channel" href={profile.links.linkedin} target="_blank" rel="noopener">
+          <span class="ico"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#0a66c2" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" /></svg></span>
+          <span class="txt"><strong>LinkedIn</strong><small>linkedin.com/in/milton-angamarca</small></span>
+          <span class="arrow" aria-hidden="true">↗</span>
+        </a>
+      </li>
+      <li class="reveal">
+        <a class="tile channel" href={profile.links.github} target="_blank" rel="noopener">
+          <span class="ico"><TechIcon name="GitHub" size={22} /></span>
+          <span class="txt"><strong>GitHub</strong><small>github.com/xXxMiltonxXx · 70+ repositorios</small></span>
+          <span class="arrow" aria-hidden="true">↗</span>
+        </a>
+      </li>
+      <li class="reveal">
+        <button class="tile channel ai" type="button" data-open-chat>
+          <span class="ico ai-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 2.5c.4 3.9 1.6 6.3 3.4 7.9 1.6 1.4 3.8 2.1 6.1 2.1-2.3 0-4.5.7-6.1 2.1-1.8 1.6-3 4-3.4 7.9-.4-3.9-1.6-6.3-3.4-7.9-1.6-1.4-3.8-2.1-6.1-2.1 2.3 0 4.5-.7 6.1-2.1 1.8-1.6 3-4 3.4-7.9z" /></svg></span>
+          <span class="txt"><strong>Pregúntale a MiltonAI</strong><small>Respuestas al instante sobre mi trabajo</small></span>
+          <span class="arrow" aria-hidden="true">→</span>
+        </button>
+      </li>
+    </ul>
   </div>
 </section>
 
 <footer class="footer">
   <div class="container wide inner">
-    <span>Copyright © {year} {profile.name}. {profile.location}.</span>
-    <span>Hecho con Astro · Asistente con Claude</span>
+    <div class="brand">
+      <strong>{profile.name}</strong>
+      <span>{profile.role}</span>
+    </div>
+    <nav aria-label="Pie de página">
+      <ul>
+        {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+      </ul>
+    </nav>
+    <p class="legal">
+      <span>Copyright © {year} {profile.name}. {profile.location}.</span>
+      <span>Hecho con Astro y GSAP · Asistente con Claude</span>
+    </p>
   </div>
 </footer>
 
 <style>
   .contact {
+    display: grid;
+    gap: 40px;
+    align-items: center;
+  }
+  @media (min-width: 1000px) {
+    .contact {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 72px;
+    }
+  }
+  .intro {
+    display: grid;
+    gap: 16px;
+    justify-items: start;
+  }
+  .intro .headline {
+    font-size: clamp(3.4rem, 10vw, 8rem);
+    line-height: 0.95;
+    transform-origin: left center;
+  }
+  .avail {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 4px 0 0;
+    color: var(--fg-2);
+    font-size: 0.95rem;
+  }
+  .status {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #30d158;
+    box-shadow: 0 0 0 4px color-mix(in srgb, #30d158 20%, transparent);
+  }
+  .channels {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+  }
+  .channel {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 18px;
+    padding: 22px 24px;
+    border: none;
+    background: var(--bg-alt);
+    box-shadow: none;
+    color: var(--fg);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .channel:hover {
+    background: var(--tile-alt);
+    transform: translateX(4px);
+  }
+  .ico {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: var(--tile);
+    color: var(--fg);
+  }
+  .ai-ico {
+    background: var(--ai);
+    color: #ffffff;
+  }
+  .txt {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 18px;
+    min-width: 0;
   }
-  .contact .headline {
-    font-size: clamp(3rem, 9vw, 6rem);
+  .txt strong {
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
   }
-  .ctas {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 14px;
-    margin-top: 14px;
+  .txt small {
+    color: var(--fg-3);
+    font-size: 0.88rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  .ask {
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-family: var(--font);
-    margin-top: 6px;
+  .arrow {
+    font-size: 1.3rem;
+    color: var(--fg-3);
+    transition: transform 0.3s, color 0.3s;
   }
+  .channel:hover .arrow {
+    color: var(--link);
+    transform: translate(2px, -2px);
+  }
+
   .footer {
     background: var(--bg-alt);
     color: var(--fg-3);
-    font-size: 0.78rem;
+    font-size: 0.82rem;
   }
   .inner {
+    display: grid;
+    gap: 24px;
+    padding-block: 40px 28px;
+  }
+  @media (min-width: 900px) {
+    .inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+    }
+  }
+  .brand {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .brand strong {
+    color: var(--fg);
+    font-size: 1rem;
+  }
+  .footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 24px;
+  }
+  .footer nav a {
+    color: var(--fg-2);
+  }
+  .footer nav a:hover {
+    color: var(--fg);
+  }
+  .legal {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 8px 24px;
-    padding-block: 22px;
   }
 </style>

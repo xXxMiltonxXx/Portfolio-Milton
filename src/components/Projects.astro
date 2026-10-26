@@ -11,49 +11,56 @@ const filters: { id: "todos" | Category; label: string }[] = [
   { id: "devops", label: "DevOps" },
 ];
 const catLabel: Record<Category, string> = { ia: "IA", web: "Web", movil: "Móvil", backend: "Backend", devops: "DevOps" };
+const count = (id: "todos" | Category) =>
+  id === "todos" ? profile.projects.length : profile.projects.filter((p) => p.categories.includes(id)).length;
 ---
 
 <section id="proyectos" class="band alt">
   <div class="container wide">
-    <div class="section-head reveal">
-      <span class="eyebrow">Proyectos</span>
-      <h2 class="headline">Lo que he lanzado. <span class="soft">Desde agentes de IA hasta apps de salud.</span></h2>
-    </div>
-
-    <div class="segmented reveal" role="group" aria-label="Filtrar proyectos">
-      {filters.map((f, i) => (
-        <button type="button" class:list={["seg", { active: i === 0 }]} data-filter={f.id} aria-pressed={i === 0 ? "true" : "false"}>
-          {f.label}
-        </button>
-      ))}
+    <div class="head">
+      <div class="section-head reveal">
+        <span class="eyebrow">Proyectos</span>
+        <h2 class="headline">Todo lo que he construido. <span class="soft">De agentes de IA a apps de salud.</span></h2>
+      </div>
+      <div class="segmented reveal" role="group" aria-label="Filtrar proyectos">
+        {filters.map((f, i) => (
+          <button type="button" class:list={["seg", { active: i === 0 }]} data-filter={f.id} aria-pressed={i === 0 ? "true" : "false"}>
+            {f.label}<span class="n">{count(f.id)}</span>
+          </button>
+        ))}
+      </div>
     </div>
 
     <ul class="grid">
       {profile.projects.map((p) => (
         <li class:list={["tile project reveal", { featured: p.featured }]} data-cats={p.categories.join(" ")}>
-          <p class="meta">
-            <span>{p.categories.map((c) => catLabel[c]).join(" · ")}</span>
-            <span>{p.year}</span>
-          </p>
-          <h3>{p.name}</h3>
-          <p class="summary">{p.summary}</p>
-          <ul class="hl">
-            {p.highlights.map((h) => <li>{h}</li>)}
-          </ul>
-          {p.tags.length > 0 && (
-          <div class="stack">
-              <p class="stack-label">Tecnologías</p>
-              <ul class="tech">
+          {p.image && (
+            <a class="thumb" href={p.live ?? p.repo ?? p.image} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+              <img src={p.image} alt="" width="1600" height="914" loading="lazy" />
+            </a>
+          )}
+          <div class="body">
+            <p class="meta">
+              <span>{p.categories.map((c) => catLabel[c]).join(" · ")}</span>
+              <span>{p.year}</span>
+            </p>
+            <h3>{p.name}</h3>
+            <p class="summary">{p.summary}</p>
+            <ul class="hl">
+              {p.highlights.map((h) => <li>{h}</li>)}
+            </ul>
+            {p.tags.length > 0 && (
+              <ul class="tech" aria-label="Tecnologías">
                 {p.tags.map((t) => (
-                  <li><TechIcon name={t} size={16} /><span>{t}</span></li>
+                  <li><TechIcon name={t} size={15} /><span>{t}</span></li>
                 ))}
               </ul>
+            )}
+            <div class="links">
+              {p.live && <a class="link" href={p.live} target="_blank" rel="noopener">Ver en vivo</a>}
+              {p.repo && <a class="link" href={p.repo} target="_blank" rel="noopener">Ver código</a>}
+              {!p.repo && p.private && <span class="private">Repositorio privado</span>}
             </div>
-          )}
-          <div class="links">
-            {p.live && <a class="link" href={p.live} target="_blank" rel="noopener">Ver en vivo</a>}
-            {p.repo && <a class="link" href={p.repo} target="_blank" rel="noopener">Ver código</a>}
-            {!p.repo && p.private && <span class="private">Repositorio privado</span>}
           </div>
         </li>
       ))}
@@ -79,28 +86,43 @@ const catLabel: Record<Category, string> = { ia: "IA", web: "Web", movil: "Móvi
 </script>
 
 <style>
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px 40px;
+    margin-bottom: clamp(36px, 5vw, 56px);
+  }
+  .head .section-head {
+    margin-bottom: 0;
+  }
   .segmented {
     display: inline-flex;
     flex-wrap: wrap;
     gap: 2px;
     padding: 3px;
     border-radius: 980px;
-    background: var(--tile-alt);
-    margin-bottom: 40px;
+    background: color-mix(in srgb, var(--fg) 7%, transparent);
     max-width: 100%;
   }
-  :global(.band.alt) .segmented {
-    background: color-mix(in srgb, var(--fg) 7%, transparent);
-  }
   .seg {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     border: none;
     background: transparent;
     color: var(--fg);
     font: 400 0.9rem var(--font);
-    padding: 7px 18px;
+    padding: 7px 16px;
     border-radius: 980px;
     cursor: pointer;
     transition: background 0.2s;
+  }
+  .seg .n {
+    font-size: 0.75rem;
+    color: var(--fg-3);
+    font-variant-numeric: tabular-nums;
   }
   .seg.active {
     background: var(--tile);
@@ -112,99 +134,94 @@ const catLabel: Record<Category, string> = { ia: "IA", web: "Web", movil: "Móvi
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 20px;
+    gap: 18px;
   }
-  @media (min-width: 760px) {
+  @media (min-width: 720px) {
     .grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
   @media (min-width: 1100px) {
     .grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+    .project {
+      grid-column: span 2;
     }
     .project.featured {
       grid-column: span 3;
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-      grid-template-rows: auto auto auto 1fr auto;
-      column-gap: 56px;
-    }
-    .featured > * {
-      grid-column: 1;
-    }
-    .featured .hl,
-    .featured .stack {
-      grid-column: 2;
-    }
-    .featured .hl {
-      grid-row: 1 / 3;
-      align-self: start;
-      margin-top: 0;
-    }
-    .featured .stack {
-      grid-row: 3 / 6;
-      align-self: start;
-    }
-    .featured .links {
-      grid-row: 5;
-    }
-    .featured h3 {
-      font-size: 2.4rem;
     }
   }
   .project {
-    padding: clamp(26px, 3.4vw, 40px);
     display: flex;
     flex-direction: column;
     min-width: 0;
+    overflow: hidden;
     transition: box-shadow 0.3s, transform 0.3s;
   }
   .project:hover {
     box-shadow: var(--shadow-hover);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+  }
+  .thumb {
+    display: block;
+    margin: 10px 10px 0;
+    border-radius: calc(var(--r-lg) - 8px);
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    max-width: 100%;
+    background: var(--bg-alt);
+  }
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .project:hover .thumb img {
+    transform: scale(1.04);
+  }
+  .body {
+    padding: clamp(22px, 2.6vw, 32px);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
   }
   .meta {
     display: flex;
     justify-content: space-between;
     gap: 12px;
     margin: 0 0 10px;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     color: var(--fg-3);
     font-variant-numeric: tabular-nums;
   }
   h3 {
-    font-size: 1.6rem;
-    line-height: 1.12;
+    font-size: 1.45rem;
+    line-height: 1.15;
     letter-spacing: -0.025em;
     font-weight: 700;
   }
+  .featured h3 {
+    font-size: clamp(1.6rem, 2.4vw, 2rem);
+  }
   .summary {
-    margin: 12px 0 0;
+    margin: 10px 0 0;
     color: var(--fg-2);
+    font-size: 0.97rem;
   }
   .hl {
-    margin: 16px 0 0;
+    margin: 14px 0 0;
     padding-left: 18px;
     display: grid;
-    gap: 6px;
-    font-size: 0.95rem;
+    gap: 5px;
+    font-size: 0.9rem;
     color: var(--fg-2);
-  }
-  .stack {
-    margin-top: 22px;
-  }
-  .stack-label {
-    margin: 0 0 10px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--fg-3);
   }
   .tech {
     list-style: none;
-    margin: 0;
+    margin: 18px 0 0;
     padding: 0;
     display: flex;
     flex-wrap: wrap;
@@ -214,10 +231,10 @@ const catLabel: Record<Category, string> = { ia: "IA", web: "Web", movil: "Móvi
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 5px 11px;
+    padding: 5px 10px;
     border-radius: 980px;
     background: var(--tile-alt);
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     color: var(--fg);
   }
   .links {
@@ -225,7 +242,7 @@ const catLabel: Record<Category, string> = { ia: "IA", web: "Web", movil: "Móvi
     flex-wrap: wrap;
     gap: 22px;
     margin-top: auto;
-    padding-top: 24px;
+    padding-top: 22px;
   }
   .private {
     color: var(--fg-3);

@@ -4,23 +4,26 @@ import TechIcon from "./TechIcon.astro";
 ---
 
 <section id="experiencia" class="band">
-  <div class="container">
+  <div class="container wide split">
     <div class="section-head reveal">
       <span class="eyebrow">Experiencia</span>
       <h2 class="headline">Dónde he construido. <span class="soft">Y qué aprendí haciéndolo.</span></h2>
+      <p class="count"><strong>{profile.experience.length}</strong> etapas · de cursos en la ULEAM a productos con IA en producción.</p>
     </div>
-    <div class="timeline">
+
+    <div class="split-body timeline">
       <span class="tl-track" aria-hidden="true"></span>
       <span class="tl-fill" data-progress-line aria-hidden="true"></span>
-    <ol class="list">
-      {profile.experience.map((e) => (
-        <li class="row reveal">
-          <span class="period">{e.period}</span>
-          <div class="body">
+      <ol class="list">
+        {profile.experience.map((e) => (
+          <li class="row reveal">
+            <div class="top">
+              <span class="period">{e.period}</span>
+              <p class="org">
+                {"link" in e && e.link ? <a class="link" href={e.link} target="_blank" rel="noopener">{e.org}</a> : e.org}
+              </p>
+            </div>
             <h3>{e.title}</h3>
-            <p class="org">
-              {"link" in e && e.link ? <a class="link" href={e.link} target="_blank" rel="noopener">{e.org}</a> : e.org}
-            </p>
             <ul class="points">
               {e.points.map((p) => <li>{p}</li>)}
             </ul>
@@ -31,25 +34,33 @@ import TechIcon from "./TechIcon.astro";
                 ))}
               </ul>
             )}
-          </div>
-        </li>
-      ))}
-    </ol>
+          </li>
+        ))}
+      </ol>
     </div>
   </div>
 </section>
 
 <style>
+  .count {
+    margin: 6px 0 0;
+    color: var(--fg-2);
+    font-size: 0.98rem;
+    max-width: 34ch;
+  }
+  .count strong {
+    color: var(--fg);
+  }
   .timeline {
     position: relative;
-    padding-left: 34px;
+    padding-left: 36px;
   }
   .tl-track,
   .tl-fill {
     position: absolute;
     left: 6px;
-    top: 0;
-    bottom: 0;
+    top: 8px;
+    bottom: 8px;
     width: 2px;
     border-radius: 2px;
   }
@@ -64,57 +75,65 @@ import TechIcon from "./TechIcon.astro";
     list-style: none;
     margin: 0;
     padding: 0;
+    display: grid;
+    gap: 16px;
   }
   .row {
     position: relative;
+    padding: 28px 30px;
+    border-radius: var(--r-lg);
+    background: var(--bg-alt);
+    transition: background 0.3s;
+  }
+  .row:hover {
+    background: var(--tile-alt);
   }
   .row::before {
     content: "";
     position: absolute;
-    left: -34px;
-    top: 38px;
+    left: -36px;
+    top: 34px;
     width: 14px;
     height: 14px;
     border-radius: 50%;
     background: var(--bg);
     box-shadow: inset 0 0 0 2px var(--fg-3);
   }
-  .row {
-    display: grid;
-    gap: 8px 40px;
-    padding-block: 32px;
-    border-top: 1px solid var(--line);
+  .row:first-child::before {
+    background: var(--ai);
+    box-shadow: 0 0 0 4px var(--bg);
   }
-  .row:last-child {
-    border-bottom: 1px solid var(--line);
-  }
-  @media (min-width: 760px) {
-    .row {
-      grid-template-columns: 200px minmax(0, 1fr);
-    }
+  .top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 6px 20px;
+    font-size: 0.92rem;
   }
   .period {
     color: var(--fg-3);
-    font-size: 0.95rem;
-    padding-top: 4px;
     font-variant-numeric: tabular-nums;
   }
+  .org {
+    margin: 0;
+    color: var(--fg-2);
+    font-weight: 500;
+  }
+  .org .link {
+    font-size: inherit;
+  }
   h3 {
-    font-size: 1.5rem;
+    margin-top: 10px;
+    font-size: clamp(1.35rem, 2.2vw, 1.7rem);
     letter-spacing: -0.02em;
   }
-  .org {
-    margin: 4px 0 0;
-    color: var(--fg-2);
-    font-size: 1.05rem;
-  }
   .points {
-    margin: 16px 0 0;
+    margin: 14px 0 0;
     padding-left: 20px;
     color: var(--fg-2);
     display: grid;
     gap: 8px;
-    max-width: 68ch;
+    max-width: 72ch;
   }
   .tech {
     list-style: none;
@@ -130,7 +149,7 @@ import TechIcon from "./TechIcon.astro";
     gap: 7px;
     padding: 6px 12px;
     border-radius: 980px;
-    background: var(--bg-alt);
+    background: var(--tile);
     font-size: 0.85rem;
     color: var(--fg);
   }

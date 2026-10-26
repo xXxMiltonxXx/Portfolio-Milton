@@ -20,9 +20,47 @@ const items = [
         {items.map((i) => <li><a href={i.href}>{i.label}</a></li>)}
       </ul>
     </nav>
-    <button class="ask" data-open-chat type="button">Pregúntale a mi IA</button>
+    <div class="actions">
+      <button class="theme" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" title="Cambiar tema">
+        <svg class="sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2" fill="currentColor" />
+          <g stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" />
+          </g>
+        </svg>
+        <svg class="moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path fill="currentColor" d="M20.2 14.6A8.5 8.5 0 0 1 9.4 3.8a8.5 8.5 0 1 0 10.8 10.8z" />
+        </svg>
+      </button>
+      <button class="ask" data-open-chat type="button">Pregúntale a mi IA</button>
+    </div>
   </div>
 </header>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>("[data-theme-toggle]");
+  const root = document.documentElement;
+  const media = matchMedia("(prefers-color-scheme: dark)");
+  const current = () => (root.dataset.theme as "light" | "dark" | undefined) ?? (media.matches ? "dark" : "light");
+  const sync = () => {
+    const dark = current() === "dark";
+    btn?.setAttribute("aria-label", dark ? "Cambiar a modo claro" : "Cambiar a modo oscuro");
+    btn?.setAttribute("aria-pressed", String(dark));
+    document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((m) => (m.content = dark ? "#000000" : "#ffffff"));
+  };
+  btn?.addEventListener("click", () => {
+    const next = current() === "dark" ? "light" : "dark";
+    root.classList.add("theme-anim");
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem("theme", next);
+    } catch {}
+    sync();
+    setTimeout(() => root.classList.remove("theme-anim"), 450);
+  });
+  media.addEventListener("change", sync);
+  sync();
+</script>
 
 <style>
   .nav {
@@ -61,6 +99,53 @@ const items = [
   }
   ul a:hover {
     opacity: 1;
+  }
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .theme {
+    position: relative;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    display: grid;
+    place-items: center;
+    background: color-mix(in srgb, var(--fg) 7%, transparent);
+    color: var(--fg);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .theme:hover {
+    background: color-mix(in srgb, var(--fg) 13%, transparent);
+  }
+  .theme svg {
+    position: absolute;
+    transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s;
+  }
+  .moon {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+  }
+  :global(:root[data-theme="dark"]) .sun {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.5);
+  }
+  :global(:root[data-theme="dark"]) .moon {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme="light"])) .sun {
+      opacity: 0;
+      transform: rotate(90deg) scale(0.5);
+    }
+    :global(:root:not([data-theme="light"])) .moon {
+      opacity: 1;
+      transform: none;
+    }
   }
   .ask {
     border: none;

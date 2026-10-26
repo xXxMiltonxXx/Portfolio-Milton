@@ -6,15 +6,20 @@ const total = profile.stack.reduce((n, g) => n + g.items.length, 0);
 ---
 
 <section id="tecnologias" class="band">
-  <div class="container wide">
+  <div class="container wide split">
     <div class="section-head reveal">
       <span class="eyebrow">Tecnologías</span>
       <h2 class="headline">{total} herramientas. <span class="soft">Usadas en proyectos reales, no en tutoriales.</span></h2>
+      <ul class="legend">
+        {profile.stack.map((g) => (
+          <li><span>{g.group}</span><strong>{g.items.length}</strong></li>
+        ))}
+      </ul>
     </div>
-    <div class="groups">
+    <div class="groups split-body">
       {profile.stack.map((g) => (
         <div class="group reveal">
-          <h3>{g.group}</h3>
+          <h3>{g.group} <span>{g.items.length}</span></h3>
           <ul class="tiles">
             {g.items.map((i) => (
               <li>
@@ -36,15 +41,36 @@ const total = profile.stack.reduce((n, g) => n + g.items.length, 0);
   }
   .group {
     display: grid;
-    gap: 18px;
+    gap: 16px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
   }
-  @media (min-width: 900px) {
-    .group {
-      grid-template-columns: 220px minmax(0, 1fr);
-      gap: 40px;
-      padding-top: 28px;
-      border-top: 1px solid var(--line);
-    }
+  .group:first-child {
+    padding-top: 0;
+    border-top: none;
+  }
+  .legend {
+    list-style: none;
+    margin: 18px 0 0;
+    padding: 0;
+  }
+  .legend li {
+    display: flex;
+    justify-content: space-between;
+    padding-block: 10px;
+    border-top: 1px solid var(--line);
+    font-size: 0.92rem;
+    color: var(--fg-2);
+  }
+  .legend strong {
+    color: var(--fg);
+    font-variant-numeric: tabular-nums;
+  }
+  h3 span {
+    color: var(--fg-3);
+    font-weight: 500;
+    font-size: 0.9em;
+    margin-left: 6px;
   }
   h3 {
     font-size: 1.25rem;
