@@ -3,7 +3,7 @@ import { defineConfig, envField } from "astro/config";
 import vercel from "@astrojs/vercel";
 
 export default defineConfig({
-  site: "https://portfolio-milton.vercel.app",
+  site: "https://portfolio-milton-rho.vercel.app",
   output: "static",
   adapter: vercel(),
   env: {
