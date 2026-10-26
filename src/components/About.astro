@@ -1,0 +1,82 @@
+---
+import { profile } from "../data/profile";
+---
+
+<section id="sobre-mi">
+  <div class="container about">
+    <div class="section-head reveal">
+      <span class="eyebrow">Sobre mí</span>
+      <h2>Ingeniería de software con <span class="grad-text">mentalidad de producto</span></h2>
+    </div>
+    <div class="grid">
+      <div class="text reveal">
+        {profile.about.map((p) => <p set:html={p} />)}
+      </div>
+      <ul class="pillars">
+        {profile.pillars.map((p) => (
+          <li class="card reveal">
+            <span class="icon" aria-hidden="true">{p.icon}</span>
+            <div>
+              <h3>{p.title}</h3>
+              <p>{p.text}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 40px;
+  }
+  @media (min-width: 960px) {
+    .grid {
+      grid-template-columns: 1.1fr 1fr;
+      gap: 64px;
+    }
+  }
+  .text p {
+    color: var(--muted);
+    font-size: 1.06rem;
+    margin: 0 0 18px;
+  }
+  .text :global(strong) {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .pillars {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+  }
+  .pillars li {
+    display: flex;
+    gap: 16px;
+    padding: 20px;
+  }
+  .icon {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: rgba(139, 92, 246, 0.12);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    font-size: 1.2rem;
+  }
+  h3 {
+    font-size: 1.05rem;
+    margin-bottom: 4px;
+  }
+  .pillars p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.93rem;
+  }
+</style>

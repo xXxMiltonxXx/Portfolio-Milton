@@ -1,0 +1,287 @@
+---
+import { profile } from "../data/profile";
+---
+
+<section id="inicio" class="hero">
+  <div class="container hero-inner">
+    <div class="copy">
+      <p class="status reveal">
+        <span class="pulse" aria-hidden="true"></span>
+        {profile.availability}
+      </p>
+      <h1 class="reveal">
+        Hola, soy <span class="grad-text">{profile.shortName}</span>.<br />
+        Construyo <span class="rotator" data-words={JSON.stringify(profile.heroWords)}>{profile.heroWords[0]}</span>
+      </h1>
+      <p class="lead reveal">{profile.tagline}</p>
+      <div class="ctas reveal">
+        <button class="btn btn-primary" data-open-chat type="button">
+          <span aria-hidden="true">✦</span> Habla con mi IA
+        </button>
+        <a class="btn" href="#proyectos">Ver proyectos →</a>
+      </div>
+      <ul class="meta reveal">
+        <li><span aria-hidden="true">📍</span> {profile.location}</li>
+        <li><a href={profile.links.github} target="_blank" rel="noopener">GitHub ↗</a></li>
+        <li><a href={profile.links.linkedin} target="_blank" rel="noopener">LinkedIn ↗</a></li>
+      </ul>
+    </div>
+
+    <div class="visual reveal">
+      <div class="photo-ring">
+        <div class="photo">
+          <img
+            src={profile.photo}
+            alt={`Foto de ${profile.name}`}
+            width="400"
+            height="400"
+            data-fallback={profile.photoFallback}
+            onerror="var f=this.dataset.fallback;if(f&&this.getAttribute('src')!==f){this.setAttribute('src',f)}else{this.remove()}"
+          />
+          <span class="initials" aria-hidden="true">{profile.initials}</span>
+        </div>
+      </div>
+      <div class="float-card fc-1 card">
+        <span class="mono">model.status</span>
+        <strong>IA + Software</strong>
+      </div>
+      <div class="float-card fc-2 card">
+        <span class="mono">hackathon</span>
+        <strong>Hacknarok · Creador</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <dl class="stats reveal">
+      {profile.stats.map((s) => (
+        <div class="stat">
+          <dt>{s.label}</dt>
+          <dd class="grad-text">{s.value}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<script>
+  const el = document.querySelector<HTMLElement>(".rotator");
+  if (el && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const words: string[] = JSON.parse(el.dataset.words || "[]");
+    let wi = 0;
+    let ci = words[0]?.length ?? 0;
+    let deleting = true;
+    const tick = () => {
+      const w = words[wi];
+      ci += deleting ? -1 : 1;
+      el.textContent = w.slice(0, ci);
+      let delay = deleting ? 40 : 75;
+      if (!deleting && ci === w.length) {
+        deleting = true;
+        delay = 2200;
+      } else if (deleting && ci === 0) {
+        deleting = false;
+        wi = (wi + 1) % words.length;
+        delay = 300;
+      }
+      setTimeout(tick, delay);
+    };
+    setTimeout(tick, 2600);
+  }
+</script>
+
+<style>
+  .hero {
+    padding: 72px 0 64px;
+    overflow-x: clip;
+  }
+  .hero-inner {
+    display: grid;
+    gap: 56px;
+    align-items: center;
+  }
+  @media (min-width: 960px) {
+    .hero {
+      padding: 110px 0 80px;
+    }
+    .hero-inner {
+      grid-template-columns: 1.25fr 0.9fr;
+    }
+  }
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    margin: 0 0 26px;
+  }
+  .pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    70% {
+      box-shadow: 0 0 0 10px rgba(52, 211, 153, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(52, 211, 153, 0);
+    }
+  }
+  h1 {
+    font-size: clamp(2.4rem, 6.4vw, 4.6rem);
+    font-weight: 700;
+  }
+  .rotator {
+    color: var(--text);
+    border-right: 3px solid var(--cyan);
+    padding-right: 4px;
+    white-space: nowrap;
+    animation: caret 1s steps(1) infinite;
+  }
+  @keyframes caret {
+    50% {
+      border-color: transparent;
+    }
+  }
+  .lead {
+    max-width: 580px;
+    font-size: 1.15rem;
+  }
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    list-style: none;
+    padding: 0;
+    margin: 32px 0 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+  .meta a:hover {
+    color: var(--cyan);
+  }
+  .visual {
+    position: relative;
+    justify-self: center;
+    width: min(360px, 82vw);
+    aspect-ratio: 1;
+  }
+  .photo-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    padding: 3px;
+    background: conic-gradient(from 0deg, #a78bfa, #22d3ee, #34d399, #a78bfa);
+    animation: spin 10s linear infinite;
+    box-shadow: 0 0 120px -20px rgba(139, 92, 246, 0.6);
+  }
+  .photo {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--bg-2);
+    animation: spin 10s linear infinite reverse;
+  }
+  .photo img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .initials {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font: 700 4rem var(--font-display);
+    color: var(--faint);
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .float-card {
+    position: absolute;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.85rem;
+    background: rgba(12, 12, 20, 0.8);
+    animation: bob 6s ease-in-out infinite;
+  }
+  .float-card .mono {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--cyan);
+  }
+  .fc-1 {
+    top: 8%;
+    left: -12%;
+  }
+  .fc-2 {
+    bottom: 6%;
+    right: -10%;
+    animation-delay: -3s;
+  }
+  @media (max-width: 520px) {
+    .fc-1 {
+      left: -4%;
+    }
+    .fc-2 {
+      right: -4%;
+    }
+  }
+  @keyframes bob {
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    margin: 72px 0 0;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  @media (min-width: 760px) {
+    .stats {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .stat {
+    background: var(--bg);
+    padding: 24px;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .stat dd {
+    margin: 0;
+    font: 700 2.2rem var(--font-display);
+  }
+  .stat dt {
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+</style>

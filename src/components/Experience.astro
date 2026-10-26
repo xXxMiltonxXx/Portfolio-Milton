@@ -1,0 +1,103 @@
+---
+import { profile } from "../data/profile";
+---
+
+<section id="experiencia">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Experiencia</span>
+      <h2>Dónde he <span class="grad-text">construido</span></h2>
+    </div>
+    <ol class="timeline">
+      {profile.experience.map((e) => (
+        <li class="item reveal">
+          <span class="node" aria-hidden="true"></span>
+          <div class="card body">
+            <div class="top">
+              <div>
+                <h3>{e.title}</h3>
+                <p class="org">{e.org}</p>
+              </div>
+              <span class="period">{e.period}</span>
+            </div>
+            <ul class="points">
+              {e.points.map((p) => <li>{p}</li>)}
+            </ul>
+            <div class="tags">
+              {e.tags.map((t) => <span class="tag">{t}</span>)}
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 28px;
+    position: relative;
+  }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(var(--violet), var(--cyan), transparent);
+  }
+  .item {
+    position: relative;
+    margin-bottom: 22px;
+  }
+  .node {
+    position: absolute;
+    left: -28px;
+    top: 26px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--cyan);
+    box-shadow: 0 0 16px rgba(34, 211, 238, 0.7);
+  }
+  .body {
+    padding: 24px;
+  }
+  .top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px 20px;
+  }
+  h3 {
+    font-size: 1.2rem;
+  }
+  .org {
+    margin: 4px 0 0;
+    color: var(--cyan);
+    font-weight: 500;
+  }
+  .period {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+    padding-top: 4px;
+  }
+  .points {
+    margin: 16px 0;
+    padding-left: 18px;
+    color: var(--muted);
+  }
+  .points li {
+    margin-bottom: 6px;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+</style>

@@ -1,0 +1,122 @@
+---
+import { profile } from "../data/profile";
+const [main, ...rest] = profile.community;
+---
+
+<section id="comunidad">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Comunidad</span>
+      <h2>Construir <span class="grad-text">con otros</span></h2>
+      <p class="lead">La tecnología crece cuando se comparte. Por eso organizo eventos, enseño y expongo proyectos.</p>
+    </div>
+    <div class="layout">
+      <a class="card hero-card reveal" href={main.link} target="_blank" rel="noopener">
+        <div class="glow" aria-hidden="true"></div>
+        <span class="kicker">{main.kicker}</span>
+        <h3>{main.title}</h3>
+        <p>{main.text}</p>
+        <ul class="facts">
+          <li><strong>$3K+</strong><span>en premios</span></li>
+          <li><strong>1–4</strong><span>personas por equipo</span></li>
+          <li><strong>Mentores</strong><span>por temática</span></li>
+        </ul>
+        <span class="cta">Ver la plataforma ↗</span>
+      </a>
+      <div class="side">
+        {rest.map((c) => (
+          <a class="card mini reveal" href={c.link} target="_blank" rel="noopener">
+            <span class="kicker">{c.kicker}</span>
+            <h3>{c.title}</h3>
+            <p>{c.text}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .layout {
+    display: grid;
+    gap: 18px;
+  }
+  @media (min-width: 960px) {
+    .layout {
+      grid-template-columns: 1.4fr 1fr;
+    }
+  }
+  .hero-card {
+    position: relative;
+    overflow: hidden;
+    padding: 34px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    border-color: rgba(34, 211, 238, 0.3);
+  }
+  .glow {
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    right: -140px;
+    top: -160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.45), transparent 70%);
+  }
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cyan);
+  }
+  .hero-card h3 {
+    font-size: clamp(2rem, 5vw, 3rem);
+  }
+  p {
+    color: var(--muted);
+    margin: 0;
+  }
+  .facts {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+  }
+  .facts li {
+    display: flex;
+    flex-direction: column;
+  }
+  .facts strong {
+    font: 700 1.5rem var(--font-display);
+  }
+  .facts span {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  .cta {
+    margin-top: auto;
+    font-weight: 600;
+    color: var(--cyan);
+  }
+  .side {
+    display: grid;
+    gap: 18px;
+  }
+  .mini {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .mini h3 {
+    font-size: 1.2rem;
+  }
+  .mini:hover,
+  .hero-card:hover {
+    transform: translateY(-3px);
+  }
+</style>

@@ -1,0 +1,209 @@
+---
+import { profile, type Category } from "../data/profile";
+
+const filters: { id: "todos" | Category; label: string }[] = [
+  { id: "todos", label: "Todos" },
+  { id: "ia", label: "✦ IA" },
+  { id: "web", label: "Web" },
+  { id: "movil", label: "Móvil" },
+  { id: "backend", label: "Backend" },
+  { id: "devops", label: "DevOps" },
+];
+---
+
+<section id="proyectos">
+  <div class="container">
+    <div class="head">
+      <div class="section-head reveal">
+        <span class="eyebrow">Proyectos</span>
+        <h2>Cosas que he <span class="grad-text">lanzado</span></h2>
+        <p class="lead">Una selección de mis repositorios: productos con IA en producción, apps móviles, plataformas web e infraestructura.</p>
+      </div>
+      <div class="filters reveal" role="group" aria-label="Filtrar proyectos">
+        {filters.map((f, i) => (
+          <button type="button" class:list={["chip", { active: i === 0 }]} data-filter={f.id} aria-pressed={i === 0 ? "true" : "false"}>
+            {f.label}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <ul class="grid">
+      {profile.projects.map((p) => (
+        <li class:list={["card project reveal", { featured: p.featured }]} data-cats={p.categories.join(" ")}>
+          <div class="p-top">
+            <span class="year">{p.year}</span>
+            {p.categories.includes("ia") && <span class="tag ai">✦ IA</span>}
+          </div>
+          <h3>{p.name}</h3>
+          <p class="summary">{p.summary}</p>
+          <ul class="hl">
+            {p.highlights.map((h) => <li>{h}</li>)}
+          </ul>
+          <div class="tags">
+            {p.tags.map((t) => <span class="tag">{t}</span>)}
+          </div>
+          <div class="links">
+            {p.live && <a href={p.live} target="_blank" rel="noopener">Ver en vivo ↗</a>}
+            {p.repo && <a href={p.repo} target="_blank" rel="noopener">Código ↗</a>}
+            {!p.repo && p.private && <span class="private">🔒 Repositorio privado</span>}
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<script>
+  const chips = document.querySelectorAll<HTMLButtonElement>("#proyectos .chip");
+  const cards = document.querySelectorAll<HTMLElement>("#proyectos .project");
+  chips.forEach((chip) =>
+    chip.addEventListener("click", () => {
+      const f = chip.dataset.filter!;
+      chips.forEach((c) => {
+        c.classList.toggle("active", c === chip);
+        c.setAttribute("aria-pressed", String(c === chip));
+      });
+      cards.forEach((card) => {
+        const show = f === "todos" || card.dataset.cats!.split(" ").includes(f);
+        card.hidden = !show;
+        if (show) card.classList.add("in");
+      });
+    }),
+  );
+</script>
+
+<style>
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0 24px;
+  }
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 48px;
+  }
+  .chip {
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    font: 500 0.88rem var(--font-sans);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .chip:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+  }
+  .chip.active {
+    color: #07070c;
+    background: var(--grad);
+    border-color: transparent;
+  }
+  .grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 18px;
+  }
+  @media (min-width: 760px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1080px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .featured:nth-child(1) {
+      grid-column: span 2;
+    }
+  }
+  .project {
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .project[hidden] {
+    display: none;
+  }
+  .project:hover {
+    transform: translateY(-4px);
+  }
+  .featured {
+    border-color: rgba(139, 92, 246, 0.3);
+  }
+  .featured::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 2px;
+    background: var(--grad);
+  }
+  .p-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .year {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--faint);
+  }
+  h3 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+  }
+  .summary {
+    color: var(--muted);
+    margin: 0 0 14px;
+    font-size: 0.95rem;
+  }
+  .hl {
+    margin: 0 0 18px;
+    padding-left: 18px;
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+  .hl li {
+    margin-bottom: 4px;
+  }
+  .hl li::marker {
+    color: var(--cyan);
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: auto;
+  }
+  .links {
+    display: flex;
+    gap: 18px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+  .links a {
+    color: var(--cyan);
+  }
+  .links a:hover {
+    text-decoration: underline;
+  }
+  .private {
+    color: var(--faint);
+    font-weight: 500;
+  }
+</style>

@@ -1,0 +1,450 @@
+---
+import { profile } from "../data/profile";
+
+const suggestions = [
+  "¿Qué es IssA y qué hizo Milton ahí?",
+  "¿Qué proyectos con IA tiene?",
+  "Cuéntame sobre Hacknarok",
+  "¿Cuál es su stack?",
+];
+
+// Base mínima para responder sin API key (o si la API falla).
+const kb = {
+  projects: profile.projects.map((p) => ({
+    name: p.name,
+    summary: p.summary,
+    tags: p.tags,
+    ai: p.categories.includes("ia"),
+    live: p.live,
+    repo: p.repo,
+  })),
+  experience: profile.experience.map((e) => ({ title: e.title, org: e.org, period: e.period, text: e.points[0] })),
+  stack: profile.stack,
+  links: profile.links,
+  location: profile.location,
+};
+---
+
+<section id="ia" class="ai-section">
+  <div class="container">
+    <div class="card ai-box reveal">
+      <div class="ai-copy">
+        <span class="eyebrow">Asistente con IA</span>
+        <h2>Pregúntale a <span class="grad-text">MiltonAI</span></h2>
+        <p class="lead">Un asistente entrenado con mi experiencia, proyectos y stack. Pregúntale lo que quieras saber antes de escribirme.</p>
+      </div>
+      <div class="suggest">
+        {suggestions.map((s) => (
+          <button type="button" class="sug" data-ask={s}>
+            <span aria-hidden="true">↳</span> {s}
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<button class="fab" type="button" data-open-chat aria-label="Abrir asistente de IA">
+  <span aria-hidden="true">✦</span>
+</button>
+
+<div class="chat" id="chat" role="dialog" aria-modal="false" aria-labelledby="chat-title" hidden>
+  <header class="chat-head">
+    <div class="bot">
+      <span class="avatar" aria-hidden="true">✦</span>
+      <div>
+        <strong id="chat-title">MiltonAI</strong>
+        <span class="online">En línea · responde sobre Milton</span>
+      </div>
+    </div>
+    <button type="button" class="close" data-close-chat aria-label="Cerrar">✕</button>
+  </header>
+  <ol class="log" aria-live="polite">
+    <li class="msg bot-msg">¡Hola! 👋 Soy el asistente de {profile.shortName}. Pregúntame por su experiencia, sus proyectos con IA, Hacknarok o su stack.</li>
+  </ol>
+  <div class="quick">
+    {suggestions.map((s) => <button type="button" class="q" data-ask={s}>{s}</button>)}
+  </div>
+  <form class="composer">
+    <input name="q" autocomplete="off" placeholder="Escribe tu pregunta…" maxlength="500" aria-label="Tu pregunta" />
+    <button type="submit" aria-label="Enviar">➤</button>
+  </form>
+</div>
+
+<script type="application/json" id="chat-kb" set:html={JSON.stringify(kb)} />
+
+<script>
+  type Msg = { role: "user" | "assistant"; content: string };
+  type KB = {
+    projects: { name: string; summary: string; tags: string[]; ai: boolean; live?: string; repo?: string }[];
+    experience: { title: string; org: string; period: string; text: string }[];
+    stack: { group: string; items: string[] }[];
+    links: { github: string; linkedin: string };
+    location: string;
+  };
+
+  const kb: KB = JSON.parse(document.getElementById("chat-kb")!.textContent!);
+  const panel = document.getElementById("chat")!;
+  const log = panel.querySelector<HTMLOListElement>(".log")!;
+  const form = panel.querySelector<HTMLFormElement>(".composer")!;
+  const input = form.querySelector<HTMLInputElement>("input")!;
+  const quick = panel.querySelector<HTMLElement>(".quick")!;
+  const history: Msg[] = [];
+  let busy = false;
+  let remote = true;
+
+  const open = () => {
+    panel.hidden = false;
+    requestAnimationFrame(() => panel.classList.add("open"));
+    input.focus({ preventScroll: true });
+  };
+  const close = () => {
+    panel.classList.remove("open");
+    setTimeout(() => (panel.hidden = true), 250);
+  };
+
+  document.querySelectorAll("[data-open-chat]").forEach((b) => b.addEventListener("click", open));
+  panel.querySelector("[data-close-chat]")!.addEventListener("click", close);
+  document.addEventListener("keydown", (e) => e.key === "Escape" && !panel.hidden && close());
+  document.querySelectorAll<HTMLElement>("[data-ask]").forEach((b) =>
+    b.addEventListener("click", () => {
+      open();
+      ask(b.dataset.ask!);
+    }),
+  );
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const q = input.value.trim();
+    if (q) ask(q);
+  });
+
+  function bubble(role: "user" | "bot", text = "") {
+    const li = document.createElement("li");
+    li.className = `msg ${role}-msg`;
+    li.textContent = text;
+    log.appendChild(li);
+    log.scrollTop = log.scrollHeight;
+    return li;
+  }
+
+  async function ask(q: string) {
+    if (busy) return;
+    busy = true;
+    input.value = "";
+    quick.hidden = true;
+    bubble("user", q);
+    history.push({ role: "user", content: q });
+    const out = bubble("bot");
+    out.classList.add("typing");
+
+    let answer = "";
+    if (remote) {
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages: history }),
+        });
+        if (!res.ok || !res.body) throw new Error(String(res.status));
+        const reader = res.body.getReader();
+        const dec = new TextDecoder();
+        out.classList.remove("typing");
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          answer += dec.decode(value, { stream: true });
+          out.textContent = answer;
+          log.scrollTop = log.scrollHeight;
+        }
+      } catch {
+        remote = false;
+      }
+    }
+    if (!answer) {
+      answer = local(q);
+      await new Promise((r) => setTimeout(r, 450));
+      out.classList.remove("typing");
+      await typeOut(out, answer);
+    }
+    history.push({ role: "assistant", content: answer });
+    busy = false;
+  }
+
+  async function typeOut(el: HTMLElement, text: string) {
+    const step = Math.max(2, Math.round(text.length / 90));
+    for (let i = 0; i <= text.length; i += step) {
+      el.textContent = text.slice(0, i);
+      log.scrollTop = log.scrollHeight;
+      await new Promise((r) => setTimeout(r, 12));
+    }
+    el.textContent = text;
+  }
+
+  const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+
+  function local(raw: string): string {
+    const q = ` ${norm(raw).replace(/[¿?¡!.,]/g, " ")} `;
+    const has = (...w: string[]) => w.some((x) => q.includes(x));
+
+    if (has("hacknarok", "hackat", "hackaton", "evento")) {
+      return "Milton creó y organizó Hacknarok 2024 en Manta: una hackathon con más de $3.000 en premios, mentores por temática, rúbricas de evaluación y equipos de 1 a 4 personas. Además construyó la plataforma oficial (Angular + Supabase) para inscripciones, entregas y votación de jurados.";
+    }
+    const stop = new Set(["para", "con", "tus", "motor", "chat", "2024"]);
+    const proj = kb.projects.find((p) =>
+      norm(p.name)
+        .split(/[\s—-]+/)
+        .filter((w) => w.length > 3 && !stop.has(w))
+        .some((w) => q.includes(w)),
+    );
+    if (proj && !has("proyectos")) {
+      const extra = proj.live ? ` Puedes verlo en ${proj.live}.` : proj.repo ? ` El código está en ${proj.repo}.` : "";
+      return `${proj.name}: ${proj.summary} Stack: ${proj.tags.join(", ")}.${extra}`;
+    }
+    if (has(" ia", "ia ", "inteligencia", " ai", "llm", "agente", "rag", "machine")) {
+      const ai = kb.projects.filter((p) => p.ai).map((p) => `• ${p.name}`);
+      return `Estos son sus proyectos con IA:\n${ai.join("\n")}\nTrabaja con LangGraph, LangChain, OpenAI, RAG, PyTorch y modelos on-device.`;
+    }
+    if (has("stack", "tecnolog", "lenguaje", "framework", "herramienta", "sabe")) {
+      return kb.stack.map((s) => `${s.group}: ${s.items.join(", ")}`).join("\n");
+    }
+    if (has("experiencia", "trabaj", "empresa", "zgames", "issa", "iess", "rol", "cargo")) {
+      return kb.experience.map((e) => `• ${e.title} — ${e.org} (${e.period})`).join("\n");
+    }
+    if (has("proyecto", "portafolio", "hizo", "construy")) {
+      return `Algunos de sus proyectos:\n${kb.projects
+        .slice(0, 8)
+        .map((p) => `• ${p.name}`)
+        .join("\n")}\nPregúntame por cualquiera para más detalle.`;
+    }
+    if (has("contact", "correo", "email", "linkedin", "contratar", "hablar", "escrib")) {
+      return `Puedes contactarlo por LinkedIn (${kb.links.linkedin}) o ver su código en GitHub (${kb.links.github}).`;
+    }
+    if (has("donde", "ubica", "vive", "pais", "ciudad", "estudi", "universidad", "uleam")) {
+      return `Milton vive en ${kb.location} y se formó en la ULEAM (Universidad Laica Eloy Alfaro de Manabí), donde también participó en la Comunidad Microsoft y en la Casa Abierta.`;
+    }
+    if (has("hola", "buenas", "hey", "que tal")) {
+      return "¡Hola! Pregúntame por la experiencia de Milton, sus proyectos con IA, Hacknarok o su stack.";
+    }
+    return "No tengo ese dato exacto, pero puedo contarte sobre su experiencia en IssA, sus proyectos con IA, Hacknarok o su stack. Para algo más específico, escríbele por LinkedIn.";
+  }
+</script>
+
+<style>
+  .ai-section {
+    padding-top: 40px;
+  }
+  .ai-box {
+    padding: clamp(26px, 5vw, 56px);
+    display: grid;
+    gap: 32px;
+    align-items: center;
+    background:
+      radial-gradient(ellipse at 0% 0%, rgba(139, 92, 246, 0.22), transparent 55%),
+      radial-gradient(ellipse at 100% 100%, rgba(34, 211, 238, 0.14), transparent 55%),
+      var(--surface);
+    border-color: rgba(139, 92, 246, 0.3);
+  }
+  @media (min-width: 960px) {
+    .ai-box {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .suggest {
+    display: grid;
+    gap: 10px;
+  }
+  .sug {
+    text-align: left;
+    padding: 14px 18px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: rgba(6, 6, 11, 0.55);
+    color: var(--text);
+    font: 500 0.95rem var(--font-sans);
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .sug span {
+    color: var(--cyan);
+    margin-right: 6px;
+  }
+  .sug:hover {
+    border-color: rgba(34, 211, 238, 0.5);
+    transform: translateX(4px);
+  }
+
+  .fab {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 60;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    border: none;
+    background: var(--grad);
+    color: #07070c;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 12px 40px -8px rgba(139, 92, 246, 0.8);
+    transition: transform 0.2s;
+  }
+  .fab:hover {
+    transform: scale(1.08) rotate(12deg);
+  }
+
+  .chat {
+    position: fixed;
+    z-index: 70;
+    right: 16px;
+    bottom: 90px;
+    width: min(400px, calc(100vw - 32px));
+    height: min(600px, calc(100dvh - 120px));
+    display: flex;
+    flex-direction: column;
+    background: rgba(12, 12, 20, 0.92);
+    backdrop-filter: blur(18px);
+    border: 1px solid var(--border-strong);
+    border-radius: 22px;
+    box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+    transition: opacity 0.25s, transform 0.25s;
+  }
+  .chat.open {
+    opacity: 1;
+    transform: none;
+  }
+  .chat[hidden] {
+    display: none;
+  }
+  .chat-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .bot {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .bot div {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+  }
+  .avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: var(--grad);
+    color: #07070c;
+  }
+  .online {
+    font-size: 0.75rem;
+    color: var(--green);
+  }
+  .close {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 6px;
+  }
+  .log {
+    flex: 1;
+    overflow-y: auto;
+    list-style: none;
+    margin: 0;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .log :global(.msg) {
+    max-width: 88%;
+    padding: 11px 14px;
+    border-radius: 16px;
+    font-size: 0.92rem;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .log :global(.bot-msg) {
+    align-self: flex-start;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-bottom-left-radius: 4px;
+  }
+  .log :global(.user-msg) {
+    align-self: flex-end;
+    background: linear-gradient(120deg, #7c3aed, #0e7490);
+    border-bottom-right-radius: 4px;
+  }
+  .log :global(.typing)::after {
+    content: "● ● ●";
+    letter-spacing: 2px;
+    color: var(--muted);
+    animation: blink 1.2s infinite;
+  }
+  @keyframes blink {
+    50% {
+      opacity: 0.3;
+    }
+  }
+  .quick {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 0 18px 12px;
+  }
+  .quick[hidden] {
+    display: none;
+  }
+  .q {
+    flex: none;
+    padding: 7px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    font: 500 0.8rem var(--font-sans);
+    cursor: pointer;
+  }
+  .q:hover {
+    color: var(--text);
+  }
+  .composer {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .composer input {
+    flex: 1;
+    min-width: 0;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text);
+    font: 0.95rem var(--font-sans);
+    outline: none;
+  }
+  .composer input:focus {
+    border-color: rgba(34, 211, 238, 0.6);
+  }
+  .composer button {
+    width: 46px;
+    border-radius: 12px;
+    border: none;
+    background: var(--grad);
+    color: #07070c;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+</style>

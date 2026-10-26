@@ -1,0 +1,63 @@
+---
+import { profile } from "../data/profile";
+const year = new Date().getFullYear();
+---
+
+<section id="contacto">
+  <div class="container">
+    <div class="card box reveal">
+      <span class="eyebrow">Contacto</span>
+      <h2>¿Construimos algo <span class="grad-text">juntos</span>?</h2>
+      <p class="lead">Si tienes un producto, una idea con IA o un evento tech en mente, escríbeme. También puedes preguntarle primero a mi asistente.</p>
+      <div class="ctas">
+        <a class="btn btn-primary" href={profile.links.linkedin} target="_blank" rel="noopener">Escríbeme en LinkedIn ↗</a>
+        <a class="btn" href={profile.links.github} target="_blank" rel="noopener">GitHub ↗</a>
+        <button class="btn" data-open-chat type="button">✦ Pregúntale a mi IA</button>
+      </div>
+    </div>
+  </div>
+  <footer class="container footer">
+    <span>© {year} {profile.name} · {profile.location}</span>
+    <span class="mono">Hecho con Astro · IA con Claude</span>
+  </footer>
+</section>
+
+<style>
+  .box {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(28px, 6vw, 72px);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background:
+      radial-gradient(ellipse at top, rgba(139, 92, 246, 0.18), transparent 60%),
+      var(--surface);
+  }
+  .lead {
+    max-width: 560px;
+  }
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 30px;
+  }
+  .footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 72px;
+    padding-top: 24px;
+    padding-bottom: 32px;
+    border-top: 1px solid var(--border);
+    color: var(--faint);
+    font-size: 0.85rem;
+  }
+  .mono {
+    font-family: var(--font-mono);
+  }
+</style>
