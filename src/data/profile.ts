@@ -311,12 +311,18 @@ export const profile = {
     },
     {
       name: "Tastyfood",
+      image: "/proyectos/tastyfood.webp",
       summary:
-        "Tienda de comida online con carrito, control de stock en tiempo real que evita sobreventas, facturas numeradas y códigos QR.",
-      highlights: ["Realtime y Storage de Supabase", "Next.js 15 + React 19"],
+        "Tienda en línea del centro gastronómico Tasty Food, con carrito, control de stock en tiempo real que evita sobreventas, facturas numeradas y códigos QR.",
+      highlights: [
+        "Panel administrativo TastyAdmin con inicio de sesión y modo oscuro",
+        "Realtime y Storage de Supabase",
+        "Next.js 15 y React 19",
+      ],
       tags: ["Next.js", "React", "Supabase", "Vercel"],
       categories: ["web"],
       year: "2025",
+      live: "https://tastyfood-admin-f8kv.vercel.app/signin",
       repo: `${GH}/Tastyfood`,
     },
     {
