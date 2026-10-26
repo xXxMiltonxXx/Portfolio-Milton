@@ -54,22 +54,18 @@ export const profile = {
 
   pillars: [
     {
-      icon: "🧠",
       title: "IA aplicada",
       text: "Agentes con LangGraph, RAG sobre documentos, visión por computadora y modelos on-device.",
     },
     {
-      icon: "⚡",
       title: "Full stack moderno",
       text: "React, Next.js, Astro, Angular, FastAPI, Go y Node con Supabase/Postgres.",
     },
     {
-      icon: "📱",
       title: "Móvil multiplataforma",
       text: "Flutter con Clean Architecture y BLoC, más Kotlin + Jetpack Compose.",
     },
     {
-      icon: "🚀",
       title: "Del prototipo a producción",
       text: "Docker, colas con Celery/Redis, CI/CD, VPS y Vercel.",
     },
@@ -85,7 +81,7 @@ export const profile = {
         "Backend con FastAPI + LangGraph (migrado desde n8n): webhooks por conexión, flujo conversacional RAG, colas Celery/Redis e ingesta de PDF, Office, audio y OCR.",
         "Landing y portal de clientes en React/Vite multilenguaje (ES/EN/PT) con dashboard de métricas, conversaciones y noticias.",
       ],
-      tags: ["FastAPI", "LangGraph", "OpenAI", "React", "Next.js", "Supabase", "Celery", "Docker"],
+      tags: ["Python", "FastAPI", "LangGraph", "OpenAI", "React", "Next.js", "Supabase", "Celery", "Redis", "Docker"],
     },
     {
       title: "Desarrollador — Proyecto Coactiva",
@@ -95,7 +91,7 @@ export const profile = {
         "Prototipo que digitaliza el ciclo completo del cobro coactivo: obligaciones en mora, glosas, notificaciones, expedientes y reportes.",
         "Next.js 16 con Server Actions, Supabase con RLS y firma electrónica de documentos PDF.",
       ],
-      tags: ["Next.js 16", "React 19", "Supabase", "RLS", "Firma PDF"],
+      tags: ["Next.js", "React", "TypeScript", "Supabase", "Tailwind CSS"],
     },
     {
       title: "Desarrollador de Software",
@@ -104,7 +100,7 @@ export const profile = {
       points: [
         "Desarrollo de software en un equipo enfocado en entretenimiento y videojuegos.",
       ],
-      tags: ["Desarrollo de software", "Trabajo en equipo"],
+      tags: [],
     },
     {
       title: "Creador y organizador",
@@ -114,7 +110,7 @@ export const profile = {
         "Ideé y organicé una hackathon en Manta con más de $3.000 en premios, mentores por temática y rúbricas de evaluación.",
         "Construí la plataforma oficial: inscripción de equipos, temas y mentores, entrega de proyectos, calificación por jurados y recursos de formación.",
       ],
-      tags: ["Liderazgo", "Angular 18", "Supabase", "Organización de eventos"],
+      tags: ["Angular", "Supabase", "Tailwind CSS", "Figma"],
     },
     {
       title: "Instructor y miembro",
@@ -124,7 +120,7 @@ export const profile = {
         "Impartí un curso de TypeScript para estudiantes de la universidad.",
         "Diseñé pruebas técnicas para la selección de nuevos miembros de la comunidad.",
       ],
-      tags: ["TypeScript", "Docencia", "Comunidad"],
+      tags: ["TypeScript", "JavaScript", "Node.js"],
     },
   ],
 
@@ -138,7 +134,7 @@ export const profile = {
         "Portal de clientes: agente, métricas, planes y conversaciones",
         "Landing multilenguaje con animaciones GSAP, Framer Motion y Three.js",
       ],
-      tags: ["React", "Vite", "Supabase Edge Functions", "OpenAI", "GSAP", "Three.js"],
+      tags: ["React", "Vite", "Tailwind CSS", "Supabase", "OpenAI", "WhatsApp API", "GSAP", "Three.js", "Framer Motion", "Docker"],
       categories: ["ia", "web"],
       year: "2025 — 2026",
       featured: true,
@@ -154,7 +150,7 @@ export const profile = {
         "Ingesta de PDF, Word, Excel, PowerPoint, audio y OCR para la base de conocimiento",
         "Voz con ElevenLabs, notificaciones push e integración con Google APIs",
       ],
-      tags: ["Python", "FastAPI", "LangGraph", "LangChain", "OpenRouter", "Celery", "Redis", "Supabase"],
+      tags: ["Python", "FastAPI", "LangGraph", "LangChain", "OpenAI", "OpenRouter", "Celery", "Redis", "Supabase", "PostgreSQL", "ElevenLabs", "Docker"],
       categories: ["ia", "backend"],
       year: "2026",
       featured: true,
@@ -169,7 +165,7 @@ export const profile = {
         "Videollamadas médico–paciente con LiveKit",
         "API Go con arquitectura hexagonal sobre Supabase, monorepo con Melos",
       ],
-      tags: ["Flutter", "Go", "Supabase", "LiveKit", "TFLite", "Visión por computadora"],
+      tags: ["Flutter", "Dart", "Go", "Supabase", "PostgreSQL", "LiveKit", "TensorFlow Lite", "Docker", "GitHub Actions"],
       categories: ["ia", "movil", "backend"],
       year: "2026",
       featured: true,
@@ -184,7 +180,7 @@ export const profile = {
         "Calendario integrado con Google Calendar y material de formación",
         "Más de $3.000 en premios para los equipos",
       ],
-      tags: ["Angular 18", "Supabase", "Tailwind", "Motion"],
+      tags: ["Angular", "TypeScript", "Supabase", "Tailwind CSS", "Vercel"],
       categories: ["web"],
       year: "2024",
       featured: true,
@@ -196,7 +192,7 @@ export const profile = {
       summary:
         "API de autenticación biométrica: registra rostros y permite iniciar sesión con reconocimiento facial, emitiendo tokens JWT.",
       highlights: ["Embeddings faciales con FaceNet (PyTorch) y OpenCV", "Caché de rostros en memoria y almacenamiento en Supabase"],
-      tags: ["Python", "FastAPI", "PyTorch", "FaceNet", "OpenCV", "JWT"],
+      tags: ["Python", "FastAPI", "PyTorch", "OpenCV", "Supabase", "Docker"],
       categories: ["ia", "backend"],
       year: "2026",
       private: true,
@@ -206,7 +202,7 @@ export const profile = {
       summary:
         "SaaS para subir un PDF y conversar con él usando IA, con respuestas en streaming. Presentado en la Casa Abierta de la ULEAM.",
       highlights: ["RAG con LangChain, OpenAI y Pinecone", "Planes gratis y Pro con Stripe, tRPC + Zod + Prisma"],
-      tags: ["Next.js", "TypeScript", "LangChain", "OpenAI", "Pinecone", "Stripe"],
+      tags: ["Next.js", "TypeScript", "LangChain", "OpenAI", "Pinecone", "tRPC", "Zod", "Prisma", "Stripe", "Tailwind CSS"],
       categories: ["ia", "web"],
       year: "2023",
       repo: `${GH}/ProyectoCasaAbierta23-2`,
@@ -216,7 +212,7 @@ export const profile = {
       summary:
         "Prototipo para digitalizar el cobro coactivo del IESS en Manabí: obligaciones, glosas, notificaciones, expedientes y firma electrónica.",
       highlights: ["Server Actions y RLS por rol", "Firma de PDFs con certificados .p12"],
-      tags: ["Next.js 16", "React 19", "Supabase", "Tailwind v4"],
+      tags: ["Next.js", "React", "TypeScript", "Supabase", "PostgreSQL", "Tailwind CSS"],
       categories: ["web"],
       year: "2026",
       private: true,
@@ -226,7 +222,7 @@ export const profile = {
       summary:
         "App móvil para la comunidad universitaria: comunidades, red social, reservas con calendario, notificaciones y panel de administración.",
       highlights: ["Clean Architecture con BLoC, GetIt y fpdart", "Supabase con triggers para notificaciones"],
-      tags: ["Flutter", "BLoC", "Supabase", "go_router"],
+      tags: ["Flutter", "Dart", "BLoC", "Supabase", "PostgreSQL"],
       categories: ["movil"],
       year: "2026",
       private: true,
@@ -236,7 +232,7 @@ export const profile = {
       summary:
         "Tienda de comida online con carrito, control de stock en tiempo real que evita sobreventas, facturas numeradas y códigos QR.",
       highlights: ["Realtime y Storage de Supabase", "Next.js 15 + React 19"],
-      tags: ["Next.js", "React", "Supabase"],
+      tags: ["Next.js", "React", "Supabase", "Vercel"],
       categories: ["web"],
       year: "2025",
       repo: `${GH}/Tastyfood`,
@@ -246,7 +242,7 @@ export const profile = {
       summary:
         "Red social estilo Threads para estudiantes de la ULEAM: hilos, feed, perfiles, búsqueda, notificaciones e imágenes. Hecha en Flutter y también en Kotlin nativo.",
       highlights: ["Firebase Auth, Firestore, Realtime DB y Storage", "Versión nativa con Jetpack Compose"],
-      tags: ["Flutter", "Kotlin", "Jetpack Compose", "Firebase"],
+      tags: ["Flutter", "Dart", "Kotlin", "Jetpack Compose", "Android", "Firebase"],
       categories: ["movil"],
       year: "2024 — 2025",
       repo: `${GH}/BridgeUleam`,
@@ -266,7 +262,7 @@ export const profile = {
       summary:
         "Backend de una red social para artistas: comunidades, foros, publicaciones, reacciones, productos y facturación.",
       highlights: ["Prisma + PostgreSQL", "Docker Compose"],
-      tags: ["TypeScript", "Express", "Prisma", "PostgreSQL"],
+      tags: ["TypeScript", "Node.js", "Express", "Prisma", "PostgreSQL", "Docker"],
       categories: ["backend"],
       year: "2023",
       repo: `${GH}/ArtConnect_Back_end`,
@@ -276,7 +272,7 @@ export const profile = {
       summary:
         "Sistema de respaldo entre servidores Ubuntu con rsync, llaves SSH, cron y scripts de monitoreo y verificación.",
       highlights: ["Guía paso a paso de instalación", "Monitoreo y verificación de integridad"],
-      tags: ["Bash", "Linux", "rsync", "cron"],
+      tags: ["Bash", "Linux", "Ubuntu"],
       categories: ["devops"],
       year: "2025",
       repo: `${GH}/ServidoresBackup`,
@@ -284,11 +280,11 @@ export const profile = {
   ]),
 
   stack: [
-    { group: "IA & Datos", items: ["LangGraph", "LangChain", "OpenAI", "RAG", "Pinecone", "PyTorch", "OpenCV", "TFLite"] },
-    { group: "Frontend", items: ["React", "Next.js", "Astro", "Angular", "TypeScript", "Tailwind", "GSAP", "Three.js"] },
-    { group: "Backend", items: ["Python", "FastAPI", "Go", "Node.js", "Express", "Celery", "Redis", "Prisma"] },
-    { group: "Móvil", items: ["Flutter", "Dart", "BLoC", "Kotlin", "Jetpack Compose", "Firebase"] },
-    { group: "Datos & Cloud", items: ["Supabase", "PostgreSQL", "MongoDB", "Docker", "Vercel", "Linux", "GitHub Actions"] },
+    { group: "Inteligencia artificial", items: ["OpenAI", "Claude", "LangGraph", "LangChain", "Pinecone", "PyTorch", "OpenCV", "TensorFlow Lite", "Hugging Face", "ElevenLabs", "OpenRouter"] },
+    { group: "Frontend", items: ["React", "Next.js", "Astro", "Angular", "TypeScript", "JavaScript", "Tailwind CSS", "Vite", "GSAP", "Three.js", "Framer Motion"] },
+    { group: "Backend", items: ["Python", "FastAPI", "Flask", "Go", "Node.js", "Express", "tRPC", "Prisma", "Celery", "Redis", "n8n"] },
+    { group: "Móvil", items: ["Flutter", "Dart", "Kotlin", "Jetpack Compose", "Android", "Firebase"] },
+    { group: "Datos e infraestructura", items: ["Supabase", "PostgreSQL", "MongoDB", "Docker", "Vercel", "Linux", "Ubuntu", "Bash", "Git", "GitHub Actions", "LiveKit", "MQTT", "Stripe"] },
   ],
 
   community: [

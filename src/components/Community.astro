@@ -3,32 +3,31 @@ import { profile } from "../data/profile";
 const [main, ...rest] = profile.community;
 ---
 
-<section id="comunidad">
-  <div class="container">
+<section id="comunidad" class="band alt">
+  <div class="container wide">
     <div class="section-head reveal">
       <span class="eyebrow">Comunidad</span>
-      <h2>Construir <span class="grad-text">con otros</span></h2>
-      <p class="lead">La tecnología crece cuando se comparte. Por eso organizo eventos, enseño y expongo proyectos.</p>
+      <h2 class="headline">Construir con otros. <span class="soft">Eventos, cursos y ferias en la ULEAM y Manta.</span></h2>
     </div>
     <div class="layout">
-      <a class="card hero-card reveal" href={main.link} target="_blank" rel="noopener">
-        <div class="glow" aria-hidden="true"></div>
+      <a class="tile main reveal" href={main.link} target="_blank" rel="noopener">
         <span class="kicker">{main.kicker}</span>
         <h3>{main.title}</h3>
         <p>{main.text}</p>
-        <ul class="facts">
-          <li><strong>$3K+</strong><span>en premios</span></li>
-          <li><strong>1–4</strong><span>personas por equipo</span></li>
-          <li><strong>Mentores</strong><span>por temática</span></li>
-        </ul>
-        <span class="cta">Ver la plataforma ↗</span>
+        <dl class="facts">
+          <div><dt>en premios</dt><dd>$3K+</dd></div>
+          <div><dt>personas por equipo</dt><dd>1–4</dd></div>
+          <div><dt>inscripción por grupo</dt><dd>$20</dd></div>
+        </dl>
+        <span class="link">Ver la plataforma</span>
       </a>
       <div class="side">
         {rest.map((c) => (
-          <a class="card mini reveal" href={c.link} target="_blank" rel="noopener">
+          <a class="tile mini reveal" href={c.link} target="_blank" rel="noopener">
             <span class="kicker">{c.kicker}</span>
             <h3>{c.title}</h3>
             <p>{c.text}</p>
+            <span class="link">Ver en GitHub</span>
           </a>
         ))}
       </div>
@@ -39,84 +38,74 @@ const [main, ...rest] = profile.community;
 <style>
   .layout {
     display: grid;
-    gap: 18px;
+    gap: 20px;
   }
   @media (min-width: 960px) {
     .layout {
-      grid-template-columns: 1.4fr 1fr;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
     }
   }
-  .hero-card {
-    position: relative;
-    overflow: hidden;
-    padding: 34px;
+  .tile {
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    border-color: rgba(34, 211, 238, 0.3);
+    gap: 10px;
+    transition: box-shadow 0.3s, transform 0.3s;
   }
-  .glow {
-    position: absolute;
-    width: 420px;
-    height: 420px;
-    right: -140px;
-    top: -160px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(139, 92, 246, 0.45), transparent 70%);
+  .tile:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+  }
+  .main {
+    padding: clamp(28px, 5vw, 56px);
   }
   .kicker {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--cyan);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--fg-3);
   }
-  .hero-card h3 {
-    font-size: clamp(2rem, 5vw, 3rem);
+  .main h3 {
+    font-size: clamp(2.4rem, 5vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
   }
   p {
-    color: var(--muted);
     margin: 0;
+    color: var(--fg-2);
   }
   .facts {
-    list-style: none;
-    padding: 0;
-    margin: 10px 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 28px;
+    gap: 20px 44px;
+    margin: 18px 0 14px;
   }
-  .facts li {
+  .facts div {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
-  .facts strong {
-    font: 700 1.5rem var(--font-display);
+  .facts dd {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
   }
-  .facts span {
-    color: var(--muted);
+  .facts dt {
     font-size: 0.85rem;
+    color: var(--fg-2);
   }
-  .cta {
+  .main .link,
+  .mini .link {
     margin-top: auto;
-    font-weight: 600;
-    color: var(--cyan);
   }
   .side {
     display: grid;
-    gap: 18px;
+    gap: 20px;
   }
   .mini {
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    padding: 30px;
   }
   .mini h3 {
-    font-size: 1.2rem;
-  }
-  .mini:hover,
-  .hero-card:hover {
-    transform: translateY(-3px);
+    font-size: 1.4rem;
+    letter-spacing: -0.02em;
   }
 </style>

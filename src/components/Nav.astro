@@ -5,25 +5,21 @@ const items = [
   { href: "#sobre-mi", label: "Sobre mí" },
   { href: "#experiencia", label: "Experiencia" },
   { href: "#proyectos", label: "Proyectos" },
+  { href: "#tecnologias", label: "Tecnologías" },
   { href: "#comunidad", label: "Comunidad" },
   { href: "#contacto", label: "Contacto" },
 ];
 ---
 
 <header class="nav">
-  <div class="container nav-inner">
-    <a href="#inicio" class="logo" aria-label="Inicio">
-      <span class="logo-mark">{profile.initials}</span>
-      <span class="logo-text">{profile.shortName}<span class="dot">.</span></span>
-    </a>
+  <div class="container wide nav-inner">
+    <a href="#inicio" class="logo">{profile.name}</a>
     <nav aria-label="Principal">
       <ul>
         {items.map((i) => <li><a href={i.href}>{i.label}</a></li>)}
       </ul>
     </nav>
-    <button class="ai-pill" data-open-chat type="button">
-      <span class="spark" aria-hidden="true">✦</span> Pregúntale a mi IA
-    </button>
+    <button class="ask" data-open-chat type="button">Pregúntale a mi IA</button>
   </div>
 </header>
 
@@ -32,76 +28,50 @@ const items = [
     position: sticky;
     top: 0;
     z-index: 50;
-    backdrop-filter: blur(14px);
-    background: rgba(6, 6, 11, 0.65);
-    border-bottom: 1px solid var(--border);
+    background: var(--nav-bg);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
   }
   .nav-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 68px;
     gap: 16px;
+    height: 52px;
   }
   .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: var(--font-display);
-    font-weight: 700;
-  }
-  .logo-mark {
-    width: 34px;
-    height: 34px;
-    border-radius: 10px;
-    display: grid;
-    place-items: center;
-    background: var(--grad);
-    color: #07070c;
-    font-size: 0.85rem;
-  }
-  .dot {
-    color: var(--cyan);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
   }
   ul {
     display: none;
     list-style: none;
     margin: 0;
     padding: 0;
-    gap: 28px;
+    gap: 30px;
   }
   ul a {
-    color: var(--muted);
-    font-size: 0.92rem;
-    transition: color 0.2s;
+    font-size: 0.8rem;
+    color: var(--fg);
+    opacity: 0.8;
+    transition: opacity 0.2s;
   }
   ul a:hover {
-    color: var(--text);
+    opacity: 1;
   }
-  .ai-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 9px 16px;
-    border-radius: 999px;
-    border: 1px solid rgba(139, 92, 246, 0.5);
-    background: rgba(139, 92, 246, 0.12);
-    color: #ddd6fe;
-    font: 600 0.85rem var(--font-sans);
+  .ask {
+    border: none;
+    border-radius: 980px;
+    padding: 6px 14px;
+    background: var(--accent);
+    color: #ffffff;
+    font: 400 0.8rem var(--font);
     cursor: pointer;
-    transition: background 0.2s, box-shadow 0.3s;
   }
-  .ai-pill:hover {
-    background: rgba(139, 92, 246, 0.22);
-    box-shadow: 0 0 30px -6px rgba(139, 92, 246, 0.8);
-  }
-  .spark {
-    color: var(--cyan);
-  }
-  @media (max-width: 420px) {
-    .logo-text {
-      display: none;
-    }
+  .ask:hover {
+    background: var(--accent-hover);
   }
   @media (min-width: 900px) {
     ul {

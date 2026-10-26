@@ -2,11 +2,11 @@
 import { profile } from "../data/profile";
 ---
 
-<section id="sobre-mi">
-  <div class="container about">
+<section id="sobre-mi" class="band alt">
+  <div class="container">
     <div class="section-head reveal">
       <span class="eyebrow">Sobre mí</span>
-      <h2>Ingeniería de software con <span class="grad-text">mentalidad de producto</span></h2>
+      <h2 class="headline">De Manta al mundo. <span class="soft">Ingeniería con mentalidad de producto.</span></h2>
     </div>
     <div class="grid">
       <div class="text reveal">
@@ -14,12 +14,9 @@ import { profile } from "../data/profile";
       </div>
       <ul class="pillars">
         {profile.pillars.map((p) => (
-          <li class="card reveal">
-            <span class="icon" aria-hidden="true">{p.icon}</span>
-            <div>
-              <h3>{p.title}</h3>
-              <p>{p.text}</p>
-            </div>
+          <li class="reveal">
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
           </li>
         ))}
       </ul>
@@ -30,21 +27,26 @@ import { profile } from "../data/profile";
 <style>
   .grid {
     display: grid;
-    gap: 40px;
+    gap: 48px;
   }
-  @media (min-width: 960px) {
+  @media (min-width: 900px) {
     .grid {
-      grid-template-columns: 1.1fr 1fr;
-      gap: 64px;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 72px;
     }
   }
+  .text {
+    display: grid;
+    gap: 20px;
+  }
   .text p {
-    color: var(--muted);
-    font-size: 1.06rem;
-    margin: 0 0 18px;
+    margin: 0;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: var(--fg-2);
   }
   .text :global(strong) {
-    color: var(--text);
+    color: var(--fg);
     font-weight: 600;
   }
   .pillars {
@@ -52,31 +54,19 @@ import { profile } from "../data/profile";
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 14px;
+    gap: 28px;
   }
   .pillars li {
-    display: flex;
-    gap: 16px;
-    padding: 20px;
-  }
-  .icon {
-    flex: none;
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    display: grid;
-    place-items: center;
-    background: rgba(139, 92, 246, 0.12);
-    border: 1px solid rgba(139, 92, 246, 0.3);
-    font-size: 1.2rem;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
   }
   h3 {
-    font-size: 1.05rem;
-    margin-bottom: 4px;
+    font-size: 1.15rem;
+    margin-bottom: 6px;
   }
   .pillars p {
     margin: 0;
-    color: var(--muted);
-    font-size: 0.93rem;
+    color: var(--fg-2);
+    font-size: 1rem;
   }
 </style>

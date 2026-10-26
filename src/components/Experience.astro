@@ -1,31 +1,31 @@
 ---
 import { profile } from "../data/profile";
+import TechIcon from "./TechIcon.astro";
 ---
 
-<section id="experiencia">
+<section id="experiencia" class="band">
   <div class="container">
     <div class="section-head reveal">
       <span class="eyebrow">Experiencia</span>
-      <h2>Dónde he <span class="grad-text">construido</span></h2>
+      <h2 class="headline">Dónde he construido. <span class="soft">Y qué aprendí haciéndolo.</span></h2>
     </div>
-    <ol class="timeline">
+    <ol class="list">
       {profile.experience.map((e) => (
-        <li class="item reveal">
-          <span class="node" aria-hidden="true"></span>
-          <div class="card body">
-            <div class="top">
-              <div>
-                <h3>{e.title}</h3>
-                <p class="org">{e.org}</p>
-              </div>
-              <span class="period">{e.period}</span>
-            </div>
+        <li class="row reveal">
+          <span class="period">{e.period}</span>
+          <div class="body">
+            <h3>{e.title}</h3>
+            <p class="org">{e.org}</p>
             <ul class="points">
               {e.points.map((p) => <li>{p}</li>)}
             </ul>
-            <div class="tags">
-              {e.tags.map((t) => <span class="tag">{t}</span>)}
-            </div>
+            {e.tags.length > 0 && (
+              <ul class="tech">
+                {e.tags.map((t) => (
+                  <li><TechIcon name={t} size={16} /><span>{t}</span></li>
+                ))}
+              </ul>
+            )}
           </div>
         </li>
       ))}
@@ -34,70 +34,64 @@ import { profile } from "../data/profile";
 </section>
 
 <style>
-  .timeline {
+  .list {
     list-style: none;
     margin: 0;
-    padding: 0 0 0 28px;
-    position: relative;
+    padding: 0;
   }
-  .timeline::before {
-    content: "";
-    position: absolute;
-    left: 6px;
-    top: 8px;
-    bottom: 8px;
-    width: 1px;
-    background: linear-gradient(var(--violet), var(--cyan), transparent);
+  .row {
+    display: grid;
+    gap: 8px 40px;
+    padding-block: 32px;
+    border-top: 1px solid var(--line);
   }
-  .item {
-    position: relative;
-    margin-bottom: 22px;
+  .row:last-child {
+    border-bottom: 1px solid var(--line);
   }
-  .node {
-    position: absolute;
-    left: -28px;
-    top: 26px;
-    width: 13px;
-    height: 13px;
-    border-radius: 50%;
-    background: var(--bg);
-    border: 2px solid var(--cyan);
-    box-shadow: 0 0 16px rgba(34, 211, 238, 0.7);
+  @media (min-width: 760px) {
+    .row {
+      grid-template-columns: 200px minmax(0, 1fr);
+    }
   }
-  .body {
-    padding: 24px;
-  }
-  .top {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 8px 20px;
+  .period {
+    color: var(--fg-3);
+    font-size: 0.95rem;
+    padding-top: 4px;
+    font-variant-numeric: tabular-nums;
   }
   h3 {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
   }
   .org {
     margin: 4px 0 0;
-    color: var(--cyan);
-    font-weight: 500;
-  }
-  .period {
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    color: var(--muted);
-    padding-top: 4px;
+    color: var(--fg-2);
+    font-size: 1.05rem;
   }
   .points {
-    margin: 16px 0;
-    padding-left: 18px;
-    color: var(--muted);
+    margin: 16px 0 0;
+    padding-left: 20px;
+    color: var(--fg-2);
+    display: grid;
+    gap: 8px;
+    max-width: 68ch;
   }
-  .points li {
-    margin-bottom: 6px;
-  }
-  .tags {
+  .tech {
+    list-style: none;
+    margin: 20px 0 0;
+    padding: 0;
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+  }
+  .tech li {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 12px;
+    border-radius: 980px;
+    background: var(--bg-alt);
+    font-size: 0.85rem;
+    color: var(--fg);
   }
 </style>

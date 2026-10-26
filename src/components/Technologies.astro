@@ -1,0 +1,83 @@
+---
+import { profile } from "../data/profile";
+import TechIcon from "./TechIcon.astro";
+
+const total = profile.stack.reduce((n, g) => n + g.items.length, 0);
+---
+
+<section id="tecnologias" class="band">
+  <div class="container wide">
+    <div class="section-head reveal">
+      <span class="eyebrow">Tecnologías</span>
+      <h2 class="headline">{total} herramientas. <span class="soft">Usadas en proyectos reales, no en tutoriales.</span></h2>
+    </div>
+    <div class="groups">
+      {profile.stack.map((g) => (
+        <div class="group reveal">
+          <h3>{g.group}</h3>
+          <ul class="tiles">
+            {g.items.map((i) => (
+              <li>
+                <TechIcon name={i} size={34} />
+                <span>{i}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .groups {
+    display: grid;
+    gap: 48px;
+  }
+  .group {
+    display: grid;
+    gap: 18px;
+  }
+  @media (min-width: 900px) {
+    .group {
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 40px;
+      padding-top: 28px;
+      border-top: 1px solid var(--line);
+    }
+  }
+  h3 {
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+  .tiles {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+    gap: 12px;
+  }
+  .tiles li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 22px 8px 16px;
+    border-radius: var(--r-md);
+    background: var(--bg-alt);
+    color: var(--fg);
+    text-align: center;
+    transition: transform 0.25s, background 0.25s;
+  }
+  .tiles li:hover {
+    transform: translateY(-3px);
+    background: var(--tile-alt);
+  }
+  .tiles span {
+    font-size: 0.82rem;
+    line-height: 1.2;
+    color: var(--fg-2);
+  }
+</style>

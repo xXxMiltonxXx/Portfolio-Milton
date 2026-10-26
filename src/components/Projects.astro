@@ -1,52 +1,57 @@
 ---
 import { profile, type Category } from "../data/profile";
+import TechIcon from "./TechIcon.astro";
 
 const filters: { id: "todos" | Category; label: string }[] = [
   { id: "todos", label: "Todos" },
-  { id: "ia", label: "✦ IA" },
+  { id: "ia", label: "IA" },
   { id: "web", label: "Web" },
   { id: "movil", label: "Móvil" },
   { id: "backend", label: "Backend" },
   { id: "devops", label: "DevOps" },
 ];
+const catLabel: Record<Category, string> = { ia: "IA", web: "Web", movil: "Móvil", backend: "Backend", devops: "DevOps" };
 ---
 
-<section id="proyectos">
-  <div class="container">
-    <div class="head">
-      <div class="section-head reveal">
-        <span class="eyebrow">Proyectos</span>
-        <h2>Cosas que he <span class="grad-text">lanzado</span></h2>
-        <p class="lead">Una selección de mis repositorios: productos con IA en producción, apps móviles, plataformas web e infraestructura.</p>
-      </div>
-      <div class="filters reveal" role="group" aria-label="Filtrar proyectos">
-        {filters.map((f, i) => (
-          <button type="button" class:list={["chip", { active: i === 0 }]} data-filter={f.id} aria-pressed={i === 0 ? "true" : "false"}>
-            {f.label}
-          </button>
-        ))}
-      </div>
+<section id="proyectos" class="band alt">
+  <div class="container wide">
+    <div class="section-head reveal">
+      <span class="eyebrow">Proyectos</span>
+      <h2 class="headline">Lo que he lanzado. <span class="soft">Desde agentes de IA hasta apps de salud.</span></h2>
+    </div>
+
+    <div class="segmented reveal" role="group" aria-label="Filtrar proyectos">
+      {filters.map((f, i) => (
+        <button type="button" class:list={["seg", { active: i === 0 }]} data-filter={f.id} aria-pressed={i === 0 ? "true" : "false"}>
+          {f.label}
+        </button>
+      ))}
     </div>
 
     <ul class="grid">
       {profile.projects.map((p) => (
-        <li class:list={["card project reveal", { featured: p.featured }]} data-cats={p.categories.join(" ")}>
-          <div class="p-top">
-            <span class="year">{p.year}</span>
-            {p.categories.includes("ia") && <span class="tag ai">✦ IA</span>}
-          </div>
+        <li class:list={["tile project reveal", { featured: p.featured }]} data-cats={p.categories.join(" ")}>
+          <p class="meta">
+            <span>{p.categories.map((c) => catLabel[c]).join(" · ")}</span>
+            <span>{p.year}</span>
+          </p>
           <h3>{p.name}</h3>
           <p class="summary">{p.summary}</p>
           <ul class="hl">
             {p.highlights.map((h) => <li>{h}</li>)}
           </ul>
-          <div class="tags">
-            {p.tags.map((t) => <span class="tag">{t}</span>)}
+          <div class="stack">
+            <p class="stack-label">Tecnologías</p>
+            <ul class="tech">
+              {p.tags.map((t) => (
+                <li><TechIcon name={t} size={16} /><span>{t}</span></li>
+              ))}
+            </ul>
           </div>
           <div class="links">
-            {p.live && <a href={p.live} target="_blank" rel="noopener">Ver en vivo ↗</a>}
-            {p.repo && <a href={p.repo} target="_blank" rel="noopener">Código ↗</a>}
-            {!p.repo && p.private && <span class="private">🔒 Repositorio privado</span>}
+            {p.live && <a class="link" href={p.live} target="_blank" rel="noopener">Ver en vivo</a>}
+            {p.repo && <a class="link" href={p.repo} target="_blank" rel="noopener">Ver código</a>}
+            {!p.repo && p.private && <span class="private">Repositorio privado</span>}
           </div>
         </li>
       ))}
@@ -55,155 +60,173 @@ const filters: { id: "todos" | Category; label: string }[] = [
 </section>
 
 <script>
-  const chips = document.querySelectorAll<HTMLButtonElement>("#proyectos .chip");
+  const segs = document.querySelectorAll<HTMLButtonElement>("#proyectos .seg");
   const cards = document.querySelectorAll<HTMLElement>("#proyectos .project");
-  chips.forEach((chip) =>
-    chip.addEventListener("click", () => {
-      const f = chip.dataset.filter!;
-      chips.forEach((c) => {
-        c.classList.toggle("active", c === chip);
-        c.setAttribute("aria-pressed", String(c === chip));
+  segs.forEach((seg) =>
+    seg.addEventListener("click", () => {
+      const f = seg.dataset.filter!;
+      segs.forEach((s) => {
+        s.classList.toggle("active", s === seg);
+        s.setAttribute("aria-pressed", String(s === seg));
       });
       cards.forEach((card) => {
-        const show = f === "todos" || card.dataset.cats!.split(" ").includes(f);
-        card.hidden = !show;
-        if (show) card.classList.add("in");
+        card.hidden = !(f === "todos" || card.dataset.cats!.split(" ").includes(f));
       });
     }),
   );
 </script>
 
 <style>
-  .head {
-    display: flex;
+  .segmented {
+    display: inline-flex;
     flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 0 24px;
+    gap: 2px;
+    padding: 3px;
+    border-radius: 980px;
+    background: var(--tile-alt);
+    margin-bottom: 40px;
+    max-width: 100%;
   }
-  .filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 48px;
+  :global(.band.alt) .segmented {
+    background: color-mix(in srgb, var(--fg) 7%, transparent);
   }
-  .chip {
-    padding: 8px 16px;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--muted);
-    font: 500 0.88rem var(--font-sans);
+  .seg {
+    border: none;
+    background: transparent;
+    color: var(--fg);
+    font: 400 0.9rem var(--font);
+    padding: 7px 18px;
+    border-radius: 980px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: background 0.2s;
   }
-  .chip:hover {
-    color: var(--text);
-    border-color: var(--border-strong);
-  }
-  .chip.active {
-    color: #07070c;
-    background: var(--grad);
-    border-color: transparent;
+  .seg.active {
+    background: var(--tile);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+    font-weight: 500;
   }
   .grid {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 18px;
+    gap: 20px;
   }
   @media (min-width: 760px) {
     .grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
-  @media (min-width: 1080px) {
+  @media (min-width: 1100px) {
     .grid {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
-    .featured:nth-child(1) {
-      grid-column: span 2;
+    .project.featured {
+      grid-column: span 3;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      grid-template-rows: auto auto auto 1fr auto;
+      column-gap: 56px;
+    }
+    .featured > * {
+      grid-column: 1;
+    }
+    .featured .hl,
+    .featured .stack {
+      grid-column: 2;
+    }
+    .featured .hl {
+      grid-row: 1 / 3;
+      align-self: start;
+      margin-top: 0;
+    }
+    .featured .stack {
+      grid-row: 3 / 6;
+      align-self: start;
+    }
+    .featured .links {
+      grid-row: 5;
+    }
+    .featured h3 {
+      font-size: 2.4rem;
     }
   }
   .project {
-    padding: 26px;
+    padding: clamp(26px, 3.4vw, 40px);
     display: flex;
     flex-direction: column;
-    position: relative;
-    overflow: hidden;
-  }
-  .project[hidden] {
-    display: none;
+    min-width: 0;
+    transition: box-shadow 0.3s, transform 0.3s;
   }
   .project:hover {
-    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
   }
-  .featured {
-    border-color: rgba(139, 92, 246, 0.3);
-  }
-  .featured::before {
-    content: "";
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 2px;
-    background: var(--grad);
-  }
-  .p-top {
+  .meta {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
-  }
-  .year {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--faint);
+    gap: 12px;
+    margin: 0 0 10px;
+    font-size: 0.85rem;
+    color: var(--fg-3);
+    font-variant-numeric: tabular-nums;
   }
   h3 {
-    font-size: 1.25rem;
-    margin-bottom: 10px;
+    font-size: 1.6rem;
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+    font-weight: 700;
   }
   .summary {
-    color: var(--muted);
-    margin: 0 0 14px;
-    font-size: 0.95rem;
+    margin: 12px 0 0;
+    color: var(--fg-2);
   }
   .hl {
-    margin: 0 0 18px;
+    margin: 16px 0 0;
     padding-left: 18px;
-    font-size: 0.88rem;
-    color: var(--muted);
+    display: grid;
+    gap: 6px;
+    font-size: 0.95rem;
+    color: var(--fg-2);
   }
-  .hl li {
-    margin-bottom: 4px;
+  .stack {
+    margin-top: 22px;
   }
-  .hl li::marker {
-    color: var(--cyan);
+  .stack-label {
+    margin: 0 0 10px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--fg-3);
   }
-  .tags {
+  .tech {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    margin-top: auto;
+  }
+  .tech li {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 11px;
+    border-radius: 980px;
+    background: var(--tile-alt);
+    font-size: 0.8rem;
+    color: var(--fg);
   }
   .links {
     display: flex;
-    gap: 18px;
-    margin-top: 18px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
-    font-size: 0.88rem;
-    font-weight: 600;
-  }
-  .links a {
-    color: var(--cyan);
-  }
-  .links a:hover {
-    text-decoration: underline;
+    flex-wrap: wrap;
+    gap: 22px;
+    margin-top: auto;
+    padding-top: 24px;
   }
   .private {
-    color: var(--faint);
-    font-weight: 500;
+    color: var(--fg-3);
+    font-size: 0.95rem;
   }
 </style>
