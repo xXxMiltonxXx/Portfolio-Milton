@@ -3,7 +3,6 @@ import { profile } from "../data/profile";
 import TechIcon from "./TechIcon.astro";
 
 const marqueeTech = ["OpenAI", "LangGraph", "Python", "FastAPI", "React", "Next.js", "Angular", "Flutter", "Go", "Supabase", "PostgreSQL", "Docker", "Nginx", "Cloudflare"];
-const quickTech = ["OpenAI", "Python", "Next.js", "Angular", "Flutter", "PostgreSQL"];
 
 // Titular partido en palabras para animarlas una a una.
 const line1 = [{ w: "Software" }, { w: "que" }, { w: "piensa", ai: true }];
@@ -40,10 +39,6 @@ function countParts(v: string) {
 
   <div class="container wide stage">
     <div class="copy">
-      <p class="name" data-hero="fade">
-        <span class="status" aria-hidden="true"></span>
-        {profile.name} · {profile.location}
-      </p>
       <h1 class="headline" aria-label="Software que piensa. Productos que funcionan.">
         <span class="line" aria-hidden="true">
           {line1.map((x) => (
@@ -63,14 +58,10 @@ function countParts(v: string) {
         <button class="btn btn-primary" data-open-chat type="button">Habla con mi IA</button>
         <a class="link" href="#vitrina">Ver proyectos</a>
       </div>
-      <div class="quick" data-hero="fade">
-        <span>Trabajo con</span>
-        <ul>
-          {quickTech.map((t) => (
-            <li title={t}><TechIcon name={t} size={20} /></li>
-          ))}
-        </ul>
-      </div>
+      <p class="name" data-hero="fade">
+        <span class="status" aria-hidden="true"></span>
+        {profile.name} · {profile.location}
+      </p>
     </div>
 
     <div class="visual">
@@ -193,7 +184,7 @@ function countParts(v: string) {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    margin: 0 0 18px;
+    margin: 30px 0 0;
     padding: 6px 14px 6px 10px;
     border-radius: 980px;
     background: color-mix(in srgb, var(--bg-alt) 80%, transparent);
@@ -247,32 +238,6 @@ function countParts(v: string) {
     gap: 14px 28px;
     margin-top: 30px;
   }
-  .quick {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 12px 16px;
-    margin-top: 30px;
-    color: var(--fg-3);
-    font-size: 0.85rem;
-  }
-  .quick ul {
-    display: flex;
-    gap: 8px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    color: var(--fg);
-  }
-  .quick li {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    display: grid;
-    place-items: center;
-    background: color-mix(in srgb, var(--bg-alt) 85%, transparent);
-  }
-
   /* ---------- Foto ---------- */
   .visual {
     position: relative;
