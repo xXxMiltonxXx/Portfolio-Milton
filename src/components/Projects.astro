@@ -188,7 +188,6 @@ const count = (id: "todos" | Category) =>
 
 <script>
   import { gsap } from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
 
   // Filtros
   const segs = document.querySelectorAll<HTMLButtonElement>("#proyectos .seg");
@@ -204,27 +203,12 @@ const count = (id: "todos" | Category) =>
         card.hidden = !(f === "todos" || card.dataset.cats!.split(" ").includes(f));
       });
       document.querySelector("#proyectos .grid")?.classList.toggle("filtered", f !== "todos");
-      // Las tarjetas que aún no habían aparecido con el scroll seguían
-      // invisibles: las mostramos y recalculamos los disparadores, porque
-      // la altura de la sección cambió.
-      const shown = [...cards].filter((c) => !c.hidden);
-      if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        gsap.set(shown, { clearProps: "transform,opacity" });
-        ScrollTrigger.refresh();
-      } else
+      // Entrada suave de las tarjetas filtradas.
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches)
         gsap.fromTo(
-          shown,
+          [...cards].filter((c) => !c.hidden),
           { y: 24, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.6,
-            ease: "expo.out",
-            stagger: 0.05,
-            overwrite: true,
-            clearProps: "transform,opacity",
-            onComplete: () => ScrollTrigger.refresh(),
-          },
+          { y: 0, opacity: 1, duration: 0.6, ease: "expo.out", stagger: 0.05, overwrite: true, clearProps: "transform,opacity" },
         );
     }),
   );
@@ -323,6 +307,15 @@ const count = (id: "todos" | Category) =>
     background: var(--tile);
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
     font-weight: 500;
+  }
+  /* En oscuro el gris del tile casi no se distingue del fondo del control. */
+  :global(:root[data-theme="dark"]) .seg.active {
+    background: color-mix(in srgb, var(--fg) 18%, transparent);
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme="light"])) .seg.active {
+      background: color-mix(in srgb, var(--fg) 18%, transparent);
+    }
   }
   .collage {
     position: relative;

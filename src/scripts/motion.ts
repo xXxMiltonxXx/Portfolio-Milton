@@ -1,7 +1,4 @@
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const $ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) =>
   Array.from(root.querySelectorAll<T>(sel));
@@ -15,6 +12,67 @@ document.addEventListener("pointermove", (e) => {
   tile.style.setProperty("--my", `${e.clientY - r.top}px`);
 });
 
+
+// Dispara cb cuando los elementos entran en pantalla (una sola vez cada uno).
+// IntersectionObserver mide en vivo, así que sigue funcionando aunque la página
+// cambie de alto (filtros de proyectos, imágenes que cargan tarde).
+const onView = (els: Element[], cb: (batch: HTMLElement[]) => void, rootMargin = "0px 0px -8% 0px") => {
+  let queue: HTMLElement[] = [];
+  let frame = 0;
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target);
+        queue.push(e.target as HTMLElement);
+      });
+      if (queue.length && !frame)
+        frame = requestAnimationFrame(() => {
+          frame = 0;
+          const batch = queue;
+          queue = [];
+          cb(batch);
+        });
+    },
+    { rootMargin },
+  );
+  els.forEach((el) => io.observe(el));
+  return () => io.disconnect();
+};
+
+// Animación ligada al scroll (scrub). El progreso se calcula en cada frame con
+// la posición real del elemento: no hay medidas guardadas que queden viejas
+// cuando la página cambia de alto. Los puntos son pares
+// [punto del elemento (0 arriba, 0.5 centro, 1 abajo), punto del viewport].
+type Scrub = { el: Element; anim: gsap.core.Animation; start: [number, number]; end: [number, number]; smooth: number };
+const scrubs: Scrub[] = [];
+const scrub = (sel: string, anim: gsap.core.Animation, start: [number, number], end: [number, number], smooth = 0) => {
+  const el = document.querySelector(sel);
+  if (!el) return anim.kill();
+  anim.pause();
+  scrubs.push({ el, anim, start, end, smooth });
+};
+const updateScrubs = () => {
+  const vh = innerHeight;
+  scrubs.forEach(({ el, anim, start, end, smooth }) => {
+    const r = el.getBoundingClientRect();
+    const a = start[1] * vh - (r.top + r.height * start[0]);
+    const total = (start[1] - end[1]) * vh + r.height * (end[0] - start[0]);
+    const p = gsap.utils.clamp(0, 1, total > 0 ? a / total : 0);
+    if (smooth) gsap.to(anim, { progress: p, duration: smooth, ease: "power3.out", overwrite: true });
+    else anim.progress(p);
+  });
+};
+let scrubFrame = 0;
+const queueScrubs = () => {
+  if (!scrubFrame)
+    scrubFrame = requestAnimationFrame(() => {
+      scrubFrame = 0;
+      updateScrubs();
+    });
+};
+addEventListener("scroll", queueScrubs, { passive: true });
+addEventListener("resize", queueScrubs);
 
 const mm = gsap.matchMedia();
 
@@ -44,99 +102,100 @@ mm.add("(prefers-reduced-motion: no-preference)", () => {
   gsap.to(".hero .ln-soft", { x: 40, duration: 11, ease: "sine.inOut", yoyo: true, repeat: -1 });
 
   // Parallax suave del hero al bajar.
-  gsap.to(".hero .stage", {
-    yPercent: 14,
-    opacity: 0.35,
-    ease: "none",
-    scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true },
-  });
-  gsap.to(".hero .lines", {
-    yPercent: 30,
-    ease: "none",
-    scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true },
-  });
+  scrub(".hero", gsap.to(".hero .stage", { yPercent: 14, opacity: 0.35, ease: "none" }), [0, 0], [1, 0]);
+  scrub(".hero", gsap.to(".hero .lines", { yPercent: 30, ease: "none" }), [0, 0], [1, 0]);
+
+  const stops: (() => void)[] = [];
 
   // ---------- Contadores ----------
-  $("[data-count]").forEach((el) => {
-    const end = Number(el.dataset.count);
-    const obj = { v: 0 };
-    gsap.to(obj, {
-      v: end,
-      duration: 1.8,
-      ease: "power3.out",
-      scrollTrigger: { trigger: el, start: "top 92%", once: true },
-      onUpdate: () => (el.textContent = String(Math.round(obj.v))),
-    });
-  });
+  const counters = $("[data-count]");
+  counters.forEach((el) => (el.textContent = "0"));
+  stops.push(
+    onView(counters, (batch) =>
+      batch.forEach((el) => {
+        const obj = { v: 0 };
+        gsap.to(obj, {
+          v: Number(el.dataset.count),
+          duration: 1.8,
+          ease: "power3.out",
+          onUpdate: () => (el.textContent = String(Math.round(obj.v))),
+        });
+      }),
+    ),
+  );
 
   // ---------- Líneas que se dibujan ----------
-  $("[data-line]").forEach((el) => {
-    gsap.from(el, {
-      scaleX: 0,
-      duration: 1.4,
-      ease: "expo.out",
-      scrollTrigger: { trigger: el, start: "top 92%", once: true },
-    });
-  });
+  const rules = $("[data-line]");
+  gsap.set(rules, { scaleX: 0 });
+  stops.push(onView(rules, (batch) => gsap.to(batch, { scaleX: 1, duration: 1.4, ease: "expo.out", clearProps: "transform" })));
 
   // ---------- Titulares de sección ----------
-  $("section:not(.hero) .section-head").forEach((head) => {
-    const tl = gsap.timeline({ scrollTrigger: { trigger: head, start: "top 85%", once: true } });
-    tl.from(head.querySelector(".eyebrow"), { y: 16, opacity: 0, duration: 0.7, ease: "power3.out" })
-      .from(head.querySelector(".headline"), { y: 60, opacity: 0, duration: 1.1, ease: "expo.out" }, 0.05)
-      .from(head.querySelector(".headline .soft"), { opacity: 0, duration: 1.2, ease: "power2.out" }, 0.45);
+  const heads = $("section:not(.hero) .section-head");
+  heads.forEach((head) => {
+    gsap.set(head.querySelector(".eyebrow"), { y: 16, opacity: 0 });
+    gsap.set(head.querySelector(".headline"), { y: 60, opacity: 0 });
+    gsap.set(head.querySelector(".headline .soft"), { opacity: 0 });
   });
+  stops.push(
+    onView(heads, (batch) =>
+      batch.forEach((head) =>
+        gsap
+          .timeline()
+          .to(head.querySelector(".eyebrow"), { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" })
+          .to(head.querySelector(".headline"), { y: 0, opacity: 1, duration: 1.1, ease: "expo.out" }, 0.05)
+          .to(head.querySelector(".headline .soft"), { opacity: 1, duration: 1.2, ease: "power2.out" }, 0.45),
+      ),
+    ),
+  );
 
   // ---------- Aparición escalonada de bloques ----------
   const blocks = $(".reveal").filter((el) => !el.classList.contains("section-head"));
   gsap.set(blocks, { y: 48, opacity: 0 });
-  ScrollTrigger.batch(blocks, {
-    start: "top 90%",
-    once: true,
-    onEnter: (batch) => gsap.to(batch, { y: 0, opacity: 1, duration: 1, ease: "expo.out", stagger: 0.08, overwrite: true, clearProps: "transform,opacity" }),
-  });
+  stops.push(
+    onView(blocks, (batch) =>
+      gsap.to(batch, { y: 0, opacity: 1, duration: 1, ease: "expo.out", stagger: 0.08, overwrite: true, clearProps: "transform,opacity" }),
+    ),
+  );
 
 
   // ---------- Línea de tiempo de experiencia ----------
-  const fill = document.querySelector("[data-progress-line]");
-  if (fill) {
-    gsap.fromTo(
-      fill,
-      { scaleY: 0 },
-      {
-        scaleY: 1,
-        ease: "none",
-        scrollTrigger: { trigger: ".timeline", start: "top 70%", end: "bottom 60%", scrub: 0.6 },
-      },
-    );
-  }
+  if (document.querySelector("[data-progress-line]"))
+    scrub(".timeline", gsap.fromTo("[data-progress-line]", { scaleY: 0 }, { scaleY: 1, ease: "none" }), [0, 0.7], [1, 0.6], 0.6);
 
   // ---------- Tecnologías: cascada de logos ----------
-  $("#tecnologias .tiles").forEach((list) => {
-    gsap.from(list.children, {
-      y: 30,
-      opacity: 0,
-      scale: 0.9,
-      duration: 0.8,
-      ease: "back.out(1.6)",
-      stagger: 0.035,
-      scrollTrigger: { trigger: list, start: "top 88%", once: true },
-    });
-  });
+  const tileLists = $("#tecnologias .tiles");
+  tileLists.forEach((list) => gsap.set(list.children, { y: 30, opacity: 0, scale: 0.9 }));
+  stops.push(
+    onView(tileLists, (batch) =>
+      batch.forEach((list) =>
+        gsap.to(list.children, {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          ease: "back.out(1.6)",
+          stagger: 0.035,
+          clearProps: "transform,opacity",
+        }),
+      ),
+    ),
+  );
 
   // ---------- Contacto ----------
-  gsap.from("#contacto .headline", {
-    scale: 0.75,
-    letterSpacing: "0.04em",
-    opacity: 0.2,
-    ease: "none",
-    scrollTrigger: { trigger: "#contacto", start: "top 95%", end: "center 60%", scrub: true },
-  });
+  scrub(
+    "#contacto",
+    gsap.from("#contacto .headline", { scale: 0.75, letterSpacing: "0.04em", opacity: 0.2, ease: "none" }),
+    [0, 0.95],
+    [0.5, 0.6],
+  );
 
   // ---------- Brillo animado del asistente ----------
   gsap.to(".ai-box", { backgroundPosition: "100% 50%", duration: 6, ease: "sine.inOut", yoyo: true, repeat: -1 });
+
+  updateScrubs();
+
+  return () => {
+    stops.forEach((stop) => stop());
+    scrubs.length = 0;
+  };
 });
-
-
-// Recalcular cuando cargan fuentes e imágenes.
-window.addEventListener("load", () => ScrollTrigger.refresh());
