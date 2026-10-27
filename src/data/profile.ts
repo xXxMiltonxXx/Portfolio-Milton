@@ -36,7 +36,7 @@ export const profile = {
   photoFallback: "",
   links: {
     github: GH,
-    linkedin: "https://www.linkedin.com/in/milton-angamarca",
+    linkedin: "https://www.linkedin.com/in/milton-angamarca-46669b204/",
   },
 
   stats: [
