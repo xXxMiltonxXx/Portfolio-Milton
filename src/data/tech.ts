@@ -70,6 +70,7 @@ const slugs: Record<string, string> = {
   "Contabo": "contabo",
   "Udemy": "udemy",
   "Coursera": "coursera",
+  "Cisco Networking Academy": "cisco",
 };
 
 export interface TechIconData {

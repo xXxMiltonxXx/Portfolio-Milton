@@ -411,7 +411,24 @@ export const profile = {
       url: "https://ude.my/UC-e55e9a05-2275-4449-a703-226f447a39cb",
       image: "/certificados/udemy-javascript-es9-node.webp",
     },
-  ] as { title: string; issuer: string; instructor?: string; date?: string; hours?: string; url?: string; image?: string }[],
+    {
+      title: "NDG Linux Unhatched",
+      issuer: "Cisco Networking Academy",
+      date: "Mayo 2022",
+      credential: "f32f7f0e-c9d1-4aa6-9133-6bbc19542562",
+      image: "/certificados/cisco-ndg-linux-unhatched.webp",
+    },
+  ] as {
+    title: string;
+    issuer: string;
+    instructor?: string;
+    date?: string;
+    hours?: string;
+    url?: string;
+    image?: string;
+    /** ID impreso en el certificado, para verificarlo con el emisor. */
+    credential?: string;
+  }[],
 
   community: [
     {
