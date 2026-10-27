@@ -17,6 +17,8 @@ export interface Project {
   image?: string;
   /** Imagen vertical (póster): se muestra completa sobre un fondo difuminado. */
   portrait?: boolean;
+  /** Encuadre de la portada en el collage (object-position). */
+  focus?: string;
 }
 
 const GH = "https://github.com/xXxMiltonxXx";
@@ -341,6 +343,9 @@ export const profile = {
       categories: ["movil"],
       year: "2024 a 2025",
       repo: `${GH}/BridgeUleam`,
+      image: "/proyectos/bridgeuleam.webp",
+      portrait: true,
+      focus: "12% top",
     },
     {
       name: "Laboratorio IoT",
