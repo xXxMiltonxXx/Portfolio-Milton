@@ -15,22 +15,6 @@ document.addEventListener("pointermove", (e) => {
   tile.style.setProperty("--my", `${e.clientY - r.top}px`);
 });
 
-// Contador de la vitrina y barra de progreso en móvil (scroll nativo).
-function showcaseNative() {
-  const viewport = document.querySelector<HTMLElement>("#vitrina .viewport");
-  const index = document.querySelector<HTMLElement>("[data-sc-index]");
-  const bar = document.querySelector<HTMLElement>("[data-sc-progress]");
-  const slides = $("[data-sc-slide]");
-  if (!viewport || !slides.length) return;
-  const update = () => {
-    const max = viewport.scrollWidth - viewport.clientWidth;
-    const p = max > 0 ? viewport.scrollLeft / max : 0;
-    if (bar) bar.style.transform = `scaleX(${p})`;
-    if (index) index.textContent = String(Math.min(slides.length, Math.round(p * (slides.length - 1)) + 1)).padStart(2, "0");
-  };
-  viewport.addEventListener("scroll", update, { passive: true });
-  update();
-}
 
 const mm = gsap.matchMedia();
 
@@ -96,7 +80,7 @@ mm.add("(prefers-reduced-motion: no-preference)", () => {
   });
 
   // ---------- Titulares de sección ----------
-  $("section:not(.hero) .section-head, #vitrina .head").forEach((head) => {
+  $("section:not(.hero) .section-head").forEach((head) => {
     const tl = gsap.timeline({ scrollTrigger: { trigger: head, start: "top 85%", once: true } });
     tl.from(head.querySelector(".eyebrow"), { y: 16, opacity: 0, duration: 0.7, ease: "power3.out" })
       .from(head.querySelector(".headline"), { y: 60, opacity: 0, duration: 1.1, ease: "expo.out" }, 0.05)
@@ -153,63 +137,6 @@ mm.add("(prefers-reduced-motion: no-preference)", () => {
   gsap.to(".ai-box", { backgroundPosition: "100% 50%", duration: 6, ease: "sine.inOut", yoyo: true, repeat: -1 });
 });
 
-// ---------- Vitrina horizontal fija (escritorio) ----------
-mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)", () => {
-  const section = document.querySelector<HTMLElement>("#vitrina");
-  const track = document.querySelector<HTMLElement>("[data-sc-track]");
-  const index = document.querySelector<HTMLElement>("[data-sc-index]");
-  const bar = document.querySelector<HTMLElement>("[data-sc-progress]");
-  const slides = $("[data-sc-slide]");
-  if (!section || !track || slides.length < 2) return;
-
-  section.classList.add("sc-pinned");
-  const distance = () => track.scrollWidth - window.innerWidth;
-
-  const tween = gsap.to(track, {
-    x: () => -distance(),
-    ease: "none",
-    scrollTrigger: {
-      trigger: section,
-      start: "top top",
-      end: () => `+=${distance()}`,
-      pin: section.querySelector(".pin"),
-      scrub: 0.8,
-      invalidateOnRefresh: true,
-      onUpdate: (st) => {
-        if (bar) bar.style.transform = `scaleX(${st.progress})`;
-        if (index) index.textContent = String(Math.round(st.progress * (slides.length - 1)) + 1).padStart(2, "0");
-      },
-    },
-  });
-
-  // Cada captura se desplaza dentro de su marco y la tarjeta se endereza al entrar.
-  slides.forEach((slide) => {
-    // El póster vertical se muestra completo, sin desplazamiento interno.
-    const img = slide.querySelector(".portrait") ? null : slide.querySelector("[data-sc-img]");
-    if (img) gsap.fromTo(
-      img,
-      { yPercent: 0 },
-      {
-        yPercent: -10,
-        ease: "none",
-        scrollTrigger: { trigger: slide, containerAnimation: tween, start: "left right", end: "right left", scrub: true },
-      },
-    );
-    gsap.from(slide, {
-      rotate: 3,
-      scale: 0.9,
-      opacity: 0.4,
-      ease: "power2.out",
-      scrollTrigger: { trigger: slide, containerAnimation: tween, start: "left 95%", end: "left 45%", scrub: true },
-    });
-  });
-
-  return () => section.classList.remove("sc-pinned");
-});
-
-mm.add("(max-width: 899px), (prefers-reduced-motion: reduce)", () => {
-  showcaseNative();
-});
 
 // Recalcular cuando cargan fuentes e imágenes.
 window.addEventListener("load", () => ScrollTrigger.refresh());

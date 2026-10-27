@@ -415,7 +415,18 @@ const count = (id: "todos" | Category) =>
     flex-direction: column;
     gap: 2px;
     padding: 60px 70px 22px 24px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.55) 50%, transparent);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.5) 55%, transparent);
+  }
+  /* Desenfoque detrás del nombre para que se lea sobre capturas claras. */
+  .overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    mask-image: linear-gradient(to top, #000 45%, transparent);
+    -webkit-mask-image: linear-gradient(to top, #000 45%, transparent);
   }
   .kind {
     font-size: 0.72rem;
