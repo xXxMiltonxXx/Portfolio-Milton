@@ -199,11 +199,13 @@ export const profile = {
       image: "/proyectos/salud-metabolica.webp",
       live: "https://saludmetabolica-salud-landing.idpriz.easypanel.host/#apps",
       summary:
-        "Plataforma de salud con app para pacientes, app para médicos y una API en Go. Un semáforo clínico prioriza pacientes y el médico puede llamarlos por video.",
+        "Mi SaaS de salud: dos apps, una para el paciente y otra para el médico, conectadas a una API en Go. El paciente registra sus comidas, glucosa y caminatas, y el médico le hace seguimiento, prioriza con un semáforo clínico y lo atiende por llamada o videollamada.",
       highlights: [
-        "Reconocimiento de alimentos desde una foto en el propio dispositivo (SigLIP 2 / TFLite)",
-        "Videollamadas médico–paciente con LiveKit",
-        "API Go con arquitectura hexagonal sobre Supabase, monorepo con Melos",
+        "IA que reconoce la comida desde una foto y calcula sus calorías, en el propio celular (SigLIP 2 / TFLite)",
+        "Seguimiento de glucosa, caminatas, pasos y metas diarias",
+        "Llamadas y videollamadas entre médico y paciente con LiveKit",
+        "Semáforo clínico que ordena a los pacientes por prioridad",
+        "API en Go con arquitectura hexagonal sobre Supabase, monorepo con Melos",
       ],
       tags: ["Flutter", "Dart", "Go", "Supabase", "PostgreSQL", "LiveKit", "TensorFlow Lite", "Docker", "Contabo", "GitHub Actions"],
       categories: ["ia", "movil", "backend"],
