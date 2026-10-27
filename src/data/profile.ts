@@ -26,7 +26,7 @@ export const profile = {
   name: "Milton Angamarca",
   shortName: "Milton",
   initials: "MA",
-  role: "Ingeniero de Software · Full Stack & IA",
+  role: "CTO de IssA · Ingeniero de Software Full Stack & IA",
   location: "Manta, Ecuador",
   availability: "Abierto a proyectos y colaboraciones",
   tagline:
@@ -48,7 +48,7 @@ export const profile = {
 
   about: [
     "Soy <strong>Milton Angamarca</strong>, ingeniero de software de <strong>Manta, Ecuador</strong>, formado en la <strong>Universidad Laica Eloy Alfaro de Manabí (ULEAM)</strong>. Me apasiona convertir problemas reales en productos que la gente usa todos los días.",
-    "Hoy construyo <strong>IssA</strong>, un CRM con IA nativa para WhatsApp: agentes que leen la base de conocimiento de un negocio, responden, agendan y cierran ventas 24/7. Trabajo en todo el stack: React y Next.js en el frontend, FastAPI, LangGraph y Go en el backend, Flutter en móvil y Supabase/Postgres como base.",
+    "Desde 2025 soy <strong>CTO de IssA</strong>, un CRM con IA nativa para WhatsApp, Instagram y Facebook: agentes que leen la base de conocimiento de un negocio, responden, agendan y cierran ventas 24/7. Trabajo en todo el stack: React y Next.js en el frontend, FastAPI, LangGraph y Go en el backend, Flutter en móvil y Supabase/Postgres como base.",
     "Fuera del código me mueve la comunidad: creé y organicé <strong>Hacknarok</strong>, una hackathon en Manta con más de <strong>$3.000 en premios</strong>, e impartí cursos en la <strong>Comunidad Microsoft de la ULEAM</strong>.",
   ],
 
@@ -83,11 +83,12 @@ export const profile = {
 
   experience: [
     {
-      title: "Full Stack & AI Engineer",
+      title: "CTO (Chief Technology Officer)",
       org: "IssA · issaa-ai.com",
       period: "Desde 2025",
       points: [
-        "Desarrollo de un CRM con IA nativa que responde, agenda citas y cierra ventas 24/7 para salud, sector público, retail, educación y B2B.",
+        "Dirijo la tecnología de la empresa: arquitectura, infraestructura, equipo de desarrollo y hoja de ruta del producto.",
+        "CRM con IA nativa que responde, agenda citas y cierra ventas 24/7 para salud, sector público, retail, educación y B2B.",
         "Conexión oficial como Meta Business Partner: WhatsApp Business API, Instagram y Facebook Messenger, con plantillas aprobadas y cumplimiento de las políticas de Meta y la normativa de protección de datos.",
         "Backend con FastAPI y LangGraph (migrado desde n8n): flujo conversacional RAG, colas Celery/Redis e ingesta de PDF, Office, audio y OCR.",
         "Landing y portal de clientes en React/Vite multilenguaje (ES/EN/PT) con dashboard de métricas, conversaciones y noticias.",
