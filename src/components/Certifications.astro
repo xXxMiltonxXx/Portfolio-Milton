@@ -3,6 +3,9 @@ import { profile } from "../data/profile";
 import TechIcon from "./TechIcon.astro";
 
 const certs = profile.certifications;
+// Se muestran los primeros; el resto queda detrás de "Ver más".
+const visible = 4;
+const extra = certs.length - visible;
 ---
 
 {certs.length > 0 && (
@@ -13,33 +16,64 @@ const certs = profile.certifications;
         <h2 class="headline">Aprendizaje continuo. <span class="soft">Cursos completados y verificables.</span></h2>
         <p class="total"><strong>{certs.reduce((h, c) => h + (parseFloat(c.hours ?? "0") || 0), 0)} horas</strong> de formación certificada.</p>
       </div>
-      <ul class="grid split-body">
-        {certs.map((c) => (
-          <li class="tile cert">
-            {c.image && (
-              <a class="thumb" href={c.url ?? c.image} target="_blank" rel="noopener">
-                <img src={c.image} alt={`Certificado: ${c.title}`} width="800" height="600" loading="lazy" />
-              </a>
-            )}
-            <div class="body">
-              <p class="issuer">
-                <TechIcon name={c.issuer} size={18} />
-                <span>{c.issuer}</span>
-                {c.date && <span class="date">{c.date}</span>}
-              </p>
-              <h3>{c.title}</h3>
-              {(c.instructor || c.hours) && (
-                <p class="meta">{[c.instructor && `Instructor: ${c.instructor}`, c.hours].filter(Boolean).join(" · ")}</p>
+      <div class="split-body">
+        <ul class="grid" id="cert-list">
+          {certs.map((c, i) => (
+            <li class="tile cert" data-extra={i >= visible ? "" : undefined} hidden={i >= visible}>
+              {c.image && (
+                <a class="thumb" href={c.url ?? c.image} target="_blank" rel="noopener">
+                  <img src={c.image} alt={`Certificado: ${c.title}`} width="800" height="600" loading="lazy" />
+                </a>
               )}
-              {c.credential && <p class="meta credential">ID del certificado: {c.credential}</p>}
-              {c.url && <a class="link" href={c.url} target="_blank" rel="noopener">Verificar certificado</a>}
-            </div>
-          </li>
-        ))}
-      </ul>
+              <div class="body">
+                <p class="issuer">
+                  <TechIcon name={c.issuer} size={18} />
+                  <span>{c.issuer}</span>
+                  {c.date && <span class="date">{c.date}</span>}
+                </p>
+                <h3>{c.title}</h3>
+                {(c.instructor || c.hours) && (
+                  <p class="meta">{[c.instructor && `Instructor: ${c.instructor}`, c.hours].filter(Boolean).join(" · ")}</p>
+                )}
+                {c.credential && <p class="meta credential">ID del certificado: {c.credential}</p>}
+                {c.url && <a class="link" href={c.url} target="_blank" rel="noopener">Verificar certificado</a>}
+              </div>
+            </li>
+          ))}
+        </ul>
+        {extra > 0 && (
+          <button class="btn btn-secondary more" type="button" data-more aria-controls="cert-list" aria-expanded="false">
+            <span data-label>Ver más certificados</span>
+            <span class="count" data-count-label>+{extra}</span>
+          </button>
+        )}
+      </div>
     </div>
   </section>
 )}
+
+<script>
+  import { gsap } from "gsap";
+
+  const btn = document.querySelector<HTMLButtonElement>("#certificaciones [data-more]");
+  const extras = document.querySelectorAll<HTMLElement>("#certificaciones [data-extra]");
+  btn?.addEventListener("click", () => {
+    const open = btn.getAttribute("aria-expanded") !== "true";
+    extras.forEach((li) => (li.hidden = !open));
+    btn.setAttribute("aria-expanded", String(open));
+    btn.querySelector("[data-label]")!.textContent = open ? "Ver menos" : "Ver más certificados";
+    btn.querySelector<HTMLElement>("[data-count-label]")!.hidden = open;
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (open && !reduce)
+      gsap.fromTo(extras, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "expo.out", stagger: 0.06, clearProps: "transform,opacity" });
+    // Al cerrar, la lista se encoge y el botón puede quedar arriba, fuera de vista
+    // (o debajo de la barra fija): lo traemos al centro.
+    if (!open) {
+      const r = btn.getBoundingClientRect();
+      if (r.top < 80 || r.bottom > innerHeight) btn.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" });
+    }
+  });
+</script>
 
 <style>
   .total {
@@ -126,6 +160,15 @@ const certs = profile.certifications;
     margin: 0;
     color: var(--fg-2);
     font-size: 0.92rem;
+  }
+  .more {
+    display: flex;
+    margin: 28px auto 0;
+  }
+  .more .count {
+    font-size: 0.85rem;
+    opacity: 0.75;
+    font-variant-numeric: tabular-nums;
   }
   .credential {
     font-size: 0.82rem;
