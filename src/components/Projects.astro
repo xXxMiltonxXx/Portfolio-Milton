@@ -17,14 +17,41 @@ const collage = [
   { src: "/proyectos/salud-metabolica.webp", cls: "f-salud" },
   { src: "/proyectos/valentina.webp", cls: "f-vale" },
 ];
-// Tarjetas que ocupan dos columnas en la cuadrícula.
+// Collage en escritorio: retícula de 12 columnas. Cada proyecto tiene su lugar
+// [columna inicial, columnas, fila inicial, filas]; los tres bloques encajan sin huecos.
+const collageLayout: Record<string, [number, number, number, number]> = {
+  // Bloque 1 (filas 1 a 8)
+  "IssA": [1, 7, 1, 5],
+  "Motor de IA de IssA": [8, 5, 1, 3],
+  "BioGuard": [8, 3, 4, 5],
+  "Coactiva": [11, 2, 4, 5],
+  "Hacknarok 2024": [1, 4, 6, 3],
+  "Invitación Valentina": [5, 3, 6, 3],
+  // Bloque 2 (filas 9 a 16)
+  "Quill ULEAM": [1, 3, 9, 5],
+  "Sistema Center · ZGames": [4, 6, 9, 4],
+  "Tastyfood": [10, 3, 9, 3],
+  "BridgeUleam": [10, 3, 12, 5],
+  "Sistema escolar Brighton": [4, 3, 13, 4],
+  "ULEAM Community Hub": [7, 3, 13, 4],
+  "Laboratorio IoT": [1, 3, 14, 3],
+  // Bloque 3 (filas 17 a 21)
+  "ArtConnect API": [1, 5, 17, 5],
+  "Salud Metabólica": [6, 7, 17, 3],
+  "Backups automatizados": [6, 7, 20, 2],
+};
+const order = Object.keys(collageLayout);
+// En tablet estas ocupan el ancho completo.
 const wide = new Set(["IssA", "Salud Metabólica"]);
-const projects = profile.projects.map((p, i) => ({
-  ...p,
-  id: `pd-${i}`,
-  kind: p.categories.map((c) => catLabel[c]).join(" · "),
-  url: p.live ?? p.repo,
-}));
+const projects = profile.projects
+  .map((p, i) => ({
+    ...p,
+    id: `pd-${i}`,
+    kind: p.categories.map((c) => catLabel[c]).join(" · "),
+    url: p.live ?? p.repo,
+    slot: collageLayout[p.name],
+  }))
+  .sort((a, b) => (order.indexOf(a.name) + 1 || 99) - (order.indexOf(b.name) + 1 || 99));
 const count = (id: "todos" | Category) =>
   id === "todos" ? profile.projects.length : profile.projects.filter((p) => p.categories.includes(id)).length;
 ---
@@ -56,16 +83,19 @@ const count = (id: "todos" | Category) =>
 
     <ul class="grid">
       {projects.map((p) => (
-        <li class:list={["card reveal", { wide: wide.has(p.name) }]} data-cats={p.categories.join(" ")}>
+        <li
+          class:list={["card reveal", { wide: wide.has(p.name) }]}
+          data-cats={p.categories.join(" ")}
+          style={p.slot ? `--gc:${p.slot[0]} / span ${p.slot[1]};--gr:${p.slot[2]} / span ${p.slot[3]}` : undefined}
+        >
           <button type="button" class="card-btn" data-open={p.id} aria-haspopup="dialog" aria-label={`Ver detalle de ${p.name}`}>
             <span class="media">
               {p.image ? (
                 <img src={p.image} alt="" width="1600" height="914" loading="lazy" class:list={{ portrait: p.portrait }} />
               ) : (
                 <span class="cover" aria-hidden="true">
-                  <span class="cover-name">{p.name}</span>
                   <span class="cover-tech">
-                    {p.tags.slice(0, 4).map((t) => <TechIcon name={t} size={22} />)}
+                    {p.tags.slice(0, 4).map((t) => <span class="cover-chip"><TechIcon name={t} size={26} /></span>)}
                   </span>
                 </span>
               )}
@@ -170,6 +200,7 @@ const count = (id: "todos" | Category) =>
       cards.forEach((card) => {
         card.hidden = !(f === "todos" || card.dataset.cats!.split(" ").includes(f));
       });
+      document.querySelector("#proyectos .grid")?.classList.toggle("filtered", f !== "todos");
     }),
   );
 
@@ -345,33 +376,58 @@ const count = (id: "todos" | Category) =>
     }
   }
 
-  /* ---------- Cuadrícula de portadas ---------- */
+  /* ---------- Collage de portadas ---------- */
   .grid {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 18px;
-    grid-auto-rows: clamp(240px, 60vw, 340px);
+    gap: 14px;
+    grid-auto-rows: clamp(240px, 64vw, 340px);
     grid-auto-flow: dense;
   }
   @media (min-width: 640px) {
     .grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      grid-auto-rows: clamp(220px, 30vw, 340px);
+      grid-auto-rows: clamp(220px, 32vw, 320px);
     }
     .card.wide {
       grid-column: span 2;
     }
   }
   @media (min-width: 1100px) {
-    .grid {
+    .grid:not(.filtered) {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-auto-rows: clamp(60px, 5.6vw, 84px);
+    }
+    .grid:not(.filtered) .card {
+      grid-column: var(--gc, span 4);
+      grid-row: var(--gr, span 4);
+    }
+    /* Con un filtro activo, cuadrícula pareja de tres columnas. */
+    .grid.filtered {
       grid-template-columns: repeat(3, minmax(0, 1fr));
       grid-auto-rows: clamp(240px, 22vw, 320px);
+    }
+    .grid.filtered .card.wide {
+      grid-column: auto;
     }
   }
   .card {
     min-width: 0;
+    container-type: inline-size;
+  }
+  /* Tarjetas angostas del collage: texto más chico y sin flecha. */
+  @container (max-width: 240px) {
+    .card-btn .name {
+      font-size: 1.1rem;
+    }
+    .card-btn .overlay {
+      padding: 50px 18px 18px;
+    }
+    .card-btn .arrow {
+      display: none;
+    }
   }
   .card-btn {
     position: relative;
@@ -497,8 +553,18 @@ const count = (id: "todos" | Category) =>
   .cover-tech {
     position: relative;
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     color: #ffffff;
+  }
+  .cover-chip {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
   }
 
   /* ---------- Ficha de detalle (estilo Awwwards) ---------- */
