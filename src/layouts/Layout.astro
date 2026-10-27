@@ -22,7 +22,16 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <title>{title}</title>
     <script is:inline>
       // Al recargar empezamos arriba en vez de restaurar el scroll a medias.
+      // Safari además salta al #ancla de la URL aunque no se vea en la barra,
+      // así que en una recarga quitamos el ancla y marcamos volver al inicio.
       if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+      try {
+        const nav = performance.getEntriesByType("navigation")[0];
+        if (nav && nav.type !== "navigate") {
+          window.__toTop = true;
+          if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+        }
+      } catch {}
       try {
         const t = localStorage.getItem("theme");
         if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
@@ -58,6 +67,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <slot />
     <script>
       import "../scripts/motion";
+
+      addEventListener("load", () => {
+        if ((window as { __toTop?: boolean }).__toTop) scrollTo({ top: 0, behavior: "instant" });
+        // Un enlace directo (/#proyectos) ya hizo su salto: limpiamos el ancla
+        // para que recargar después no vuelva a llevar ahí.
+        else if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+      });
 
       // Los enlaces internos hacen scroll sin dejar #seccion en la URL,
       // así una recarga no salta a la última sección visitada.
