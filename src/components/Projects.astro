@@ -17,6 +17,8 @@ const collage = [
   { src: "/proyectos/salud-metabolica.webp", cls: "f-salud" },
   { src: "/proyectos/valentina.webp", cls: "f-vale" },
 ];
+// Destacados en cuadrícula; el resto en mosaico de columnas (alto natural, sin huecos).
+const groups = [profile.projects.filter((p) => p.featured), profile.projects.filter((p) => !p.featured)];
 const count = (id: "todos" | Category) =>
   id === "todos" ? profile.projects.length : profile.projects.filter((p) => p.categories.includes(id)).length;
 ---
@@ -46,8 +48,9 @@ const count = (id: "todos" | Category) =>
       </div>
     </div>
 
-    <ul class="grid">
-      {profile.projects.map((p) => (
+    {groups.map((list, gi) => (
+    <ul class={gi === 0 ? "grid" : "masonry"}>
+      {list.map((p) => (
         <li class:list={["tile project reveal", { featured: p.featured }]} data-cats={p.categories.join(" ")}>
           {p.image && (
             <a class:list={["thumb", { portrait: p.portrait }]} href={p.live ?? p.repo ?? p.image} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
@@ -81,6 +84,7 @@ const count = (id: "todos" | Category) =>
         </li>
       ))}
     </ul>
+    ))}
   </div>
 </section>
 
@@ -281,9 +285,30 @@ const count = (id: "todos" | Category) =>
       font-size: clamp(2rem, 3vw, 2.6rem);
     }
     /* Las dos últimas tarjetas comparten la fila para no dejar huecos. */
-    .project:not(.featured):nth-last-child(-n + 2) {
-      grid-column: span 3;
+  }
+  .masonry {
+    list-style: none;
+    margin: 18px 0 0;
+    padding: 0;
+    columns: 1;
+    column-gap: 18px;
+  }
+  @media (min-width: 720px) {
+    .masonry {
+      columns: 2;
     }
+  }
+  @media (min-width: 1100px) {
+    .masonry {
+      columns: 3;
+    }
+  }
+  .masonry .project {
+    break-inside: avoid;
+    margin-bottom: 18px;
+  }
+  .masonry .links {
+    margin-top: 0;
   }
   .project {
     display: flex;
