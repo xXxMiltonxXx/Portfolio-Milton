@@ -32,7 +32,7 @@ const items = [
           <path fill="currentColor" d="M20.2 14.6A8.5 8.5 0 0 1 9.4 3.8a8.5 8.5 0 1 0 10.8 10.8z" />
         </svg>
       </button>
-      <button class="ask" data-open-chat type="button">Pregúntale a mi IA</button>
+      <button class="ask" data-open-chat type="button"><span class="ask-long">Pregúntale a mi IA</span><span class="ask-short">Mi IA</span></button>
     </div>
   </div>
 </header>
@@ -147,7 +147,22 @@ const items = [
       transform: none;
     }
   }
+  .ask-short {
+    display: none;
+  }
+  @media (max-width: 480px) {
+    .ask-long {
+      display: none;
+    }
+    .ask-short {
+      display: inline;
+    }
+  }
+  .logo {
+    white-space: nowrap;
+  }
   .ask {
+    white-space: nowrap;
     border: none;
     border-radius: 980px;
     padding: 6px 14px;
