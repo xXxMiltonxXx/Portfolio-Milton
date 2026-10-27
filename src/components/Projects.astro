@@ -187,6 +187,9 @@ const count = (id: "todos" | Category) =>
 </section>
 
 <script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
   // Filtros
   const segs = document.querySelectorAll<HTMLButtonElement>("#proyectos .seg");
   const cards = document.querySelectorAll<HTMLElement>("#proyectos .card");
@@ -201,6 +204,28 @@ const count = (id: "todos" | Category) =>
         card.hidden = !(f === "todos" || card.dataset.cats!.split(" ").includes(f));
       });
       document.querySelector("#proyectos .grid")?.classList.toggle("filtered", f !== "todos");
+      // Las tarjetas que aún no habían aparecido con el scroll seguían
+      // invisibles: las mostramos y recalculamos los disparadores, porque
+      // la altura de la sección cambió.
+      const shown = [...cards].filter((c) => !c.hidden);
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        gsap.set(shown, { clearProps: "transform,opacity" });
+        ScrollTrigger.refresh();
+      } else
+        gsap.fromTo(
+          shown,
+          { y: 24, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.6,
+            ease: "expo.out",
+            stagger: 0.05,
+            overwrite: true,
+            clearProps: "transform,opacity",
+            onComplete: () => ScrollTrigger.refresh(),
+          },
+        );
     }),
   );
 

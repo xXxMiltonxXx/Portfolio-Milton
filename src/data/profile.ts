@@ -34,7 +34,7 @@ export const profile = {
   tagline:
     "Desarrollo productos con IA de punta a punta: agentes conversacionales, CRMs inteligentes, apps móviles de salud y plataformas web, desde la idea hasta producción.",
   heroWords: ["agentes de IA", "CRMs inteligentes", "apps móviles", "plataformas web", "comunidad tech"],
-  photo: "/milton.jpg",
+  photo: "/milton.webp",
   photoFallback: "",
   links: {
     github: GH,
@@ -398,7 +398,7 @@ export const profile = {
       date: "Enero 2026",
       hours: "52.5 horas",
       url: "https://ude.my/UC-52b03c29-c292-48af-b79a-39e55caae35b",
-      image: "/certificados/udemy-javascript-moderno.jpg",
+      image: "/certificados/udemy-javascript-moderno.webp",
     },
     {
       title: "Aprende JavaScript ES9, HTML, CSS3 y NodeJS desde cero",
@@ -407,7 +407,7 @@ export const profile = {
       date: "Enero 2024",
       hours: "19 horas",
       url: "https://ude.my/UC-e55e9a05-2275-4449-a703-226f447a39cb",
-      image: "/certificados/udemy-javascript-es9-node.jpg",
+      image: "/certificados/udemy-javascript-es9-node.webp",
     },
   ] as { title: string; issuer: string; instructor?: string; date?: string; hours?: string; url?: string; image?: string }[],
 
