@@ -21,6 +21,7 @@ const items = [
       </ul>
     </nav>
     <div class="actions">
+      <a class="cv" href="/Milton-Angamarca-CV.pdf" download aria-label="Descargar CV en PDF" title="Descargar CV en PDF"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M11 3h2v9.2l3.3-3.3 1.4 1.4L12 16 6.3 10.3l1.4-1.4L11 12.2V3zM5 18h14v2H5v-2z" /></svg><span>CV</span></a>
       <button class="theme" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro" title="Cambiar tema">
         <svg class="sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
           <circle cx="12" cy="12" r="4.2" fill="currentColor" />
@@ -89,9 +90,10 @@ const items = [
     list-style: none;
     margin: 0;
     padding: 0;
-    gap: 30px;
+    gap: clamp(16px, 2.2vw, 30px);
   }
   ul a {
+    white-space: nowrap;
     font-size: 0.8rem;
     color: var(--fg);
     opacity: 0.8;
@@ -145,6 +147,37 @@ const items = [
     :global(:root:not([data-theme="light"])) .moon {
       opacity: 1;
       transform: none;
+    }
+  }
+  .cv {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 980px;
+    font-size: 0.8rem;
+    color: var(--fg);
+    background: color-mix(in srgb, var(--fg) 7%, transparent);
+    transition: background 0.2s;
+  }
+  .cv:hover {
+    background: color-mix(in srgb, var(--fg) 13%, transparent);
+  }
+  @media (min-width: 560px) {
+    .cv {
+      display: inline-flex;
+    }
+  }
+  /* Con poco ancho solo el icono, para que los enlaces no se aprieten. */
+  @media (max-width: 1279px) {
+    .cv span {
+      display: none;
+    }
+    .cv {
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      justify-content: center;
     }
   }
   .ask-short {
