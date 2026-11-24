@@ -13,7 +13,7 @@ const brief = (s: string) => {
   }
   return out;
 };
-const featured = ["Salud Metabólica", "BioGuard", "Quill ULEAM", "BridgeUleam"];
+const featured = ["Activica", "Salud Metabólica", "EditorIA", "BioGuard"];
 const projects = featured.map((n) => profile.projects.find((p) => p.name === n)).filter((p) => !!p);
 const web = new URL(Astro.site!).host;
 const linkedin = profile.links.linkedin.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");

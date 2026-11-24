@@ -422,7 +422,7 @@ export const profile = {
   stack: [
     { group: "Inteligencia artificial", items: ["OpenAI", "Claude", "LangGraph", "LangChain", "Pinecone", "PyTorch", "OpenCV", "TensorFlow Lite", "Hugging Face", "ElevenLabs", "OpenRouter"] },
     { group: "Frontend", items: ["React", "Next.js", "Astro", "Angular", "TypeScript", "JavaScript", "Tailwind CSS", "Vite", "SWR", "GSAP", "Three.js", "Framer Motion"] },
-    { group: "Backend", items: ["Python", "FastAPI", "Flask", "Go", "Node.js", "Express", "tRPC", "Prisma", "Celery", "Redis", "n8n"] },
+    { group: "Backend", items: ["Python", "FastAPI", "Flask", "Go", "Rust", "Node.js", "Express", "tRPC", "Prisma", "Celery", "Redis", "n8n"] },
     { group: "Integraciones", items: ["Meta", "WhatsApp API", "Instagram", "Messenger", "Telegram", "Gmail", "Google Calendar"] },
     { group: "Móvil", items: ["Flutter", "Dart", "Kotlin", "Jetpack Compose", "Android", "Firebase"] },
     { group: "Datos e infraestructura", items: ["Supabase", "PostgreSQL", "MongoDB", "Docker", "Nginx", "Cloudflare", "Contabo", "Vercel", "Linux", "Ubuntu", "Bash", "Git", "GitHub Actions", "LiveKit", "MQTT", "Stripe"] },
