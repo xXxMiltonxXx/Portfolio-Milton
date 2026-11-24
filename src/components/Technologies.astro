@@ -1,8 +1,11 @@
 ---
 import { profile } from "../data/profile";
 import TechIcon from "./TechIcon.astro";
+import { tech } from "../data/tech";
 
 const total = profile.stack.reduce((n, g) => n + g.items.length, 0);
+// Datos de los logos para el globo 3D (sin repetidos).
+const globeItems = [...new Set(profile.stack.flatMap((g) => g.items))].map((n) => tech(n));
 ---
 
 <section id="tecnologias" class="band">
@@ -10,6 +13,11 @@ const total = profile.stack.reduce((n, g) => n + g.items.length, 0);
     <div class="section-head reveal">
       <span class="eyebrow">Tecnologías</span>
       <h2 class="headline">{total} herramientas. <span class="soft">Usadas en proyectos reales, no en tutoriales.</span></h2>
+      <div class="globe" data-globe hidden>
+        <canvas aria-hidden="true"></canvas>
+        <p class="globe-label" aria-hidden="true">Arrastra para girar</p>
+      </div>
+      <script type="application/json" id="globe-data" set:html={JSON.stringify(globeItems)} />
       <ul class="legend">
         {profile.stack.map((g) => (
           <li><span>{g.group}</span><strong>{g.items.length}</strong></li>
@@ -34,6 +42,32 @@ const total = profile.stack.reduce((n, g) => n + g.items.length, 0);
   </div>
 </section>
 
+<script>
+  // El globo se arma aparte, cuando la sección está cerca; sin WebGL queda la lista de siempre.
+  const host = document.querySelector<HTMLElement>("#tecnologias [data-globe]");
+  const canvas = host?.querySelector("canvas");
+  const dataEl = document.getElementById("globe-data");
+  if (host && canvas && dataEl) {
+    const items = JSON.parse(dataEl.textContent ?? "[]");
+    const boot = async () => {
+      host.hidden = false;
+      const { startTechGlobe } = await import("../scripts/techGlobe");
+      const ok = startTechGlobe(canvas, host, items, host.querySelector(".globe-label"));
+      if (ok) host.closest("section")?.classList.add("has-globe");
+      else host.hidden = true;
+    };
+    new IntersectionObserver(
+      (entries, io) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          io.disconnect();
+          boot();
+        }
+      },
+      { rootMargin: "600px 0px" },
+    ).observe(host.parentElement!);
+  }
+</script>
+
 <style>
   .groups {
     display: grid;
@@ -48,6 +82,28 @@ const total = profile.stack.reduce((n, g) => n + g.items.length, 0);
   .group:first-child {
     padding-top: 0;
     border-top: none;
+  }
+  .globe {
+    width: min(100%, 440px);
+    margin-top: 14px;
+  }
+  .globe canvas {
+    width: 100%;
+    aspect-ratio: 1;
+    display: block;
+    cursor: grab;
+    touch-action: pan-y;
+  }
+  .globe-label {
+    margin: 2px 0 0;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--fg-3);
+    min-height: 1.3em;
+  }
+  /* Con el globo activo, la lista de conteos sobra. */
+  :global(.has-globe) .legend {
+    display: none;
   }
   .legend {
     list-style: none;

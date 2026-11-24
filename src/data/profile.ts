@@ -35,6 +35,8 @@ export const profile = {
   availability: "Abierto a proyectos y colaboraciones",
   tagline:
     "Desarrollo productos con IA de punta a punta: agentes conversacionales, CRMs inteligentes, apps móviles de salud y plataformas web, desde la idea hasta producción.",
+  /** Versión corta para la portada en móvil. */
+  taglineShort: "CTO de IssA. Agentes de IA, CRMs inteligentes y apps móviles, de la idea a producción.",
   heroWords: ["agentes de IA", "CRMs inteligentes", "apps móviles", "plataformas web", "comunidad tech"],
   photo: "/milton.webp",
   photoFallback: "",
