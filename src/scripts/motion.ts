@@ -150,12 +150,48 @@ mm.add("(prefers-reduced-motion: no-preference)", () => {
 
   // ---------- Aparición escalonada de bloques ----------
   const blocks = $(".reveal").filter((el) => !el.classList.contains("section-head"));
-  gsap.set(blocks, { y: 48, opacity: 0 });
+  // Entran levantándose desde atrás, con un giro 3D que se asienta.
+  gsap.set(blocks, { y: 48, opacity: 0, rotationX: -12, transformPerspective: 1100, transformOrigin: "50% 100%" });
   stops.push(
     onView(blocks, (batch) =>
-      gsap.to(batch, { y: 0, opacity: 1, duration: 1, ease: "expo.out", stagger: 0.08, overwrite: true, clearProps: "transform,opacity" }),
+      gsap.to(batch, {
+        y: 0,
+        opacity: 1,
+        rotationX: 0,
+        duration: 1.1,
+        ease: "expo.out",
+        stagger: 0.08,
+        overwrite: true,
+        clearProps: "transform,opacity",
+      }),
     ),
   );
+
+  // ---------- Tarjetas de proyecto: inclinación 3D hacia el cursor ----------
+  if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    $(".card-btn").forEach((btn) => {
+      let frame = 0;
+      btn.addEventListener("pointermove", (e) => {
+        const r = btn.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width;
+        const py = (e.clientY - r.top) / r.height;
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(() => {
+          btn.style.setProperty("--rx", `${((0.5 - py) * 9).toFixed(2)}deg`);
+          btn.style.setProperty("--ry", `${((px - 0.5) * 11).toFixed(2)}deg`);
+          btn.style.setProperty("--gx", `${(px * 100).toFixed(1)}%`);
+          btn.style.setProperty("--gy", `${(py * 100).toFixed(1)}%`);
+          btn.classList.add("tilting");
+        });
+      });
+      btn.addEventListener("pointerleave", () => {
+        cancelAnimationFrame(frame);
+        btn.classList.remove("tilting");
+        btn.style.setProperty("--rx", "0deg");
+        btn.style.setProperty("--ry", "0deg");
+      });
+    });
+  }
 
 
   // ---------- Línea de tiempo de experiencia ----------

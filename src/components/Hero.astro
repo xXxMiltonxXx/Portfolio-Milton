@@ -66,6 +66,7 @@ function countParts(v: string) {
     </div>
 
     <div class="visual">
+      <canvas class="knot" aria-hidden="true"></canvas>
       <div class="orbit" aria-hidden="true">
         <span class="ring r1"></span>
         <span class="ring r2"></span>
@@ -120,6 +121,21 @@ function countParts(v: string) {
     ))}
   </div>
 </div>
+
+<script>
+  // El nudo 3D se carga aparte y sin bloquear: si WebGL no está disponible, queda el diseño de anillos.
+  const canvas = document.querySelector<HTMLCanvasElement>(".hero .knot");
+  const visual = document.querySelector<HTMLElement>(".hero .visual");
+  if (canvas && visual) {
+    const boot = async () => {
+      const { startHero3D } = await import("../scripts/hero3d");
+      if (startHero3D(canvas, visual)) visual.classList.add("has-3d");
+      else canvas.remove();
+    };
+    if ("requestIdleCallback" in window) requestIdleCallback(boot, { timeout: 1500 });
+    else setTimeout(boot, 300);
+  }
+</script>
 
 <style>
   .hero {
@@ -256,6 +272,27 @@ function countParts(v: string) {
     position: absolute;
     inset: 0;
     pointer-events: none;
+  }
+  /* Lienzo WebGL: más grande que el visual para que el nudo abrace la foto. */
+  .knot {
+    position: absolute;
+    left: -22%;
+    top: -22%;
+    width: 144%;
+    height: 144%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  }
+  .has-3d .knot {
+    opacity: 1;
+  }
+  .has-3d .r2,
+  .has-3d .r3 {
+    opacity: 0.18;
+  }
+  .has-3d .r1 {
+    opacity: 0.4;
   }
   .ring {
     position: absolute;
