@@ -19,6 +19,8 @@ export interface Project {
   portrait?: boolean;
   /** Encuadre de la portada en el collage (object-position). */
   focus?: string;
+  /** Video de demostración (MP4 ya comprimido) y su imagen de portada. */
+  video?: { src: string; poster: string };
 }
 
 const GH = "https://github.com/xXxMiltonxXx";
@@ -156,6 +158,42 @@ export const profile = {
   ],
 
   projects: defineProjects([
+    {
+      name: "Activica",
+      image: "/proyectos/activica.webp",
+      summary:
+        "Plataforma de conteo rápido de actas electorales: la app escanea el acta, un backend en Rust la procesa y lee sus cifras con visión por computadora e IA, y un panel de supervisión muestra el avance en vivo por provincia.",
+      highlights: [
+        "API en Rust (Axum y SQLite) con más de 11 mil líneas: cola de fotos, procesamiento en paralelo y reintentos automáticos",
+        "App Android en Flutter con escáner de documentos, corrección de perspectiva y cola sin conexión de hasta 40 fotos",
+        "Cada cifra se verifica contra su escritura en letras y las sumas contra los sufragantes; si dos modelos difieren, un tercero desempata",
+        "Supervisión en vivo con mapa de Ecuador por provincias, mapa de calor y eventos en tiempo real",
+        "Panel de administración en Astro con Supabase: suscripciones por cobertura, tarifas, pagos y verificación en dos pasos",
+        "Una sola API para todos los clientes, con los datos de cada licencia separados, desplegada con Docker y Caddy",
+      ],
+      tags: ["Rust", "Flutter", "Dart", "Python", "OpenCV", "Astro", "Supabase", "SQLite", "Docker", "Caddy"],
+      categories: ["ia", "movil", "backend", "web"],
+      year: "2026",
+      featured: true,
+      private: true,
+    },
+    {
+      name: "EditorIA",
+      summary:
+        "Estudio de video con IA para canales y series: escribe el guion por escenas, genera imágenes con personajes consistentes, anima las tomas y arma el video. También monta videos sin IA a partir de clips, con voz, subtítulos y música.",
+      highlights: [
+        "Espacio de trabajo por canal: personajes, conocimiento y episodios como un solo conjunto",
+        "Personajes recurrentes con la misma cara y estilo en todas las escenas (Higgsfield)",
+        "Modo clips: voz, subtítulos y música sobre material de stock, sin IA generativa",
+        "Editor para ajustar clips, subtítulos, título y música y volver a renderizar solo lo que cambió",
+        "Nada de pago se ejecuta sin un clic y cada llamada lleva clave de idempotencia para no cobrar dos veces",
+        "Basado en el proyecto de código abierto MoneyPrinterTurbo, ampliado con canales, personajes, historias y editor",
+      ],
+      tags: ["Python", "FastAPI", "Streamlit", "FFmpeg", "ElevenLabs", "OpenAI"],
+      categories: ["ia", "web"],
+      year: "2026",
+      private: true,
+    },
     {
       name: "IssA",
       image: "/proyectos/issa-landing.webp",

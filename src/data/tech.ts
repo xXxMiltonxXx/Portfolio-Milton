@@ -71,6 +71,12 @@ const slugs: Record<string, string> = {
   "Udemy": "udemy",
   "Coursera": "coursera",
   "Cisco Networking Academy": "cisco",
+  "Rust": "rust",
+  "SQLite": "sqlite",
+  "FFmpeg": "ffmpeg",
+  "Streamlit": "streamlit",
+  "Caddy": "caddy",
+  "ONNX Runtime": "onnx",
 };
 
 export interface TechIconData {
