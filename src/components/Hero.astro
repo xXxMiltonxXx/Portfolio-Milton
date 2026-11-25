@@ -64,7 +64,7 @@ function countParts(v: string) {
       </div>
       <p class="name" data-hero="fade">
         <span class="status" aria-hidden="true"></span>
-        <span class="nm">{profile.name} · </span>{profile.location}
+        <span><span class="nm">{profile.name} · </span>{profile.location}</span>
       </p>
     </div>
 
@@ -126,7 +126,7 @@ function countParts(v: string) {
 </div>
 
 <script>
-  // El nudo 3D se carga aparte y sin bloquear: si WebGL no está disponible, queda el diseño de anillos.
+  // La red de nodos 3D se carga aparte y sin bloquear: si WebGL no está disponible, queda el diseño de anillos.
   const canvas = document.querySelector<HTMLCanvasElement>(".hero .knot");
   const visual = document.querySelector<HTMLElement>(".hero .visual");
   if (canvas && visual) {
