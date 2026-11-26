@@ -90,8 +90,8 @@ export const profile = {
   education: {
     school: "Universidad Laica Eloy Alfaro de Manabí (ULEAM)",
     short: "ULEAM",
-    degree: "Tecnologías de la Información",
-    period: "2020 a 2025",
+    degree: "Ingeniero en Tecnologías de la Información",
+    period: "2020 a 2026",
     thesis: "ULEAM Community Hub",
   },
 
