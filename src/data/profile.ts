@@ -1,7 +1,7 @@
 // Fuente única de verdad del portafolio: la usan las secciones de la página
 // y el asistente de IA (/api/chat) como base de conocimiento.
 
-export type Category = "ia" | "web" | "movil" | "backend" | "devops";
+export type Category = "ia" | "web" | "movil" | "backend" | "devops" | "escritorio";
 
 export interface Project {
   name: string;
@@ -193,6 +193,23 @@ export const profile = {
       ],
       tags: ["Python", "FastAPI", "Streamlit", "FFmpeg", "ElevenLabs", "OpenAI"],
       categories: ["ia", "web"],
+      year: "2026",
+      private: true,
+    },
+    {
+      name: "TwinPods",
+      image: "/proyectos/twinpods.webp",
+      summary:
+        "App de barra de menú para macOS que reproduce el audio de la Mac por dos o más audífonos o parlantes Bluetooth al mismo tiempo, sin drivers ni dependencias.",
+      highlights: [
+        "Crea un dispositivo de salida múltiple de CoreAudio con las salidas Bluetooth conectadas y lo deja como salida predeterminada",
+        "Si un audífono se desconecta, se apaga solo y restaura la salida anterior; si conectas otro, lo agrega automáticamente",
+        "Herramienta de línea de comandos (twinpods on, off y list) que comparte el mismo núcleo con la app",
+        "Swift nativo: AppKit para el menú y CoreAudio para los dispositivos, compilado con un solo script",
+        "Se distribuye como app firmada ad hoc en un .zip, con licencia MIT",
+      ],
+      tags: ["Swift", "macOS", "Bluetooth", "Xcode"],
+      categories: ["escritorio"],
       year: "2026",
       private: true,
     },
@@ -426,7 +443,7 @@ export const profile = {
     { group: "Frontend", items: ["React", "Next.js", "Astro", "Angular", "TypeScript", "JavaScript", "Tailwind CSS", "Vite", "SWR", "GSAP", "Three.js", "Framer Motion"] },
     { group: "Backend", items: ["Python", "FastAPI", "Flask", "Go", "Rust", "Node.js", "Express", "tRPC", "Prisma", "Celery", "Redis", "n8n"] },
     { group: "Integraciones", items: ["Meta", "WhatsApp API", "Instagram", "Messenger", "Telegram", "Gmail", "Google Calendar"] },
-    { group: "Móvil", items: ["Flutter", "Dart", "Kotlin", "Jetpack Compose", "Android", "Firebase"] },
+    { group: "Móvil", items: ["Flutter", "Dart", "Kotlin", "Swift", "Jetpack Compose", "Android", "Firebase"] },
     { group: "Datos e infraestructura", items: ["Supabase", "PostgreSQL", "MongoDB", "Docker", "Nginx", "Cloudflare", "Contabo", "Vercel", "Linux", "Ubuntu", "Bash", "Git", "GitHub Actions", "LiveKit", "MQTT", "Stripe"] },
   ],
 

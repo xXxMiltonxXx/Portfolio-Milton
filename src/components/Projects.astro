@@ -9,8 +9,9 @@ const filters: { id: "todos" | Category; label: string }[] = [
   { id: "movil", label: "Móvil" },
   { id: "backend", label: "Backend" },
   { id: "devops", label: "DevOps" },
+  { id: "escritorio", label: "Escritorio" },
 ];
-const catLabel: Record<Category, string> = { ia: "IA", web: "Web", movil: "Móvil", backend: "Backend", devops: "DevOps" };
+const catLabel: Record<Category, string> = { ia: "IA", web: "Web", movil: "Móvil", backend: "Backend", devops: "DevOps", escritorio: "Escritorio" };
 // Tarjetas flotantes del encabezado, como las ilustraciones de la invitación de Valentina.
 const collage = [
   { src: "/proyectos/bioguard.webp", cls: "f-bio" },
@@ -21,8 +22,9 @@ const collage = [
 // [columna inicial, columnas, fila inicial, filas]; los bloques encajan sin huecos.
 const collageLayout: Record<string, [number, number, number, number]> = {
   // Bloque 0 (filas 1 a 5)
-  "Activica": [1, 8, 1, 5],
-  "EditorIA": [9, 4, 1, 5],
+  "Activica": [1, 7, 1, 5],
+  "EditorIA": [8, 5, 1, 2],
+  "TwinPods": [8, 5, 3, 3],
   // Bloque 1 (filas 6 a 14)
   "IssA": [1, 7, 6, 5],
   "Salud Metabólica": [1, 7, 11, 4],
@@ -45,7 +47,7 @@ const collageLayout: Record<string, [number, number, number, number]> = {
 };
 const order = Object.keys(collageLayout);
 // En tablet estas ocupan el ancho completo.
-const wide = new Set(["Activica", "EditorIA", "IssA", "Salud Metabólica"]);
+const wide = new Set(["Activica", "EditorIA", "TwinPods", "IssA", "Salud Metabólica"]);
 const projects = profile.projects
   .map((p, i) => ({
     ...p,
