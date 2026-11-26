@@ -1,4 +1,5 @@
-// Genera public/Milton-Angamarca-CV.pdf a partir de la página /cv.
+// Genera public/cv-web-version.pdf (versión web de 2 páginas) a partir de la página /cv.
+// El CV oficial que descarga el sitio es public/Milton-Angamarca-CV.pdf (formato Harvard, 1 página).
 // Uso: npm run build && npm run cv   (requiere Playwright con Chromium instalado)
 import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
@@ -45,7 +46,7 @@ const browser = await chromium.launch();
 const page = await browser.newPage();
 await page.goto(`http://127.0.0.1:${port}/cv/`, { waitUntil: "networkidle" });
 await page.evaluate(() => document.fonts.ready);
-const out = "public/Milton-Angamarca-CV.pdf";
+const out = "public/cv-web-version.pdf"; // no pisa public/Milton-Angamarca-CV.pdf, que es el CV Harvard de 1 página
 await page.pdf({ path: out, format: "A4", printBackground: true, preferCSSPageSize: true });
 await browser.close();
 server.close();
