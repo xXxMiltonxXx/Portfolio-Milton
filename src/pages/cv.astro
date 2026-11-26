@@ -72,8 +72,9 @@ const github = profile.links.github.replace(/^https?:\/\//, "");
         <section>
           <h2>Formación</h2>
           <div class="skill">
-            <h3>Universidad Laica Eloy Alfaro de Manabí (ULEAM)</h3>
-            <p>Manta, Ecuador</p>
+            <h3>{profile.education.school}</h3>
+            <p>{profile.education.degree} · {profile.education.period}</p>
+            <p>Tesis: {profile.education.thesis}</p>
           </div>
           {profile.certifications.map((c) => (
             <div class="skill">
@@ -102,9 +103,9 @@ const github = profile.links.github.replace(/^https?:\/\//, "");
             <article class="job">
               <div class="row">
                 <h3>{e.title}</h3>
-                <span class="when">{e.period}</span>
+                <span class="when">{e.period.split(" (")[0]}</span>
               </div>
-              <p class="org">{e.org}</p>
+              <p class="org">{e.org}{e.period.includes(" (") && ` · ${e.period.slice(e.period.indexOf("(") + 1, -1)}`}</p>
               <ul>
                 {e.points.map((pt) => <li>{pt}</li>)}
               </ul>

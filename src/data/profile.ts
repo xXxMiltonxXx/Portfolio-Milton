@@ -46,15 +46,15 @@ export const profile = {
   },
 
   stats: [
-    { value: "70+", label: "Repositorios en GitHub" },
-    { value: "3", label: "Idiomas · español, inglés e italiano" },
+    { value: "70+", label: "Repositorios en GitHub (50 públicos, el resto privados)" },
+    { value: "3", label: "Idiomas · español nativo, inglés B1, italiano básico" },
     { value: "24/7", label: "Agentes de IA atendiendo en IssA" },
     { value: "5+", label: "Años construyendo software" },
   ],
 
   about: [
     "Soy <strong>Milton Angamarca</strong>, ingeniero de software de <strong>Manta, Ecuador</strong>, formado en la <strong>Universidad Laica Eloy Alfaro de Manabí (ULEAM)</strong>. Me apasiona convertir problemas reales en productos que la gente usa todos los días.",
-    "Desde 2025 soy <strong>CTO de IssA</strong>, un CRM con IA nativa para WhatsApp, Instagram y Facebook: agentes que leen la base de conocimiento de un negocio, responden, agendan y cierran ventas 24/7. Trabajo en todo el stack: React y Next.js en el frontend, FastAPI, LangGraph y Go en el backend, Flutter en móvil y Supabase/Postgres como base.",
+    "Soy <strong>CTO de IssA</strong>, un CRM con IA nativa para WhatsApp, Instagram y Facebook: agentes que leen la base de conocimiento de un negocio, responden, agendan y cierran ventas 24/7. Trabajo en todo el stack: React y Next.js en el frontend, FastAPI, LangGraph y Go en el backend, Flutter en móvil y Supabase/Postgres como base.",
     "Fuera del código me mueve la comunidad: creé y organicé <strong>Hacknarok</strong>, una hackathon en Manta con más de <strong>$3.000 en premios</strong>, e impartí cursos en la <strong>Comunidad Microsoft de la ULEAM</strong>.",
   ],
 
@@ -83,15 +83,23 @@ export const profile = {
 
   languages: [
     { name: "Español", level: "Nativo" },
-    { name: "Inglés", level: "Intermedio" },
-    { name: "Italiano", level: "Intermedio" },
+    { name: "Inglés", level: "B1" },
+    { name: "Italiano", level: "Básico" },
   ],
+
+  education: {
+    school: "Universidad Laica Eloy Alfaro de Manabí (ULEAM)",
+    short: "ULEAM",
+    degree: "Tecnologías de la Información",
+    period: "2020 a 2025",
+    thesis: "ULEAM Community Hub",
+  },
 
   experience: [
     {
       title: "CTO (Chief Technology Officer)",
       org: "IssA · issaa-ai.com",
-      period: "Desde 2025",
+      period: "Desde marzo de 2026",
       points: [
         "Dirijo la tecnología de la empresa: arquitectura, infraestructura, equipo de desarrollo y hoja de ruta del producto.",
         "CRM con IA nativa que responde, agenda citas y cierra ventas 24/7 para salud, sector público, retail, educación y B2B.",
@@ -126,7 +134,7 @@ export const profile = {
     {
       title: "Desarrollador Full Stack Junior",
       org: "ZGames",
-      period: "Experiencia profesional",
+      period: "Enero 2025 a enero 2026 (pasante de julio a diciembre de 2024)",
       points: [
         "Desarrollé Sistema Center, una plataforma que centraliza todos los movimientos de los empleados.",
         "Implementé roles y permisos, y el módulo contable con su lógica de debe y haber.",
@@ -529,6 +537,7 @@ export function profileAsContext(): string {
         (pr.repo ? ` Código: ${pr.repo}.` : pr.private ? " Código privado." : ""),
     ),
     `Idiomas: ${p.languages.map((l) => `${l.name} (${l.level})`).join(", ")}.`,
+    `Formación: ${p.education.degree}, ${p.education.school}, ${p.education.period}. Tesis: ${p.education.thesis}.`,
     "Stack:",
     ...p.stack.map((s) => `- ${s.group}: ${s.items.join(", ")}`),
     "Comunidad:",
