@@ -459,6 +459,13 @@ export const profile = {
   // La sección se muestra sola en cuanto haya al menos uno.
   certifications: [
     {
+      title: "AI Fluency: Framework and Foundations",
+      issuer: "Claude Academy (Anthropic)",
+      date: "Noviembre 2026",
+      url: "https://academy.claude.com/verify/515892403aa0157abe1fa8c5b5067ebb",
+      image: "/certificados/anthropic-ai-fluency.webp",
+    },
+    {
       title: "JavaScript Moderno Guía Definitiva: Construye +20 Proyectos",
       issuer: "Udemy",
       instructor: "Juan Pablo De la torre Valdez",

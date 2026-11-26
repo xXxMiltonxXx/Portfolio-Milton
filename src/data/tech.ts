@@ -5,6 +5,7 @@ const slugs: Record<string, string> = {
   "LangGraph": "langchain",
   "LangChain": "langchain",
   "Claude": "claude",
+  "Claude Academy (Anthropic)": "claude",
   "PyTorch": "pytorch",
   "OpenCV": "opencv",
   "TensorFlow Lite": "tensorflow",
