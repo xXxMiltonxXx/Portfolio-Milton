@@ -459,6 +459,15 @@ export const profile = {
   // La sección se muestra sola en cuanto haya al menos uno.
   certifications: [
     {
+      title: "Masterclass: MCP para empresas",
+      issuer: "Código Facilito",
+      instructor: "Uriel Hernández",
+      date: "Noviembre 2026",
+      hours: "2.45 horas",
+      url: "https://codigofacilito.com/certificates/a631a04a-cb5f-4043-b3bb-7945d162c129",
+      image: "/certificados/codigo-facilito-mcp-empresas.webp",
+    },
+    {
       title: "Agents Course · Certificado de excelencia",
       issuer: "Hugging Face",
       date: "Noviembre 2026",

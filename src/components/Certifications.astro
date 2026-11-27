@@ -14,7 +14,7 @@ const extra = certs.length - visible;
       <div class="section-head">
         <span class="eyebrow">Certificaciones</span>
         <h2 class="headline">Aprendizaje continuo. <span class="soft">Cursos completados y verificables.</span></h2>
-        <p class="total"><strong>{certs.reduce((h, c) => h + (parseFloat(c.hours ?? "0") || 0), 0)} horas</strong> de formación certificada.</p>
+        <p class="total"><strong>{Math.round(certs.reduce((h, c) => h + (parseFloat(c.hours ?? "0") || 0), 0) * 10) / 10} horas</strong> de formación certificada.</p>
       </div>
       <div class="split-body">
         <ul class="grid" id="cert-list">
