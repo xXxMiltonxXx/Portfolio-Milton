@@ -459,6 +459,13 @@ export const profile = {
   // La sección se muestra sola en cuanto haya al menos uno.
   certifications: [
     {
+      title: "Agents Course · Certificado de excelencia",
+      issuer: "Hugging Face",
+      date: "Noviembre 2026",
+      url: "https://huggingface.co/datasets/agents-course/final-certificates/resolve/main/certificates/MiltonXd/2026-11-27.png",
+      image: "/certificados/hugging-face-agents-course.webp",
+    },
+    {
       title: "AI Fluency: Framework and Foundations",
       issuer: "Claude Academy (Anthropic)",
       date: "Noviembre 2026",
